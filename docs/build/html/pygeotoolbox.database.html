@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.database package &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pygeotoolbox.database package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.database.base">pygeotoolbox.database.base module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.database.postgis">pygeotoolbox.database.postgis module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.database">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pygeotoolbox.database package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pygeotoolbox.database.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pygeotoolbox-database-package">
+<h1>pygeotoolbox.database package<a class="headerlink" href="#pygeotoolbox-database-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pygeotoolbox.database.sqltemplating.html">pygeotoolbox.database.sqltemplating package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pygeotoolbox.database.sqltemplating.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygeotoolbox.database.sqltemplating.html#module-pygeotoolbox.database.sqltemplating.base">pygeotoolbox.database.sqltemplating.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygeotoolbox.database.sqltemplating.html#module-pygeotoolbox.database.sqltemplating.sqlcommands">pygeotoolbox.database.sqltemplating.sqlcommands module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygeotoolbox.database.sqltemplating.html#module-pygeotoolbox.database.sqltemplating.sqlprocedure">pygeotoolbox.database.sqltemplating.sqlprocedure module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygeotoolbox.database.sqltemplating.html#module-pygeotoolbox.database.sqltemplating">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pygeotoolbox.database.base">
+<span id="pygeotoolbox-database-base-module"></span><h2>pygeotoolbox.database.base module<a class="headerlink" href="#module-pygeotoolbox.database.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate">
+<em class="property">class </em><code class="descclassname">pygeotoolbox.database.base.</code><code class="descname">DatabaseTemplate</code><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template for geodatabase class. Methods with NotImplementedError must be implemented by all descendants.</p>
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.cleanTableContent">
+<code class="descname">cleanTableContent</code><span class="sig-paren">(</span><em>tableName</em>, <em>schema='temp'</em>, <em>whereClause=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.cleanTableContent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.cleanTableContent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.clearBuffer">
+<code class="descname">clearBuffer</code><span class="sig-paren">(</span><em>buffer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.clearBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.clearBuffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes all commands in a buffer, commits the database and returns empty buffer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>of string buffer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of SQL commands.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">empty buffer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.createDatabase">
+<code class="descname">createDatabase</code><span class="sig-paren">(</span><em>databaseName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.createDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.createDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>databaseName</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.createOrCleanTable">
+<code class="descname">createOrCleanTable</code><span class="sig-paren">(</span><em>schema</em>, <em>tableName</em>, <em>createSQL</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.createOrCleanTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.createOrCleanTable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.createSchema">
+<code class="descname">createSchema</code><span class="sig-paren">(</span><em>schema</em>, <em>dropIfExists=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.createSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.createSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates database schema with given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – schema name</li>
+<li><strong>dropIfExists</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – drops schema before creating, if already exists.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.databaseExists">
+<code class="descname">databaseExists</code><span class="sig-paren">(</span><em>databaseName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.databaseExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.databaseExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if a database with name databaseName exists.</p>
+<p>:param str databaseName:database name
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.disconnect">
+<code class="descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnects database connection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>sql</em>, <em>parameters={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes sql command. Before execution, it replaces parameters if provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Command sequence to be executed;</li>
+<li><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Parameters to be used in a query.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.executeBuffer">
+<code class="descname">executeBuffer</code><span class="sig-paren">(</span><em>sql</em>, <em>buffer</em>, <em>limit=1000</em>, <em>parameters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.executeBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.executeBuffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts sql into buffer, then executes it, if number of commands in it is higher than limit or does nothing. returns either empty or original buffer.</p>
+<p>:param str sql:sql command to be inserted to buffer
+:param list of str buffer: buffer of SQL commands
+:param int limit: maximum number of items in a buffer before being executed
+:return list of str: empty list or buffer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.executeSQLFile">
+<code class="descname">executeSQLFile</code><span class="sig-paren">(</span><em>fileName</em>, <em>parameters={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.executeSQLFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.executeSQLFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads SQL script from the file, compiles parameters into it and executes it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fileName</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – file name to be loaded as SQL script</li>
+<li><strong>parameters</strong> – paramaters to be compiled</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.executeSelectSQL">
+<code class="descname">executeSelectSQL</code><span class="sig-paren">(</span><em>sql</em>, <em>parameters={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.executeSelectSQL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.executeSelectSQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs SQL query and returns database cursor with query result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Query to be executed.</li>
+<li><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Parameters to be used in a query.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:return cursor : Cursor with result or None if fails.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.flushBuffer">
+<code class="descname">flushBuffer</code><span class="sig-paren">(</span><em>buffer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.flushBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.flushBuffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>clearBuffer method alias. Executes all commands in a buffer, commits the database and returns empty buffer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>of string buffer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of SQL commands.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">empty buffer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.getTableNames">
+<code class="descname">getTableNames</code><span class="sig-paren">(</span><em>schema</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.getTableNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.getTableNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return table names in a given database schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – schema name</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return list of str:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">list of table names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.loadAndExecute">
+<code class="descname">loadAndExecute</code><span class="sig-paren">(</span><em>fileName</em>, <em>params={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.loadAndExecute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.loadAndExecute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads SQL script from the file and executes it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fileName</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – file name to be loaded as SQL script</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.mute">
+<code class="descname">mute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.mute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.mute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch database into muted state, in which neither execute or executeSelectSQL commands are not commited.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.muted">
+<code class="descname">muted</code><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.muted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if database is muted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.tableExists">
+<code class="descname">tableExists</code><span class="sig-paren">(</span><em>schema</em>, <em>tableName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.tableExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.tableExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if table exists in given schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Schema name.</li>
+<li><strong>tableName</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Table name.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return bool:</th><td class="field-body"><p class="first last">True if table schema.tableName exists.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.base.DatabaseTemplate.unMute">
+<code class="descname">unMute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/base.html#DatabaseTemplate.unMute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.base.DatabaseTemplate.unMute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch database into unmuted state, in which both execute or executeSelectSQL commands works.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.database.postgis">
+<span id="pygeotoolbox-database-postgis-module"></span><h2>pygeotoolbox.database.postgis module<a class="headerlink" href="#module-pygeotoolbox.database.postgis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygeotoolbox.database.postgis.Database">
+<em class="property">class </em><code class="descclassname">pygeotoolbox.database.postgis.</code><code class="descname">Database</code><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pygeotoolbox.database.base.DatabaseTemplate" title="pygeotoolbox.database.base.DatabaseTemplate"><code class="xref py py-class docutils literal"><span class="pre">pygeotoolbox.database.base.DatabaseTemplate</span></code></a></p>
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.cleanTableContent">
+<code class="descname">cleanTableContent</code><span class="sig-paren">(</span><em>tableName</em>, <em>schema='temp'</em>, <em>whereClause=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.cleanTableContent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.cleanTableContent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pygeotoolbox.database.postgis.Database.connection">
+<code class="descname">connection</code><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pygeotoolbox.database.postgis.Database.connectionParams">
+<code class="descname">connectionParams</code><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.connectionParams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.createDatabase">
+<code class="descname">createDatabase</code><span class="sig-paren">(</span><em>databaseName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.createDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.createDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>databaseName</strong> – </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.createSchema">
+<code class="descname">createSchema</code><span class="sig-paren">(</span><em>schema</em>, <em>dropIfExists=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.createSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.createSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates database schema with given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – schema name</li>
+<li><strong>dropIfExists</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – drops schema before creating, if already exists.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.databaseExists">
+<code class="descname">databaseExists</code><span class="sig-paren">(</span><em>databaseName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.databaseExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.databaseExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if a database with name databaseName exists.</p>
+<p><a class="reference external" href="https://dba.stackexchange.com/questions/45143/check-if-postgresql-database-exists-case-insensitive-way">https://dba.stackexchange.com/questions/45143/check-if-postgresql-database-exists-case-insensitive-way</a>
+:param str databaseName:database name
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.disconnect">
+<code class="descname">disconnect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.disconnect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>sql</em>, <em>parameters={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes sql command. Before execution, it replaces parameters if provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Command sequence to be executed;</li>
+<li><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Parameters to be used in a query.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.executeSelectSQL">
+<code class="descname">executeSelectSQL</code><span class="sig-paren">(</span><em>sql</em>, <em>parameters={}</em>, <em>iterSize=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.executeSelectSQL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.executeSelectSQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs SQL query and returns database cursor with query result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Query to be executed.</li>
+<li><strong>parameters</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Parameters to be used in a query.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:return cursor : Cursor with result or None if fails.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pygeotoolbox.database.postgis.Database.extractSchemaAndTableName">
+<em class="property">static </em><code class="descname">extractSchemaAndTableName</code><span class="sig-paren">(</span><em>tableSpec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.extractSchemaAndTableName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.extractSchemaAndTableName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.fieldExists">
+<code class="descname">fieldExists</code><span class="sig-paren">(</span><em>fieldName</em>, <em>tableOrFieldDefinitions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.fieldExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.fieldExists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.findSRID">
+<code class="descname">findSRID</code><span class="sig-paren">(</span><em>schemaName</em>, <em>tableName</em>, <em>fieldName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.findSRID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.findSRID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.firstRowFromSelect">
+<code class="descname">firstRowFromSelect</code><span class="sig-paren">(</span><em>sql</em>, <em>parameters={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.firstRowFromSelect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.firstRowFromSelect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.geometryValueFromShape">
+<code class="descname">geometryValueFromShape</code><span class="sig-paren">(</span><em>shape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.geometryValueFromShape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.geometryValueFromShape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.geometryValueFromWKT">
+<code class="descname">geometryValueFromWKT</code><span class="sig-paren">(</span><em>wkt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.geometryValueFromWKT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.geometryValueFromWKT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pygeotoolbox.database.postgis.Database.getDefaultSchemaIfNotAssigned">
+<em class="property">static </em><code class="descname">getDefaultSchemaIfNotAssigned</code><span class="sig-paren">(</span><em>schemaName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.getDefaultSchemaIfNotAssigned"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.getDefaultSchemaIfNotAssigned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.getFieldDefinition">
+<code class="descname">getFieldDefinition</code><span class="sig-paren">(</span><em>schemaName</em>, <em>tableName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.getFieldDefinition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.getFieldDefinition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pygeotoolbox.database.postgis.Database.getFieldString">
+<em class="property">static </em><code class="descname">getFieldString</code><span class="sig-paren">(</span><em>fieldDefinition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.getFieldString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.getFieldString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.getFieldTypeFromValue">
+<code class="descname">getFieldTypeFromValue</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.getFieldTypeFromValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.getFieldTypeFromValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.getRowCount">
+<code class="descname">getRowCount</code><span class="sig-paren">(</span><em>tableFullName</em>, <em>whereClause=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.getRowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.getRowCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns table row count.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tableFullName</strong> (<em>String</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return LongInt:</th><td class="field-body">Row count for the table specified.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">Database</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">getRowCount</span><span class="p">(</span><span class="s2">&quot;public.z_terennirelief_l&quot;</span><span class="p">)</span>
+<span class="go">1099736L</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.getTableNames">
+<code class="descname">getTableNames</code><span class="sig-paren">(</span><em>schema</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.getTableNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.getTableNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return table names in a given database schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>schema</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – schema name</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return list of str:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">list of table names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.loadShapes">
+<code class="descname">loadShapes</code><span class="sig-paren">(</span><em>sql</em>, <em>fieldNames</em>, <em>geomFieldName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.loadShapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.loadShapes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.normalizeName">
+<code class="descname">normalizeName</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.normalizeName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.normalizeName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.database.postgis.Database.schemaExists">
+<code class="descname">schemaExists</code><span class="sig-paren">(</span><em>schemaName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database/postgis.html#Database.schemaExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.postgis.Database.schemaExists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.database">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pygeotoolbox.database" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pygeotoolbox.database.databaseByName">
+<code class="descclassname">pygeotoolbox.database.</code><code class="descname">databaseByName</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/database.html#databaseByName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.database.databaseByName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns database with a given name. If it doesn’t exist yet, creates and returns new instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – database name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">database with a given name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

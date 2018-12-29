@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.htmlhelpers &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.htmlhelpers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.htmlhelpers</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="c1">###########################################################</span>
+<span class="c1">#                                                         #</span>
+<span class="c1"># Copyright (c) 2018 Radek Augustýn, licensed under MIT.  #</span>
+<span class="c1">#                                                         #</span>
+<span class="c1">###########################################################</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+<span class="c1"># @PRODUCTION MODULE [Full]</span>
+
+
+<span class="kn">from</span> <span class="nn">base</span> <span class="k">import</span> <span class="n">replaceStringBlocks</span><span class="p">,</span> <span class="n">pathLeaf</span>
+
+
+<div class="viewcode-block" id="replaceHTMLBlock"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.replaceHTMLBlock">[docs]</a><span class="k">def</span> <span class="nf">replaceHTMLBlock</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">commentIdentifier</span><span class="p">,</span> <span class="n">newContent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Replaces html content in block of &lt;!-- commentIdentifier --&gt;Old content&lt;!-- end of commentIdentifier --&gt; by new value.</span>
+
+<span class="sd">    :param html: source html containing section(s) to be replaced</span>
+<span class="sd">    :param commentIdentifier: identifier of section to be replaced</span>
+<span class="sd">    :param newContent: new content of identified section</span>
+<span class="sd">    :return: resulting html</span>
+
+<span class="sd">    &gt;&gt;&gt; html = &quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Title&lt;/h1&gt;&lt;p&gt;&lt;!-- content --&gt;Here should be page content&lt;!-- end of content --&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; html = replaceHTMLBlock(html, &quot;content&quot;, &quot;My content of page.&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print html</span>
+<span class="sd">    &lt;html&gt;&lt;body&gt;&lt;h1&gt;Title&lt;/h1&gt;&lt;p&gt;My content of page.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">commentIdentifier</span> <span class="o">=</span> <span class="n">commentIdentifier</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">startId</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&lt;!-- </span><span class="si">%s</span><span class="s2"> --&gt;&quot;</span> <span class="o">%</span> <span class="n">commentIdentifier</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="n">endId</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&lt;!-- END OF </span><span class="si">%s</span><span class="s2"> --&gt;&quot;</span> <span class="o">%</span> <span class="n">commentIdentifier</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">html</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">startId</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">upperCase</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">startPos</span> <span class="o">=</span> <span class="n">upperCase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">startId</span><span class="p">)</span>
+
+        <span class="n">endPos</span> <span class="o">=</span> <span class="n">upperCase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">endId</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">endPos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">logging</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;replaceHTMLBlock endPos(</span><span class="si">%d</span><span class="s2">) &lt; 0&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">endPos</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">html</span>
+
+        <span class="n">endCutPos</span> <span class="o">=</span> <span class="n">upperCase</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;--&gt;&quot;</span><span class="p">,</span> <span class="n">endPos</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="n">endCutPos</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">html</span>
+
+        <span class="k">if</span> <span class="n">startPos</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">endCutPos</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="p">[:</span><span class="n">startPos</span><span class="p">]</span> <span class="o">+</span> <span class="n">newContent</span> <span class="o">+</span> <span class="n">html</span><span class="p">[</span><span class="n">endCutPos</span><span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">html</span></div>
+
+
+<div class="viewcode-block" id="initializeJavaScriptVariable"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.initializeJavaScriptVariable">[docs]</a><span class="k">def</span> <span class="nf">initializeJavaScriptVariable</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">variableName</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="n">startId</span> <span class="o">=</span> <span class="s2">&quot;var </span><span class="si">%s</span><span class="s2"> = &quot;</span> <span class="o">%</span> <span class="n">variableName</span>
+    <span class="k">return</span> <span class="n">replaceStringBlocks</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">startId</span><span class="p">,</span> <span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">startId</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s2">&quot;;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="replaceJavaScriptBlock"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.replaceJavaScriptBlock">[docs]</a><span class="k">def</span> <span class="nf">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">commentIdentifier</span><span class="p">,</span> <span class="n">newContent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replaces JavScript code block in html code.</span>
+
+<span class="sd">    :param html: Source html code.</span>
+<span class="sd">    :param commentIdentifier: JavaScript comment identifier.</span>
+<span class="sd">    :param newContent: New content of the block.</span>
+<span class="sd">    :return: html with replaced blocks of code.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="n">commentIdentifier</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">replaceStringBlocks</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s2">&quot;// </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">identifier</span><span class="p">,</span> <span class="s2">&quot;// END OF </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">newContent</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">replaceStringBlocks</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s2">&quot;/* </span><span class="si">%s</span><span class="s2"> */&quot;</span> <span class="o">%</span> <span class="n">identifier</span><span class="p">,</span> <span class="s2">&quot;/* END OF </span><span class="si">%s</span><span class="s2"> */&quot;</span> <span class="o">%</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">newContent</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">html</span></div>
+
+
+<div class="viewcode-block" id="replaceHTMLTags"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.replaceHTMLTags">[docs]</a><span class="k">def</span> <span class="nf">replaceHTMLTags</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">tags</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &lt;#LOGLINES#/&gt; ... just replace values</span>
+<span class="sd">    &lt;#LOGLINES#&gt; ... replace in block</span>
+<span class="sd">    /* DATA */ ... replace data in block</span>
+<span class="sd">    //DATA ... replace data in block</span>
+
+<span class="sd">    :param html:</span>
+<span class="sd">    :param tags:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">tagName</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tags</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tagName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tagName</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&gt;&quot;</span><span class="p">)):</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tagName</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tagName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">):</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">tagName</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tagName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">):</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">replaceHTMLBlock</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">tagName</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tagName</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/*&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tagName</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;*/&quot;</span><span class="p">):</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="n">tagName</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">tagName</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">html</span></div>
+
+
+<div class="viewcode-block" id="strToBool"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.strToBool">[docs]</a><span class="k">def</span> <span class="nf">strToBool</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="HTMLTemplateProcessor"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.HTMLTemplateProcessor">[docs]</a><span class="k">class</span> <span class="nc">HTMLTemplateProcessor</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">templateFileName</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">fileToStr</span><span class="p">,</span> <span class="n">log</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;Reading HTML Templates from &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">templateFileName</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">templates</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">templatesContent</span> <span class="o">=</span> <span class="n">fileToStr</span><span class="p">(</span><span class="n">templateFileName</span><span class="p">)</span>
+        <span class="n">searchPos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">templateEndMarker_StartPos</span> <span class="o">=</span> <span class="n">templatesContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&lt;!-- END OF &quot;</span><span class="p">,</span> <span class="n">searchPos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">templateEndMarker_StartPos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">templateEndMarker_EndPos</span> <span class="o">=</span> <span class="n">templatesContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;--&gt;&quot;</span><span class="p">,</span> <span class="n">templateEndMarker_StartPos</span><span class="p">)</span>
+                <span class="n">templateName</span> <span class="o">=</span> <span class="n">templatesContent</span><span class="p">[</span><span class="n">templateEndMarker_StartPos</span><span class="o">+</span><span class="mi">12</span><span class="p">:</span><span class="n">templateEndMarker_EndPos</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">templateStartMarker_StartPos</span> <span class="o">=</span> <span class="n">templatesContent</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&lt;!-- </span><span class="si">%s</span><span class="s2"> --&gt;&quot;</span> <span class="o">%</span> <span class="n">templateName</span><span class="p">,</span> <span class="n">searchPos</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">templateStartMarker_StartPos</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="n">templateContent</span> <span class="o">=</span> <span class="n">templatesContent</span><span class="p">[</span><span class="n">templateStartMarker_StartPos</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">templateName</span><span class="p">)</span><span class="o">+</span><span class="mi">9</span><span class="p">:</span><span class="n">templateEndMarker_StartPos</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">[</span><span class="n">templateName</span><span class="p">]</span> <span class="o">=</span> <span class="n">templateContent</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39; not found&quot;</span> <span class="o">%</span> <span class="s2">&quot;&lt;!-- </span><span class="si">%s</span><span class="s2"> --&gt;&quot;</span> <span class="o">%</span> <span class="n">templateName</span><span class="p">)</span>
+                <span class="n">searchPos</span> <span class="o">=</span> <span class="n">templateEndMarker_EndPos</span> <span class="o">+</span> <span class="mi">3</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Template names:</span><span class="si">%s</span><span class="s2"> (HTMLTemplateProcessor)&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">closeSection</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="HTMLTemplateProcessor.processContent"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.HTMLTemplateProcessor.processContent">[docs]</a>    <span class="k">def</span> <span class="nf">processContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">fileName</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">log</span>
+        <span class="k">for</span> <span class="n">templateName</span><span class="p">,</span> <span class="n">templateContent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Found template &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">templateName</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">replaceHTMLBlock</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">templateName</span><span class="p">,</span> <span class="n">templateContent</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fileName</span><span class="p">:</span> <span class="c1"># Bootstrap active menu item</span>
+            <span class="n">fileName</span> <span class="o">=</span> <span class="n">pathLeaf</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;li class=&quot;active&quot;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;li&gt;&#39;</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;li class=&#39;active&#39;&gt;&quot;</span><span class="p">,</span> <span class="s1">&#39;&lt;li&gt;&#39;</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;li&gt;&lt;a href=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&#39;</span> <span class="o">%</span> <span class="n">fileName</span><span class="p">,</span> <span class="s1">&#39;&lt;li class=&quot;active&quot;&gt;&lt;a href=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&#39;</span> <span class="o">%</span> <span class="n">fileName</span><span class="p">)</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;li&gt;&lt;a href=&#39;</span><span class="si">%s</span><span class="s2">&#39;&gt;&quot;</span> <span class="o">%</span> <span class="n">fileName</span><span class="p">,</span> <span class="s2">&quot;&lt;li class=&#39;active&#39;&gt;&lt;a href=&#39;</span><span class="si">%s</span><span class="s2">&#39;&gt;&quot;</span> <span class="o">%</span> <span class="n">fileName</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">content</span></div>
+
+
+<div class="viewcode-block" id="HTMLTemplateProcessor.processFile"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.HTMLTemplateProcessor.processFile">[docs]</a>    <span class="k">def</span> <span class="nf">processFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">fileToStr</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">processContent</span><span class="p">(</span><span class="n">fileToStr</span><span class="p">(</span><span class="n">fileName</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="VariableReplaceProcessor"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.VariableReplaceProcessor">[docs]</a><span class="k">class</span> <span class="nc">VariableReplaceProcessor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="n">items</span>
+
+
+<div class="viewcode-block" id="VariableReplaceProcessor.processContent"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmlhelpers.VariableReplaceProcessor.processContent">[docs]</a>    <span class="k">def</span> <span class="nf">processContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">fileName</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{{</span><span class="si">%s</span><span class="s2">}}&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">content</span></div></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">processor</span> <span class="o">=</span> <span class="n">HTMLTemplateProcessor</span><span class="p">(</span><span class="s2">&quot;C:/ms4w/Apache/htdocs/Generalizace/projects/Tutorials/01_DataExtraction/manager_data/CodeTemplates.html&quot;</span><span class="p">)</span>
+    <span class="n">processor</span><span class="o">.</span><span class="n">processFileContent</span><span class="p">(</span><span class="s2">&quot;C:\Python27\Lib\site-packages\mapgen\manager\web\manager\Data.html&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

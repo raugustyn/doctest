@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.workflow.rest.database &mdash; pygeotoolbox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../workflow.html">pygeotoolbox.workflow</a> &raquo;</li>
+        
+          <li><a href="../rest.html">pygeotoolbox.workflow.rest</a> &raquo;</li>
+        
+      <li>pygeotoolbox.workflow.rest.database</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.workflow.rest.database</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!c:/python27/python.exe</span>
+<span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+<span class="kn">import</span> <span class="nn">psycopg2</span>
+
+
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">:</span>
+    <span class="n">_connection</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_connectionString</span> <span class="o">=</span> <span class="s2">&quot;user=postgres password=postgres&quot;</span>
+    <span class="n">_databaseNames</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Connection.connection"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.Connection.connection">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">connection</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Connection</span><span class="o">.</span><span class="n">_connection</span><span class="p">:</span>
+            <span class="n">Connection</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Connection</span><span class="o">.</span><span class="n">connectorString</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Connection</span><span class="o">.</span><span class="n">connection</span></div>
+
+<div class="viewcode-block" id="Connection.setConnectionString"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.Connection.setConnectionString">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">setConnectionString</span><span class="p">(</span><span class="n">connectionString</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Connection</span> <span class="o">&lt;&gt;</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">:</span>
+            <span class="n">Connection</span><span class="o">.</span><span class="n">_connectionString</span> <span class="o">=</span> <span class="n">connectionString</span>
+            <span class="k">if</span> <span class="n">Connection</span><span class="o">.</span><span class="n">_connection</span><span class="p">:</span>
+                <span class="n">Connection</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">Connection</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Connection.getDatabaseNames"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.Connection.getDatabaseNames">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getDatabaseNames</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :return:</span>
+
+<span class="sd">        &gt;&gt;&gt; print Connection.getDatabaseNames()</span>
+<span class="sd">        [&#39;postgres&#39;, &#39;data10&#39;, &#39;tb04cuzk001_testbed&#39;, &#39;gensmd&#39;, &#39;lms&#39;, &#39;zabarak&#39;]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Connection</span><span class="o">.</span><span class="n">_databaseNames</span><span class="p">:</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Connection</span><span class="o">.</span><span class="n">_connectionString</span><span class="p">)</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT datname FROM pg_database WHERE datistemplate = false;&quot;</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">return</span>  <span class="n">result</span>
+
+        <span class="k">return</span> <span class="n">Connection</span><span class="o">.</span><span class="n">_databaseNames</span></div>
+
+<div class="viewcode-block" id="Connection.execute"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.Connection.execute">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">):</span>
+        <span class="n">databaseName</span> <span class="o">=</span> <span class="n">databaseName</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Connection</span><span class="o">.</span><span class="n">_connectionString</span> <span class="o">+</span> <span class="s2">&quot; dbname=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">databaseName</span><span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Connection.createDatabase"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.Connection.createDatabase">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">createDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">):</span>
+        <span class="n">databaseName</span> <span class="o">=</span> <span class="n">databaseName</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;CREATE DATABASE data10 WITH OWNER = postgres ENCODING = &#39;UTF8&#39; TABLESPACE = pg_default LC_COLLATE = &#39;Czech_Czech Republic.1250&#39; LC_CTYPE = &#39;Czech_Czech Republic.1250&#39; CONNECTION LIMIT = -1;&quot;</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;data10&quot;</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">)</span>
+
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">Connection</span><span class="o">.</span><span class="n">_connectionString</span> <span class="o">+</span> <span class="s2">&quot; dbname=&#39;postgres&#39;&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">psycopg2.extensions</span> <span class="k">import</span> <span class="n">ISOLATION_LEVEL_AUTOCOMMIT</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">set_isolation_level</span><span class="p">(</span><span class="n">ISOLATION_LEVEL_AUTOCOMMIT</span><span class="p">)</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s1">&#39;CREATE EXTENSION postgis SCHEMA public VERSION &quot;2.2.2&quot;;&#39;</span>
+        <span class="n">Connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="processDatabaseRequest"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.processDatabaseRequest">[docs]</a><span class="k">def</span> <span class="nf">processDatabaseRequest</span><span class="p">(</span><span class="n">databaseName</span><span class="p">,</span> <span class="n">pathList</span><span class="p">,</span> <span class="n">queryParams</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
+
+    <span class="k">if</span> <span class="n">pathList</span><span class="p">:</span>
+        <span class="n">pathItem</span> <span class="o">=</span> <span class="n">pathList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pathItem</span> <span class="o">==</span> <span class="s2">&quot;schemas&quot;</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">dumps</span><span class="p">([</span><span class="s2">&quot;schemaa&quot;</span><span class="p">,</span> <span class="s2">&quot;schemab&quot;</span><span class="p">],</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">=</span> <span class="s2">&quot;application/json&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;Unknown request at database </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">databaseName</span><span class="p">,</span> <span class="n">pathItem</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;No request at database &quot;</span> <span class="o">+</span> <span class="n">databaseName</span>
+
+    <span class="n">response</span><span class="o">.</span><span class="n">handled</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">htmlData</span> <span class="o">=</span> <span class="n">html</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+
+
+<div class="viewcode-block" id="processRequest"><a class="viewcode-back" href="../../../../pygeotoolbox.workflow.rest.html#pygeotoolbox.workflow.rest.database.processRequest">[docs]</a><span class="k">def</span> <span class="nf">processRequest</span><span class="p">(</span><span class="n">pathList</span><span class="p">,</span> <span class="n">queryParams</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
+    <span class="kn">from</span> <span class="nn">sharedtools</span> <span class="k">import</span> <span class="n">normalizePath</span><span class="p">,</span> <span class="n">fileRead</span>
+
+    <span class="k">if</span> <span class="n">pathList</span><span class="p">:</span>
+        <span class="n">pathItem</span> <span class="o">=</span> <span class="n">pathList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">pathItem</span> <span class="o">==</span> <span class="s2">&quot;names&quot;</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">dumps</span><span class="p">(</span><span class="n">Connection</span><span class="o">.</span><span class="n">getDatabaseNames</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">=</span> <span class="s2">&quot;application/json&quot;</span>
+        <span class="k">elif</span> <span class="n">pathItem</span> <span class="o">==</span> <span class="s2">&quot;fields&quot;</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">fileRead</span><span class="p">(</span><span class="n">normalizePath</span><span class="p">(</span><span class="s2">&quot;workflow/rest/FieldEditors/DatabaseName.html&quot;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">pathItem</span> <span class="o">==</span> <span class="s2">&quot;create&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pathList</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">Connection</span><span class="o">.</span><span class="n">createDatabase</span><span class="p">(</span><span class="n">pathList</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;Database created&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;Create database. Database name not provided.&quot;</span>
+
+        <span class="k">elif</span> <span class="n">pathItem</span> <span class="ow">in</span> <span class="n">Connection</span><span class="o">.</span><span class="n">getDatabaseNames</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">processDatabaseRequest</span><span class="p">(</span><span class="n">pathItem</span><span class="p">,</span> <span class="n">pathList</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">queryParams</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;Unknown request &quot;</span> <span class="o">+</span> <span class="n">pathItem</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;No database request defined&quot;</span>
+
+    <span class="n">response</span><span class="o">.</span><span class="n">handled</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">htmlData</span> <span class="o">=</span> <span class="n">html</span>
+    <span class="k">return</span> <span class="n">response</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">workflow.rest.workflows</span> <span class="k">import</span> <span class="n">registerPath</span><span class="p">,</span> <span class="n">runServer</span>
+
+    <span class="n">registerPath</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="n">processRequest</span><span class="p">)</span>
+    <span class="n">runServer</span><span class="p">(</span><span class="s2">&quot;workflow.rest.database&quot;</span><span class="p">)</span> <span class="c1"># , aDefaultPath = &quot;database/names&quot;)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'0.0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

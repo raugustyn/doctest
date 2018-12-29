@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.htmltools &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.htmltools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.htmltools</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="c1">###########################################################</span>
+<span class="c1">#                                                         #</span>
+<span class="c1"># Copyright (c) 2018 Radek Augustýn, licensed under MIT.  #</span>
+<span class="c1">#                                                         #</span>
+<span class="c1">###########################################################</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+<span class="c1"># @PRODUCTION MODULE [Full]</span>
+
+<span class="kn">from</span> <span class="nn">base</span> <span class="k">import</span> <span class="n">fileRead</span>
+
+<span class="n">templates</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+
+<div class="viewcode-block" id="registerTemplate"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.registerTemplate">[docs]</a><span class="k">def</span> <span class="nf">registerTemplate</span><span class="p">(</span><span class="n">templateName</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">templates</span><span class="p">[</span><span class="n">templateName</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span></div>
+
+<span class="n">templates</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;ahoj&lt;div id=&quot;mojeTestId&quot;&gt;&lt;p class=&quot;caption&quot;&gt;Moje Caption&lt;/p&gt;&lt;p class=&quot;shortDescription&quot;&gt;Moje shortDescription&lt;/p&gt;&lt;p class=&quot;description&quot;&gt;Moje dDescription&lt;/p&gt;&lt;/div&gt;&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="getTemplate"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.getTemplate">[docs]</a><span class="k">def</span> <span class="nf">getTemplate</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns HTML template content. For the first time in a given template it reads data from the file.</span>
+
+<span class="sd">    :param String name: Name of the template.</span>
+<span class="sd">    :return String: Template HTML content.</span>
+
+<span class="sd">    &gt;&gt;&gt; print getTemplate(&quot;sample&quot;)</span>
+<span class="sd">    ahoj&lt;div id=&quot;mojeTestId&quot;&gt;&lt;p class=&quot;caption&quot;&gt;Moje Caption&lt;/p&gt;&lt;p class=&quot;shortDescription&quot;&gt;Moje shortDescription&lt;/p&gt;&lt;p class=&quot;description&quot;&gt;Moje dDescription&lt;/p&gt;&lt;/div&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">templates</span><span class="p">:</span>
+        <span class="n">fileName</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="n">templates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">fileRead</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+            <span class="n">registerTemplate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">content</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="getHtmlDiv"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.getHtmlDiv">[docs]</a><span class="k">def</span> <span class="nf">getHtmlDiv</span><span class="p">(</span><span class="n">templateName</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extracts content of the html DIV element with given id. There must not be another div inside.</span>
+
+<span class="sd">    :param String templateName: Name of the template in the templates list.</span>
+<span class="sd">    :param String identifier: Id of the selected DIV element.</span>
+<span class="sd">    :return String: Content of DIV element with given id.</span>
+
+<span class="sd">    &gt;&gt;&gt; getHtmlDiv(&quot;sample&quot;, &quot;mojeTestId&quot;)</span>
+<span class="sd">    &#39;&lt;p id=&quot;caption&quot;&gt;Moje Caption&lt;/p&gt;&lt;p id=&quot;shortDescription&quot;&gt;Moje shortDescription&lt;/p&gt;&lt;p id=&quot;description&quot;&gt;Moje dDescription&lt;/p&gt;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">getTemplate</span><span class="p">(</span><span class="n">templateName</span><span class="p">)</span>
+    <span class="n">startPos</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&lt;div id=&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">identifier</span><span class="p">)</span>
+    <span class="n">startPos</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">startPos</span><span class="p">)</span>
+    <span class="n">endPos</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">,</span> <span class="n">startPos</span><span class="p">)</span>
+    <span class="k">if</span>  <span class="n">startPos</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">endPos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">html</span><span class="p">[</span><span class="n">startPos</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">endPos</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="getHtmlItems"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.getHtmlItems">[docs]</a><span class="k">def</span> <span class="nf">getHtmlItems</span><span class="p">(</span><span class="n">templateName</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param templateName:</span>
+<span class="sd">    :param identifier:</span>
+<span class="sd">    :return:</span>
+
+<span class="sd">    &gt;&gt;&gt; getHtmlItems(&quot;sample&quot;, &quot;mojeTestId&quot;)</span>
+<span class="sd">    {&#39;caption&#39;: &#39;Moje Caption&#39;, &#39;shortDescription&#39;: &#39;Moje shortDescription&#39;, &#39;description&#39;: &#39;Moje dDescription&#39;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">divContent</span> <span class="o">=</span> <span class="n">getHtmlDiv</span><span class="p">(</span><span class="n">templateName</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="n">divContent</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&lt;/p&gt;&quot;</span><span class="p">):</span>
+        <span class="n">paragraph</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">paragraph</span> <span class="ow">and</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;p&quot;</span><span class="p">):</span>
+            <span class="n">classNameStart</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;class=&quot;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">7</span>
+            <span class="n">classNameEnd</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="n">classNameStart</span><span class="p">)</span>
+            <span class="n">className</span> <span class="o">=</span> <span class="n">paragraph</span><span class="p">[</span><span class="n">classNameStart</span><span class="p">:</span><span class="n">classNameEnd</span><span class="p">]</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">paragraph</span><span class="p">[</span><span class="n">paragraph</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">className</span><span class="p">]</span> <span class="o">=</span> <span class="n">content</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="setAttrsFromHTML"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.setAttrsFromHTML">[docs]</a><span class="k">def</span> <span class="nf">setAttrsFromHTML</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">templateName</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param obj:</span>
+<span class="sd">    :param templateName:</span>
+<span class="sd">    :param identifier:</span>
+<span class="sd">    :return:</span>
+
+<span class="sd">    &gt;&gt;&gt; class A:pass</span>
+<span class="sd">    &gt;&gt;&gt; a = A</span>
+<span class="sd">    &gt;&gt;&gt; setAttrsFromHTML(a, &quot;sample&quot;, &quot;mojeTestId&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; a.caption</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">getHtmlItems</span><span class="p">(</span><span class="n">templateName</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HTMLFormatter"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.HTMLFormatter">[docs]</a><span class="k">class</span> <span class="nc">HTMLFormatter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indentStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<div class="viewcode-block" id="HTMLFormatter.add"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.HTMLFormatter.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">html</span> <span class="o">+=</span> <span class="nb">str</span></div>
+
+<div class="viewcode-block" id="HTMLFormatter.addLine"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.HTMLFormatter.addLine">[docs]</a>    <span class="k">def</span> <span class="nf">addLine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_indent</span><span class="p">):</span>
+            <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">str</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HTMLFormatter.addLineAndIndent"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.HTMLFormatter.addLineAndIndent">[docs]</a>    <span class="k">def</span> <span class="nf">addLineAndIndent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indent</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="HTMLFormatter.unIndentAndAddLine"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.HTMLFormatter.unIndentAndAddLine">[docs]</a>    <span class="k">def</span> <span class="nf">unIndentAndAddLine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unIndent</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HTMLFormatter.indent"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.HTMLFormatter.indent">[docs]</a>    <span class="k">def</span> <span class="nf">indent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">+</span> <span class="n">count</span></div>
+
+<div class="viewcode-block" id="HTMLFormatter.unIndent"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.htmltools.HTMLFormatter.unIndent">[docs]</a>    <span class="k">def</span> <span class="nf">unIndent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">-</span> <span class="n">count</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">=</span> <span class="mi">0</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

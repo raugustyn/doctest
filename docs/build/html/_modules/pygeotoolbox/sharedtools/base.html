@@ -1,0 +1,1147 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.base &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.base</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">###########################################################</span>
+<span class="c1">#                                                         #</span>
+<span class="c1"># Copyright (c) 2018 Radek Augustýn, licensed under MIT.  #</span>
+<span class="c1">#                                                         #</span>
+<span class="c1">###########################################################</span>
+<span class="c1"># @PRODUCTION MODULE</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">codecs</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="setupEncoding"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.setupEncoding">[docs]</a><span class="k">def</span> <span class="nf">setupEncoding</span><span class="p">(</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Setup program encoding. Using simple undocumented hack with reloading sys module.</span>
+
+<span class="sd">    :param encoding: Selected encoding, if utf-8 is not appropriate.</span>
+
+<span class="sd">    &gt;&gt;&gt; setupEncoding(&quot;windows_1252&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">encoding</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">reload</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">setdefaultencoding</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="strToFloatOrNone"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.strToFloatOrNone">[docs]</a><span class="k">def</span> <span class="nf">strToFloatOrNone</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns float representation of str argument or None if empty string.</span>
+
+<span class="sd">    :param str: String to ne converted into float number</span>
+<span class="sd">    :return: Float representation of str or None.</span>
+
+
+<span class="sd">    &gt;&gt;&gt; print strToFloatOrNone(&quot;36&quot;)</span>
+<span class="sd">    36.0</span>
+
+<span class="sd">    &gt;&gt;&gt; print strToFloatOrNone(&quot;&quot;)</span>
+<span class="sd">    None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="sqr"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.sqr">[docs]</a><span class="k">def</span> <span class="nf">sqr</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; returns square of given value.</span>
+
+<span class="sd">    :param {float|int} value: Value to be squared.</span>
+<span class="sd">    :return: Square value</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    &gt;&gt;&gt; sqr(4)</span>
+<span class="sd">    16</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">value</span><span class="o">*</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="extractFileName"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.extractFileName">[docs]</a><span class="k">def</span> <span class="nf">extractFileName</span><span class="p">(</span><span class="n">fullFileName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Aliaz to pathLeaf. Extracts file name or directory name from given path.</span>
+
+<span class="sd">    :param str fullFileName: Full or relative path</span>
+<span class="sd">    :return: File name from given path.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; extractFileName(&quot;c:/temp/test.html&quot;)</span>
+<span class="sd">    &#39;test.html&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; extractFileName(&quot;c:/temp/&quot;)</span>
+<span class="sd">    &#39;temp&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pathLeaf</span><span class="p">(</span><span class="n">fullFileName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pathLeaf"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.pathLeaf">[docs]</a><span class="k">def</span> <span class="nf">pathLeaf</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Extracts file name or directory name from given path.</span>
+
+<span class="sd">    :param str path: Full or relative path</span>
+<span class="sd">    :return: File name from given path.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; pathLeaf(&quot;c:/temp/test.html&quot;)</span>
+<span class="sd">    &#39;test.html&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; pathLeaf(&quot;c:/temp/&quot;)</span>
+<span class="sd">    &#39;temp&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">ntpath</span>
+    <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">ntpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">ntpath</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pathWithLastSlash"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.pathWithLastSlash">[docs]</a><span class="k">def</span> <span class="nf">pathWithLastSlash</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">+=</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span>
+
+    <span class="k">return</span> <span class="n">path</span></div>
+
+
+<div class="viewcode-block" id="getFileExtension"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getFileExtension">[docs]</a><span class="k">def</span> <span class="nf">getFileExtension</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;getExtension aliaz. Extracts file extension of the given path.</span>
+
+<span class="sd">    :param str path: path or file name</span>
+<span class="sd">    :return: extension including separator</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; getFileExtension(&quot;c:/temp/test.html&quot;)</span>
+<span class="sd">    &#39;.html&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">getExtension</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getExtension"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getExtension">[docs]</a><span class="k">def</span> <span class="nf">getExtension</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Extracts file extension of the given path.</span>
+
+<span class="sd">    :param str path: path or file name</span>
+<span class="sd">    :return: extension including separator</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; getExtension(&quot;c:/temp/test.html&quot;)</span>
+<span class="sd">    &#39;.html&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">fileExtension</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fileExtension</span></div>
+
+
+<div class="viewcode-block" id="changeFileExtension"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.changeFileExtension">[docs]</a><span class="k">def</span> <span class="nf">changeFileExtension</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">newExtension</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Changes file extension with new one.</span>
+
+<span class="sd">    :param str fileName: master file name</span>
+<span class="sd">    :param str newExtension: new file name extension</span>
+<span class="sd">    :return: new file name with extension changed.</span>
+<span class="sd">    :rtype: str</span>
+
+
+<span class="sd">    &gt;&gt;&gt; print changeFileExtension(&quot;c:/temp/ahoj.txt&quot;, &quot;.sql&quot;)</span>
+<span class="sd">    c:/temp/ahoj.sql</span>
+
+<span class="sd">    &gt;&gt;&gt; print changeFileExtension(&quot;c:/temp/ahoj.txt&quot;, &quot;sql&quot;)</span>
+<span class="sd">    c:/temp/ahoj.sql</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">fileExtension</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">newExtension</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">newExtension</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="n">newExtension</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">newExtension</span>
+    <span class="k">return</span>  <span class="n">fileName</span> <span class="o">+</span> <span class="n">newExtension</span></div>
+
+
+<div class="viewcode-block" id="safeMkDir"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.safeMkDir">[docs]</a><span class="k">def</span> <span class="nf">safeMkDir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates directory under path if not exists. Unlike os.makedirs, first check it and don&#39;t raise error if yes.</span>
+
+<span class="sd">    :param str path: Path of the directory to be created</span>
+
+
+<span class="sd">    &gt;&gt;&gt; path = &quot;c:/temp/testdir_1234&quot;</span>
+<span class="sd">    &gt;&gt;&gt; safeMkDir(path)</span>
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; print os.path.exists(path)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; os.rmdir(path)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getFileContent"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getFileContent">[docs]</a><span class="k">def</span> <span class="nf">getFileContent</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads file content into string. Obsolete function provided for backward compatibility only.</span>
+<span class="sd">    New code should use fileRead instead.</span>
+
+<span class="sd">    :param str fileName: name of the file</span>
+<span class="sd">    :return: file content as a string</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="fileToStr"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.fileToStr">[docs]</a><span class="k">def</span> <span class="nf">fileToStr</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">baseFileName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;fileRead aliaz. Reads file content using encoding specified, utf-8 as default if parameter not provided.</span>
+
+<span class="sd">    :param str fileName: name of the file</span>
+<span class="sd">    :param str encoding: encoding codec name, utf-8 as a default</span>
+<span class="sd">    :return: file content as a string</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; content = fileRead(__name__ + &quot;.py&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print content.startswith(&quot;# -*- coding: utf-8 -*-&quot;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">fileRead</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">baseFileName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fileRead"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.fileRead">[docs]</a><span class="k">def</span> <span class="nf">fileRead</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">baseFileName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Reads file content using encoding specified, utf-8 as default if parameter not provided.</span>
+
+<span class="sd">    :param str fileName: name of the file</span>
+<span class="sd">    :param str encoding: encoding codec name, utf-8 as a default</span>
+<span class="sd">    :return: file content as a string</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; content = fileRead(__name__ + &quot;.py&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print content.startswith(&quot;# -*- coding: utf-8 -*-&quot;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">baseFileName</span><span class="p">:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">baseFileName</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">fileName</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="pairItems"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.pairItems">[docs]</a><span class="k">def</span> <span class="nf">pairItems</span><span class="p">(</span><span class="n">iterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns new iterator with subsequent tupple pairs of source iterator.</span>
+<span class="sd">    I could be used for example for converting list of vertexes in a linestring to list of edges.</span>
+
+<span class="sd">    :param iterator: Iterator for join pairs</span>
+<span class="sd">    :return: Pairs iterator</span>
+
+<span class="sd">    &gt;&gt;&gt; pairs = pairItems([1, 2, 3, 4, 5])</span>
+<span class="sd">    &gt;&gt;&gt; for item in pairs:print item</span>
+<span class="sd">    (1, 2)</span>
+<span class="sd">    (2, 3)</span>
+<span class="sd">    (3, 4)</span>
+<span class="sd">    (4, 5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firstItem</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">firstItem</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">firstItem</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="n">firstItem</span> <span class="o">=</span> <span class="n">item</span></div>
+
+
+<div class="viewcode-block" id="replaceStringBlocks"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.replaceStringBlocks">[docs]</a><span class="k">def</span> <span class="nf">replaceStringBlocks</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">startId</span><span class="p">,</span> <span class="n">endId</span><span class="p">,</span> <span class="n">newContent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Replaces all string sections in blocks given by startId and endId tags by newContent.</span>
+
+<span class="sd">    :param str str: Text content to be updated.</span>
+<span class="sd">    :param str startId: Start identifier of the block to be replaced.</span>
+<span class="sd">    :param str endId: End identifier of the block to be replaced.</span>
+<span class="sd">    :param str newContent: New text content.</span>
+<span class="sd">    :return: Updated str block.</span>
+<span class="sd">    :rtype: str</span>
+
+
+<span class="sd">    &gt;&gt;&gt; replaceStringBlocks(&quot;Text pred.&lt;ReplaceStart&gt;StaryText&lt;ReplaceEnd&gt;Text za.&quot;, &quot;&lt;ReplaceStart&gt;&quot;, &quot;&lt;ReplaceEnd&gt;&quot;, &quot;Next content.&quot;)</span>
+<span class="sd">    &#39;Text pred.Next content.Text za.&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">endPos</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">startPos</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">startId</span><span class="p">,</span> <span class="n">endPos</span><span class="p">)</span>
+        <span class="n">endPos</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">endId</span><span class="p">,</span> <span class="n">startPos</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">startPos</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">endPos</span><span class="o">&lt;</span><span class="n">startPos</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">[:</span><span class="n">startPos</span><span class="p">]</span> <span class="o">+</span> <span class="n">newContent</span> <span class="o">+</span> <span class="nb">str</span><span class="p">[</span><span class="n">endPos</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">endId</span><span class="p">):]</span>
+
+    <span class="k">return</span> <span class="nb">str</span></div>
+
+
+<div class="viewcode-block" id="setParameters"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.setParameters">[docs]</a><span class="k">def</span> <span class="nf">setParameters</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replace values in a template string by given real values dictionary. Used mainly for SQL queries,</span>
+<span class="sd">    enabling leave them working for copy&amp;paste debugging.</span>
+
+<span class="sd">    :param str template: template string with identifiers to be replaced</span>
+<span class="sd">    :param dict parameters: dictionary where keys are identifiers in a template which have to be replaced by values</span>
+<span class="sd">    :return str: template string with replaced values</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; template = &quot;select ogc_fid from public.z_terrenrelief_l&quot;</span>
+<span class="sd">    &gt;&gt;&gt; str = setParameters(template, { &quot;ogc_fid&quot;: &quot;zrdoj_id&quot;, &quot;public&quot; : &quot;temp&quot;})</span>
+<span class="sd">    &gt;&gt;&gt; print str</span>
+<span class="sd">    select zrdoj_id from temp.z_terrenrelief_l</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">template</span></div>
+
+
+<div class="viewcode-block" id="makeDir"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.makeDir">[docs]</a><span class="k">def</span> <span class="nf">makeDir</span><span class="p">(</span><span class="n">dirName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates directory dirName if not exists.</span>
+
+<span class="sd">    :param str dirName: Directory to be created.</span>
+
+<span class="sd">    &gt;&gt;&gt; makeDir(&quot;c:/temp/testMakeDir&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; os.path.exists(&quot;c:/temp/testMakeDir&quot;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; os.rmdir(&quot;c:/temp/testMakeDir&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dirName</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dirName</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="makeDirForFile"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.makeDirForFile">[docs]</a><span class="k">def</span> <span class="nf">makeDirForFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create directory for storing file if not exists.</span>
+
+<span class="sd">    :param str fileName: Name of the file for creating directory.</span>
+
+<span class="sd">    &gt;&gt;&gt; makeDirForFile(&quot;c:/temp/testMakeDirForFile/testfile.txt&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; os.path.exists(&quot;c:/temp/testMakeDirForFile&quot;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; os.rmdir(&quot;c:/temp/testMakeDirForFile&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">makeDir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fileName</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="saveStrToFile"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.saveStrToFile">[docs]</a><span class="k">def</span> <span class="nf">saveStrToFile</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Saves given string str into file fileName using encoding parameter.</span>
+
+<span class="sd">    :param str str: String to be saved.</span>
+<span class="sd">    :param str fileName: Name of the created file.</span>
+<span class="sd">    :param str encoding: Character encoding, utf-8 as defatult.</span>
+
+<span class="sd">    &gt;&gt;&gt; saveStrToFile(&quot;Ahoj&quot;, &quot;c:/temp/testSaveToStr.txt&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; os.path.exists(&quot;c:/temp/testSaveToStr.txt&quot;)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; # Cleaning after test</span>
+<span class="sd">    &gt;&gt;&gt; os.remove(&quot;c:/temp/testSaveToStr.txt&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">makeDirForFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+    <span class="n">outputFile</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+    <span class="n">outputFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">outputFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="saveJSONtoJavaScript"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.saveJSONtoJavaScript">[docs]</a><span class="k">def</span> <span class="nf">saveJSONtoJavaScript</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">javaScriptFileName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Saves obj to the JavaScript file as a identifier variable.</span>
+
+<span class="sd">    :param dict obj: object to be saved</span>
+<span class="sd">    :param str identifier: JavaScript reference variable name</span>
+<span class="sd">    :param str javaScriptFileName: JavaScript file name</span>
+
+<span class="sd">    &gt;&gt;&gt; obj = { &quot;value&quot; : 3 }</span>
+<span class="sd">    &gt;&gt;&gt; saveJSONtoJavaScript(obj, &quot;testValue&quot;, &quot;c:/temp/test.js&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print open(&quot;c:/temp/test.js&quot;, &quot;r&quot;).read()</span>
+<span class="sd">    testValue = {</span>
+<span class="sd">        &quot;value&quot;: 3</span>
+<span class="sd">    }</span>
+<span class="sd">    &gt;&gt;&gt; os.remove(&quot;c:/temp/test.js&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
+
+    <span class="n">jsonString</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+    <span class="n">saveStrToFile</span><span class="p">(</span><span class="n">jsonString</span><span class="p">,</span> <span class="n">javaScriptFileName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="saveDictToJSON"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.saveDictToJSON">[docs]</a><span class="k">def</span> <span class="nf">saveDictToJSON</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">fileName</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">getFileExtension</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">fileName</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+
+    <span class="n">saveStrToFile</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="n">fileName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getMessageIfFalse"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getMessageIfFalse">[docs]</a><span class="k">def</span> <span class="nf">getMessageIfFalse</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;If condition is False, then returns msg, otherwise returns empty string.</span>
+
+<span class="sd">    :param bool condition: Condition paramater.</span>
+<span class="sd">    :param str msg: Message returned if condition is False.</span>
+<span class="sd">    :return: msg or empty string.</span>
+<span class="sd">    :rtype: str</span>
+
+
+<span class="sd">    &gt;&gt;&gt; getMessageIfFalse(False, &quot;Condition is set to False.&quot;)</span>
+<span class="sd">    &#39;Condition is set to False.&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">msg</span></div>
+
+
+<div class="viewcode-block" id="getTrueFalseMessage"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getTrueFalseMessage">[docs]</a><span class="k">def</span> <span class="nf">getTrueFalseMessage</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">trueMessage</span><span class="p">,</span> <span class="n">falseMessage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns trueMessage if condition is True, otherwise returns falseMessage.</span>
+
+<span class="sd">    :param bool condition: condition parameter</span>
+<span class="sd">    :param str trueMessage: True case string message</span>
+<span class="sd">    :param str falseMessage: False case string message</span>
+<span class="sd">    :return: appropriate message string</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; getTrueFalseMessage(True, &quot;Condition is True&quot;, &quot;Condition is False&quot;)</span>
+<span class="sd">    &#39;Condition is True&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">condition</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">trueMessage</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">falseMessage</span></div>
+
+
+<div class="viewcode-block" id="formatValueIfNotEmpty"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.formatValueIfNotEmpty">[docs]</a><span class="k">def</span> <span class="nf">formatValueIfNotEmpty</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Formats value if template is given, if not, the just convert it into string. Returns empty string if value is None.</span>
+
+<span class="sd">    :param str template: string formating template</span>
+<span class="sd">    :param str value: value to be formated</span>
+<span class="sd">    :return: formatted value</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; formatValueIfNotEmpty(&quot;%3.1f&quot;, 8.54684)</span>
+<span class="sd">    &#39;8.5&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; formatValueIfNotEmpty(&quot;%f3.1&quot;, None)</span>
+<span class="sd">    &#39;&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">template</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">template</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">template</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Container"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.Container">[docs]</a><span class="k">class</span> <span class="nc">Container</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Empty class holding values. Pascal record or CPP union equivalent. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldNamesOrFields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">{},</span> <span class="n">fieldNames</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="k">if</span> <span class="n">fieldNamesOrFields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fieldNamesOrFields</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">fieldNames</span> <span class="o">=</span> <span class="n">fieldNamesOrFields</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fieldNamesOrFields</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">fields</span> <span class="o">=</span> <span class="n">fieldNamesOrFields</span>
+
+        <span class="k">if</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fieldName</span><span class="p">,</span> <span class="n">fieldValue</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">,</span> <span class="n">fieldValue</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fieldNames</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fieldName</span> <span class="ow">in</span> <span class="n">fieldNamesOrFields</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="searchForFileAtPath"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.searchForFileAtPath">[docs]</a><span class="k">def</span> <span class="nf">searchForFileAtPath</span><span class="p">(</span><span class="n">deepestPath</span><span class="p">,</span> <span class="n">fileName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Search for file at path. Used mainly to find config file at highest level (shortest path)</span>
+
+<span class="sd">    :param str deepestPath: path to start search at</span>
+<span class="sd">    :param str fileName:  file name to be searched for</span>
+<span class="sd">    :return: tupple (found, fullFileName)</span>
+<span class="sd">    :rtype: tupple</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">deepestPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">deepestPath</span><span class="p">)</span>
+    <span class="n">pathItems</span> <span class="o">=</span> <span class="n">deepestPath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)</span>
+    <span class="n">pathLen</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pathItems</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">pathLen</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">fullFileName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pathItems</span><span class="p">[:</span><span class="n">pathLen</span><span class="p">])</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">fileName</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fullFileName</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">fullFileName</span><span class="p">)</span>
+
+        <span class="n">pathLen</span> <span class="o">=</span> <span class="n">pathLen</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">deepestPath</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">fileName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="listToSqlStr"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.listToSqlStr">[docs]</a><span class="k">def</span> <span class="nf">listToSqlStr</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts list items into SQL list sequence.</span>
+
+<span class="sd">    :param list values: list of value to be converted into SQL list sequence</span>
+<span class="sd">    :return: SQL list values representation</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; listToSqlStr([4, 5, &quot;Ahoj&quot;])</span>
+<span class="sd">    &quot;(4, 5, &#39;Ahoj&#39;)&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;(&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="listToSqlFieldList"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.listToSqlFieldList">[docs]</a><span class="k">def</span> <span class="nf">listToSqlFieldList</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts list items into SQL list sequence.</span>
+
+<span class="sd">    :param list values: list of value to be converted into SQL field list sequence</span>
+<span class="sd">    :return: SQL field list values representation</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; listToSqlFieldList([4, 5, &quot;Ahoj&quot;])</span>
+<span class="sd">    &quot;4, 5, &#39;Ahoj&#39;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="listToSqlValuesList"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.listToSqlValuesList">[docs]</a><span class="k">def</span> <span class="nf">listToSqlValuesList</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts values list into SQL values list sequence.</span>
+
+<span class="sd">    :param list values: list of value to be converted into SQL values list sequence</span>
+<span class="sd">    :return: SQL values list representation</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; listToSqlValuesList([4, None, &quot;Ahoj&quot;, 4.56])</span>
+<span class="sd">    &quot;4, Null, &#39;Ahoj&#39;, 4.56&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;st_geometryfromtext&#39;</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Null&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getTableHTML"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getTableHTML">[docs]</a><span class="k">def</span> <span class="nf">getTableHTML</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Binds rows items into HTML table code.</span>
+
+<span class="sd">    :param list rows: an array of row items</span>
+<span class="sd">    :return: HTML table code with items at rows</span>
+<span class="sd">    :rtype: str</span>
+
+
+<span class="sd">    &gt;&gt;&gt; getTableHTML([[&quot;Name&quot;, &quot;Radek&quot;], [&quot;Street&quot;, &quot;Chvalinska&quot;]])</span>
+<span class="sd">    &#39;&lt;table&gt;&lt;tr&gt;&lt;td&gt;Name&lt;/td&gt;&lt;td&gt;Radek&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Street&lt;/td&gt;&lt;td&gt;Chvalinska&lt;/td&gt;&lt;/tr&gt;&lt;table&gt;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&lt;table&gt;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot;&lt;tr&gt;&quot;</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot;&lt;td&gt;</span><span class="si">%s</span><span class="s2">&lt;/td&gt;&quot;</span> <span class="o">%</span> <span class="n">item</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/tr&gt;&quot;</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot;&lt;table&gt;&quot;</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="dump"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.dump">[docs]</a><span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; An equivalent of PostGIS st_dump command for shapely geometry. Returns first geom of shape or shape if not compoment element.</span>
+
+<span class="sd">    :param shapely.geometry.base.BaseGeometry shape: Shapely geometry to be dumped.</span>
+<span class="sd">    :return: First geom of shape or shape if not compoment element.</span>
+
+
+<span class="sd">    &gt;&gt;&gt; from shapely.geometry import Point, MultiPoint</span>
+<span class="sd">    &gt;&gt;&gt; multiPoint = MultiPoint([Point(4, 1)])</span>
+<span class="sd">    &gt;&gt;&gt; dump(multiPoint).wkt</span>
+<span class="sd">    &#39;POINT (4 1)&#39;</span>
+<span class="sd">    &gt;&gt;&gt; dump(Point(5, 7)).wkt</span>
+<span class="sd">    &#39;POINT (5 7)&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;geoms&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">geoms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">shape</span><span class="o">.</span><span class="n">geoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">shape</span></div>
+
+
+<div class="viewcode-block" id="geomsEnumerator"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.geomsEnumerator">[docs]</a><span class="k">def</span> <span class="nf">geomsEnumerator</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;geoms&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">geoms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">shape</span><span class="o">.</span><span class="n">geoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">shape</span><span class="o">.</span><span class="n">geoms</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">shape</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="numIntersections"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.numIntersections">[docs]</a><span class="k">def</span> <span class="nf">numIntersections</span><span class="p">(</span><span class="n">proxyLine</span><span class="p">,</span> <span class="n">endPoint</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">intersectionPoint</span> <span class="ow">in</span> <span class="n">geomsEnumerator</span><span class="p">(</span><span class="n">proxyLine</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">shape</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">endPoint</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">intersectionPoint</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.1</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="createContainer"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.createContainer">[docs]</a><span class="k">def</span> <span class="nf">createContainer</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create container for szmbolic values, equivalent of Pascal record or C struct commands.</span>
+
+<span class="sd">    :param list values: values to be added as container properties</span>
+<span class="sd">    :return: class instance with given properties</span>
+<span class="sd">    :rtype: Container</span>
+
+<span class="sd">    &gt;&gt;&gt; a = createContainer({ &quot;floatNumber&quot;: 3, &quot;stringValue&quot;: &quot;Test&quot;})</span>
+<span class="sd">    &gt;&gt;&gt; print a.__class__</span>
+<span class="sd">    base.Container</span>
+<span class="sd">    &gt;&gt;&gt; print a.floatNumber, a.stringValue</span>
+<span class="sd">    3 Test</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">class</span> <span class="nc">Container</span><span class="p">:</span><span class="k">pass</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="sign"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.sign">[docs]</a><span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; @TODO Check, doc or remove.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="maxWithNone"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.maxWithNone">[docs]</a><span class="k">def</span> <span class="nf">maxWithNone</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns maximal value from two values, if any of them is None, returns other one.</span>
+
+<span class="sd">    :param a: int, float or None value</span>
+<span class="sd">    :param b: int, float or None value</span>
+<span class="sd">    :return: class instance with given properties</span>
+<span class="sd">    &gt;&gt;&gt; maxWithNone(None, 1)</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">b</span>
+    <span class="k">elif</span> <span class="n">b</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">a</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="minWithNone"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.minWithNone">[docs]</a><span class="k">def</span> <span class="nf">minWithNone</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns minimal value from two values, if any of them is None, returns other one.</span>
+
+<span class="sd">    :param a: int, float or None value</span>
+<span class="sd">    :param b: int, float or None value</span>
+<span class="sd">    :return: class instance with given properties</span>
+<span class="sd">    &gt;&gt;&gt; minWithNone(None, 1)</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">b</span>
+    <span class="k">elif</span> <span class="n">b</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">a</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">__DummySelfExplainingClass</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="n">SelfExplainingClass</span> <span class="o">=</span> <span class="n">__DummySelfExplainingClass</span>
+
+
+<div class="viewcode-block" id="angleToStr"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.angleToStr">[docs]</a><span class="k">def</span> <span class="nf">angleToStr</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns string representation of angle given in radians.</span>
+
+<span class="sd">    :param float angle: angle in radians</span>
+<span class="sd">    :return: string representation.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; angleToStr(math.pi)</span>
+<span class="sd">    &#39;180.0&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="mi">180</span><span class="o">*</span><span class="n">angle</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normalizeAngle"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.normalizeAngle">[docs]</a><span class="k">def</span> <span class="nf">normalizeAngle</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">maxValue</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns angle in interval &lt;0, maxValue&gt;.</span>
+
+<span class="sd">    :param float angle: angle in radians</span>
+<span class="sd">    :param float maxValue:  circle value</span>
+<span class="sd">    :return: angle in interval &lt;0, maxValue&gt;</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">maxValue</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">angle</span> <span class="o">+=</span> <span class="n">maxValue</span>
+
+    <span class="k">while</span> <span class="n">angle</span> <span class="o">&gt;</span> <span class="n">maxValue</span><span class="p">:</span>
+        <span class="n">angle</span> <span class="o">-=</span> <span class="n">maxValue</span>
+
+    <span class="k">return</span> <span class="n">angle</span></div>
+
+
+<div class="viewcode-block" id="copyAttributes"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.copyAttributes">[docs]</a><span class="k">def</span> <span class="nf">copyAttributes</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Copy object instance attributes to other instance.</span>
+
+<span class="sd">    :param object source: Source instance.</span>
+<span class="sd">    :param object target: Target instance.</span>
+<span class="sd">    :param list attributes:  Copied attribute names.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">attribute</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">attribute</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="copyAttributesToItems"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.copyAttributesToItems">[docs]</a><span class="k">def</span> <span class="nf">copyAttributesToItems</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copies given attribute values into list of objects.</span>
+
+<span class="sd">    :param object source: source instance</span>
+<span class="sd">    :param list items: target items list</span>
+<span class="sd">    :param list attributes: copied attribute names</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="n">copyAttributes</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="extendListNoDuplicates"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.extendListNoDuplicates">[docs]</a><span class="k">def</span> <span class="nf">extendListNoDuplicates</span><span class="p">(</span><span class="n">listToBeExtended</span><span class="p">,</span> <span class="n">newItems</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extend list with items without duplicities.</span>
+
+<span class="sd">    :param list listToBeExtended: list to be extended</span>
+<span class="sd">    :param list newItems: new items</span>
+<span class="sd">    :return: extended list</span>
+<span class="sd">    :rtype: list</span>
+
+<span class="sd">    &gt;&gt;&gt; extendListNoDuplicates([1, 2, 3, 4], [4, 5, 6])</span>
+<span class="sd">    [1, 2, 3, 4, 5, 6]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">newItems</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">listToBeExtended</span><span class="p">:</span>
+            <span class="n">listToBeExtended</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">listToBeExtended</span></div>
+
+
+<div class="viewcode-block" id="safeRemoveItemsFromList"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.safeRemoveItemsFromList">[docs]</a><span class="k">def</span> <span class="nf">safeRemoveItemsFromList</span><span class="p">(</span><span class="n">listWithItems</span><span class="p">,</span> <span class="n">itemsToBeRemoved</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Removes items from other list with check if it is inside.</span>
+
+<span class="sd">    :param list listWithItems: list to be updated</span>
+<span class="sd">    :param list itemsToBeRemoved: items to be removed</span>
+<span class="sd">    :return: list without items</span>
+<span class="sd">    :rtype: list</span>
+
+<span class="sd">    &gt;&gt;&gt; safeRemoveItemsFromList([1, 2, 3, 4], [2, 5])</span>
+<span class="sd">    [1, 3, 4]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">itemsToBeRemoved</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">itemsToBeRemoved</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">listWithItems</span><span class="p">:</span>
+                <span class="n">listWithItems</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">listWithItems</span></div>
+
+
+<div class="viewcode-block" id="WellKnownClass"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.WellKnownClass">[docs]</a><span class="k">class</span> <span class="nc">WellKnownClass</span><span class="p">:</span>
+    <span class="n">DEFAULT_LANGUAGE</span> <span class="o">=</span> <span class="s2">&quot;CZ&quot;</span>
+    <span class="n">LANGUAGE</span> <span class="o">=</span> <span class="n">DEFAULT_LANGUAGE</span>
+
+    <span class="sd">&quot;&quot;&quot;Named base class with description. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="n">description</span><span class="p">,</span> <span class="n">description</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">description</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">description</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">):</span>
+                <span class="n">subItems</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;::&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subItems</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">itemLanguage</span> <span class="o">=</span> <span class="n">subItems</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">itemDescription</span> <span class="o">=</span> <span class="s2">&quot;::&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subItems</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">itemLanguage</span> <span class="o">=</span> <span class="n">WellKnownClass</span><span class="o">.</span><span class="n">DEFAULT_LANGUAGE</span>
+                    <span class="n">itemDescription</span> <span class="o">=</span> <span class="n">item</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="p">[</span><span class="n">itemLanguage</span><span class="p">]</span> <span class="o">=</span> <span class="n">itemDescription</span>
+                <span class="nb">print</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">itemLanguage</span><span class="p">,</span> <span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">itemDescription</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">WellKnownClass</span><span class="o">.</span><span class="n">LANGUAGE</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">WellKnownClass</span><span class="o">.</span><span class="n">DEFAULT_LANGUAGE</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="o">.</span><span class="n">values</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WellKnownClass.asDict"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.WellKnownClass.asDict">[docs]</a>    <span class="k">def</span> <span class="nf">asDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert instance into dictionary.</span>
+
+<span class="sd">        :param bool deep: if True, it will convert recursive</span>
+<span class="sd">        :return: dictionary representation of the object</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;asCodeSample&quot;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools.python2html</span> <span class="k">import</span> <span class="n">convertCode</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;codeSampleHTML&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">convertCode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">asCodeSample</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="WellKnownClass.asJSON"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.WellKnownClass.asJSON">[docs]</a>    <span class="k">def</span> <span class="nf">asJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Converts instance into JSON.</span>
+
+<span class="sd">        :param bool deep: if True, it will convert recursive</span>
+<span class="sd">        :return: JSON representation of the object</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
+
+        <span class="k">return</span> <span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">asDict</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;unicode-escape&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WellKnownClass.asCodeSample"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.WellKnownClass.asCodeSample">[docs]</a>    <span class="k">def</span> <span class="nf">asCodeSample</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns code sample representation of the instance. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WellKnownClass.saveAsJavaScriptVariable"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.WellKnownClass.saveAsJavaScriptVariable">[docs]</a>    <span class="k">def</span> <span class="nf">saveAsJavaScriptVariable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">variableName</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates JavaScript file with instance content in variableName.</span>
+
+<span class="sd">        :param str fileName: JavaScript file name</span>
+<span class="sd">        :param str variableName: variable name in JavaScript file created</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">saveStrToFile</span>
+        <span class="kn">import</span> <span class="nn">log</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Saving </span><span class="si">%s</span><span class="s2"> to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fileName</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">variableName</span><span class="p">:</span>
+            <span class="n">variableName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">variableName</span> <span class="o">=</span> <span class="n">variableName</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="n">variableName</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="n">saveStrToFile</span><span class="p">(</span><span class="s2">&quot;var </span><span class="si">%s</span><span class="s2">=</span><span class="si">%s</span><span class="s2">;&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">variableName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">asJSON</span><span class="p">()),</span> <span class="n">fileName</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="variantCombinations"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.variantCombinations">[docs]</a><span class="k">def</span> <span class="nf">variantCombinations</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Calculates variant combinations for given list of options. Each item in the items list represents</span>
+<span class="sd">    unique value with it&#39;s variants.</span>
+
+<span class="sd">    :param list items: list of values to be combined</span>
+
+<span class="sd">    &gt;&gt;&gt; c = variantCombinations([[&quot;1.1&quot;, &quot;1.2&quot;], [&quot;2.1&quot;, &quot;2.2&quot;], [&quot;3.1&quot;, &quot;3.2&quot;]])</span>
+<span class="sd">    &gt;&gt;&gt; len(c)</span>
+<span class="sd">    8</span>
+<span class="sd">    &gt;&gt;&gt; for combination in c:print combination</span>
+<span class="sd">    [&#39;1.1&#39;, &#39;2.1&#39;, &#39;3.1&#39;]</span>
+<span class="sd">    [&#39;1.1&#39;, &#39;2.1&#39;, &#39;3.2&#39;]</span>
+<span class="sd">    [&#39;1.1&#39;, &#39;2.2&#39;, &#39;3.1&#39;]</span>
+<span class="sd">    [&#39;1.1&#39;, &#39;2.2&#39;, &#39;3.2&#39;]</span>
+<span class="sd">    [&#39;1.2&#39;, &#39;2.1&#39;, &#39;3.1&#39;]</span>
+<span class="sd">    [&#39;1.2&#39;, &#39;2.1&#39;, &#39;3.2&#39;]</span>
+<span class="sd">    [&#39;1.2&#39;, &#39;2.2&#39;, &#39;3.1&#39;]</span>
+<span class="sd">    [&#39;1.2&#39;, &#39;2.2&#39;, &#39;3.2&#39;]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">list</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">subItems</span> <span class="o">=</span> <span class="n">variantCombinations</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">for</span> <span class="n">masterItem</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">subItem</span> <span class="ow">in</span> <span class="n">subItems</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subItem</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="n">masterItem</span><span class="p">]</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">subItem</span><span class="p">)</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">masterItem</span><span class="p">,</span> <span class="n">subItem</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="getPathRelativeToFile"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getPathRelativeToFile">[docs]</a><span class="k">def</span> <span class="nf">getPathRelativeToFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns absolute path relative to given fileName.</span>
+
+<span class="sd">    :param str fileName: file name to be relative to</span>
+<span class="sd">    :param str path: relative path</span>
+<span class="sd">    :return: requested absolute path</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &gt;&gt;&gt; getPathRelativeToFile(&#39;c:/temp/exapleFile.py&#39;, &#39;./path01/path02/sample.txt&#39;)</span>
+<span class="sd">    &#39;c:/temp/path01/path02/sample.txt&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">targetPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fileName</span><span class="p">),</span> <span class="n">path</span><span class="p">)</span>
+    <span class="n">targetPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">targetPath</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">targetPath</span></div>
+
+
+<div class="viewcode-block" id="getPathRelativeToScript"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.getPathRelativeToScript">[docs]</a><span class="k">def</span> <span class="nf">getPathRelativeToScript</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">getPathRelativeToFile</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pythonVariableCase"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.pythonVariableCase">[docs]</a><span class="k">def</span> <span class="nf">pythonVariableCase</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">s</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="splitOrEmptyList"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.base.splitOrEmptyList">[docs]</a><span class="k">def</span> <span class="nf">splitOrEmptyList</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">identifier</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">identifier</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<span class="kn">from</span> <span class="nn">shapely.geometry.base</span> <span class="k">import</span> <span class="n">BaseGeometry</span>
+<span class="nb">setattr</span><span class="p">(</span><span class="n">BaseGeometry</span><span class="p">,</span> <span class="s2">&quot;dump&quot;</span><span class="p">,</span> <span class="n">dump</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">MultiPoint</span>
+
+        <span class="nb">print</span> <span class="n">MultiPoint</span><span class="p">([</span><span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+        <span class="nb">print</span> <span class="n">MultiPoint</span><span class="p">([</span><span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)])</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

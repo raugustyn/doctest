@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.fonts.svg.svgicons &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.fonts.svg.svgicons</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.fonts.svg.svgicons</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools.fonts.svg.svgfontreader</span> <span class="k">import</span> <span class="n">SVGFontReader</span>
+<span class="kn">import</span> <span class="nn">pygeotoolbox.sharedtools.log</span> <span class="k">as</span> <span class="nn">log</span>
+<span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">makeDirForFile</span>
+
+<span class="n">__readers</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="extractSVGIcon"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.svgicons.extractSVGIcon">[docs]</a><span class="k">def</span> <span class="nf">extractSVGIcon</span><span class="p">(</span><span class="n">svgFontFileName</span><span class="p">,</span> <span class="n">glyphName</span><span class="p">,</span> <span class="n">iconFileName</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">__readers</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">svgFontFileName</span> <span class="ow">in</span> <span class="n">__readers</span><span class="p">:</span>
+        <span class="n">__readers</span><span class="p">[</span><span class="n">svgFontFileName</span><span class="p">]</span> <span class="o">=</span> <span class="n">SVGFontReader</span><span class="p">(</span><span class="n">svgFontFileName</span><span class="p">)</span>
+
+    <span class="n">reader</span> <span class="o">=</span> <span class="n">__readers</span><span class="p">[</span><span class="n">svgFontFileName</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">glyphUnicode</span><span class="p">,</span> <span class="n">glyph</span> <span class="ow">in</span> <span class="n">reader</span><span class="o">.</span><span class="n">glyphs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">glyphName</span> <span class="o">==</span> <span class="n">glyph</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot;?&gt;</span><span class="se">\n</span><span class="s1">&lt;svg&gt;</span><span class="se">\n\t</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&lt;/svg&gt;&#39;</span> <span class="o">%</span> <span class="n">glyph</span><span class="o">.</span><span class="n">glyphXMLContent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;glyph&quot;</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">iconFileName</span><span class="p">:</span>
+                <span class="n">makeDirForFile</span><span class="p">(</span><span class="n">iconFileName</span><span class="p">)</span>
+                <span class="nb">open</span><span class="p">(</span><span class="n">iconFileName</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Saving icon &#39;</span><span class="si">%s</span><span class="s2">&#39; --&gt; &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">glyphName</span><span class="p">,</span> <span class="n">iconFileName</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;extractSVGIcon(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;) - glyph [</span><span class="si">%s</span><span class="s2">] not found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">svgFontFileName</span><span class="p">,</span> <span class="n">glyphName</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">iconFileName</span><span class="p">),</span> <span class="n">glyphName</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">extractSVGIcon</span><span class="p">(</span><span class="s2">&quot;C:/ms4w/Apache/htdocs/Generalizace/MapGen/projects/zm/zm10/zm10fonts/zm10x1.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;105_kostel&quot;</span><span class="p">,</span> <span class="s2">&quot;C:/ms4w/Apache/htdocs/Generalizace/MapGen/ms4w/Apache/htdocs/mgFiddle/Maps/zm10/105_kostel.svg&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

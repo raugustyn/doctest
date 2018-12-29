@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.deploy.directoryprocessor &mdash; pygeotoolbox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.deploy.directoryprocessor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.deploy.directoryprocessor</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">sharedtools</span> <span class="k">import</span> <span class="n">normalizePath</span><span class="p">,</span> <span class="n">getExtension</span><span class="p">,</span> <span class="n">makeDirForFile</span>
+<span class="kn">import</span> <span class="nn">sharedtools.log</span> <span class="k">as</span> <span class="nn">log</span>
+<span class="kn">from</span> <span class="nn">modulelistbuilder</span> <span class="k">import</span> <span class="n">moduleListBuilder</span>
+<span class="kn">from</span> <span class="nn">updatemode</span> <span class="k">import</span> <span class="n">UPDATE_MODE</span>
+<span class="kn">from</span> <span class="nn">dependenciesmanager</span> <span class="k">import</span> <span class="n">dependencies</span>
+
+
+<div class="viewcode-block" id="DirectoryProcessor"><a class="viewcode-back" href="../../../pygeotoolbox.deploy.html#pygeotoolbox.deploy.directoryprocessor.DirectoryProcessor">[docs]</a><span class="k">class</span> <span class="nc">DirectoryProcessor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">outputPath</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">UPDATE_MODE</span><span class="o">.</span><span class="n">OVERWRITE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sourcePath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">outputPath</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sourcePathLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcePath</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">targetPathLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetPath</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copiedFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simplySkippedFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skippedNoProductionSourceFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processedAndSavedFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysedSourceFileNames</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="DirectoryProcessor.deploy"><a class="viewcode-back" href="../../../pygeotoolbox.deploy.html#pygeotoolbox.deploy.directoryprocessor.DirectoryProcessor.deploy">[docs]</a>    <span class="k">def</span> <span class="nf">deploy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dependencies</span><span class="o">.</span><span class="n">basePath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sourcePath</span>
+        <span class="n">moduleListBuilder</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetPath</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetPath</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copiedFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simplySkippedFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skippedNoProductionSourceFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processedAndSavedFiles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysedSourceFileNames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processDirectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcePath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targetPath</span><span class="p">)</span>
+        <span class="n">moduleListBuilder</span><span class="o">.</span><span class="n">saveToFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">targetPath</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s2">&quot;modules.html&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DirectoryProcessor.relativizeTargetPath"><a class="viewcode-back" href="../../../pygeotoolbox.deploy.html#pygeotoolbox.deploy.directoryprocessor.DirectoryProcessor.relativizeTargetPath">[docs]</a>    <span class="k">def</span> <span class="nf">relativizeTargetPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">path</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">targetPathLength</span><span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="DirectoryProcessor.relativizeSourcePath"><a class="viewcode-back" href="../../../pygeotoolbox.deploy.html#pygeotoolbox.deploy.directoryprocessor.DirectoryProcessor.relativizeSourcePath">[docs]</a>    <span class="k">def</span> <span class="nf">relativizeSourcePath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">path</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcePathLength</span><span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="DirectoryProcessor.processDirectory"><a class="viewcode-back" href="../../../pygeotoolbox.deploy.html#pygeotoolbox.deploy.directoryprocessor.DirectoryProcessor.processDirectory">[docs]</a>    <span class="k">def</span> <span class="nf">processDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">outputPath</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;Directory&quot;</span> <span class="o">+</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dirItem</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">itemPath</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">dirItem</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">itemPath</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">dirItem</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">skipedDirectories</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">processDirectory</span><span class="p">(</span><span class="n">itemPath</span><span class="p">,</span> <span class="n">outputPath</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">dirItem</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">itemPath</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">getExtension</span><span class="p">(</span><span class="n">itemPath</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">skippedExtensions</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">itemPath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysedSourceFileNames</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">processFile</span><span class="p">(</span><span class="n">itemPath</span><span class="p">,</span> <span class="n">outputPath</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">dirItem</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span> <span class="c1"># islink, ismount intentionally skip</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">closeSection</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DirectoryProcessor.processFile"><a class="viewcode-back" href="../../../pygeotoolbox.deploy.html#pygeotoolbox.deploy.directoryprocessor.DirectoryProcessor.processFile">[docs]</a>    <span class="k">def</span> <span class="nf">processFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">outputFileName</span><span class="p">):</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="n">getExtension</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+        <span class="n">processorFound</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">processorClass</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">extension</span><span class="p">:</span>
+                <span class="n">processorFound</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">processorClass</span><span class="p">:</span>
+                    <span class="n">processor</span> <span class="o">=</span> <span class="n">processorClass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">outputFileName</span><span class="p">)</span>
+                    <span class="n">processor</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span>
+                    <span class="n">processor</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span>
+                    <span class="n">processor</span><span class="o">.</span><span class="n">processFile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">analysedSourceFileNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping &quot;</span> <span class="o">+</span> <span class="n">fileName</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">simplySkippedFiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">processorFound</span><span class="p">:</span>
+            <span class="n">makeDirForFile</span><span class="p">(</span><span class="n">outputFileName</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-&gt;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relativizeSourcePath</span><span class="p">(</span><span class="n">fileName</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">relativizeTargetPath</span><span class="p">(</span><span class="n">outputFileName</span><span class="p">)))</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">outputFileName</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">copiedFiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DirectoryProcessor.printStatistics"><a class="viewcode-back" href="../../../pygeotoolbox.deploy.html#pygeotoolbox.deploy.directoryprocessor.DirectoryProcessor.printStatistics">[docs]</a>    <span class="k">def</span> <span class="nf">printStatistics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">printList</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">listToBePrinted</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%d</span><span class="s2">):&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">listToBePrinted</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">fileName</span> <span class="ow">in</span> <span class="n">listToBePrinted</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">relativizeSourcePath</span><span class="p">(</span><span class="n">fileName</span><span class="p">))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">closeSection</span><span class="p">()</span>
+
+        <span class="n">statistics</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;processedAndSavedFiles&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">processedAndSavedFiles</span><span class="p">,</span>
+            <span class="s2">&quot;skippedNoProductionSourceFiles&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">skippedNoProductionSourceFiles</span><span class="p">,</span>
+            <span class="s2">&quot;simplySkippedFiles&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">simplySkippedFiles</span><span class="p">,</span>
+            <span class="s2">&quot;copiedFiles&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">copiedFiles</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">message</span><span class="p">,</span> <span class="n">listToBePrinted</span> <span class="ow">in</span> <span class="n">statistics</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">printList</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">listToBePrinted</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">message</span><span class="p">,</span> <span class="n">listToBePrinted</span> <span class="ow">in</span> <span class="n">statistics</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">listToBePrinted</span><span class="p">),</span> <span class="n">message</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;Dependencies:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">dependencies</span><span class="o">.</span><span class="n">dependencies</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dependency</span><span class="p">))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">closeSection</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> dependencies found in total.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">dependencies</span><span class="o">.</span><span class="n">dependencies</span><span class="p">))</span>
+
+
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;Packages:&quot;</span><span class="p">)</span>
+            <span class="n">packages</span> <span class="o">=</span> <span class="n">dependencies</span><span class="o">.</span><span class="n">getPackages</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">packageName</span> <span class="ow">in</span> <span class="n">packages</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">packageName</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">closeSection</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> packages found in total.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">packages</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Paralelization Animation</title>
+        <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="http://openlayers.org/en/v3.11.0/css/ol.css" type="text/css">
+        <script src="http://openlayers.org/en/v3.11.0/build/ol-debug.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
+        <style>
+            body { padding: 10px; }
+
+            #mapdiv {
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                float: right;
+                box-shadow: rgba(50, 50, 50, 0.4) 0px 0px 10px 0px;
+                border-color: #0088cc;
+            }
+
+            #info{  }
+
+            .layerswitcher {
+                overflow: auto;
+                float: right;
+                box-shadow: rgba(50, 50, 50, 0.4) 0px 0px 10px 0px;
+                border-color: #0088cc;
+            }
+
+            body {
+                text-align: center;
+                color: rgb(0, 102, 153);
+                font-size: 12px;
+            }
+
+            div#PageContent {
+                width: 100%;
+                text-align: left;
+                margin: auto;
+                vertical-align: top;
+            }
+
+            div#LeftColumn {
+                background-color: rgb(244, 252, 255);
+                width: 10%;
+                float: left;
+            }
+
+            div#MapColumn {
+                width: 80%;
+                float: left;
+            }
+
+            div#InfoColumn {
+                background-color: rgb(244, 252, 255);
+                width: 10%;
+                float: left;
+                box-shadow: rgba(50, 50, 50, 0.4) 0px 0px 10px 0px;
+                border-color: #0088cc;
+            }
+
+            #BackgroundDataDiv {
+                padding-left: 10px;
+                padding-top: 0px;
+            }
+
+            .layerswitcher, #Data10Div {
+                padding: 5px;
+            }
+
+            .title {
+                background-color: rgb(244, 252, 255);
+                font-weight: bold;
+                margin-bottom: 0px;
+            }
+
+            hr {
+                margin-top:2px;
+                margin-bottom:2px;
+            }
+
+            .SectionDiv {
+                background-color: rgb(244, 252, 255);
+	            color: rgb(0, 102, 153);
+                margin-bottom: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+                <button onclick="startAnimation()">Start</button>
+                <button onclick="stopAnimation()">Stop</button>
+                &nbsp;&nbsp;
+                <button id="FlyInBtn1" onclick="bounceToIndex(0)">|- First </button>
+                <button id="FlyInBtn2" onclick="bounceToIndex(SelectedIndex - 1)">&lt;&lt; Previous</button>
+                <input id="FeatureIndexInput" />
+                <button id="FlyInBtn3" onclick="bounceToIndex(SelectedIndex + 1)">Next &gt;&gt;</button>
+                <button id="FlyInBtn4" onclick="bounceToIndex(FeaturesCount-1)">Last --|</button>
+        </div>
+        <div id="PageContent">
+            <div id="LeftColumn">
+                <div class="layerswitcher">
+                    <div class="SectionDiv">
+                        <p class="title">Pozadí</p>
+                        <div id="BackgroundDataDiv">
+                            <input id="NoBackground" type="radio" name="background" value="NoBackground" checked>&nbsp;Prázdné<br>
+                            <input id="ortofoto" type="radio" name="background" value="ortofoto">&nbsp;Ortofoto<br>
+                            <input id="zm10" type="radio" name="background" value="zm10">&nbsp;ZM 10<br>
+                            <input id="zm25" type="radio" name="background" value="zm25">&nbsp;ZM 25<br>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="SectionDiv">
+                        <input id="SwitchVectors" type="checkbox" name="SwitchVectors" checked><span class="title">&nbsp;Data 10</span><br>
+                        <div id="Data10Div">
+                            <input id="SwitchShowVertexes" type="checkbox" name="SwitchShowVertexes">&nbsp;Zobrazit vrcholy
+                            <div id="VectorLayers">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+      <div id="MapColumn">
+          <div id="mapdiv"></div>
+      </div>
+      <div id="InfoColumn">
+            <div id="info" ></div>
+      </div>
+        </div>
+
+        <script src="Zavrty.js"></script>
+        <script> var map; </script>
+		
+    </body>
+</html>

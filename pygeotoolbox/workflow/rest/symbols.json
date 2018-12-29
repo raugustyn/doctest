@@ -1,0 +1,130 @@
+{
+    "symbols": [
+        {
+            "identifier": "5210100_line", 
+            "type": "line", 
+            "name": "5210100", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "2490103_line", 
+            "type": "line", 
+            "name": "2490103", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "1010100_area", 
+            "type": "area", 
+            "name": "1010100", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "4010200_area", 
+            "type": "area", 
+            "name": "4010200", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "4010100_area", 
+            "type": "area", 
+            "name": "4010100", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "3330000_area", 
+            "type": "area", 
+            "name": "3330000", 
+            "outlineColor": "modra"
+        }, 
+        {
+            "identifier": "2480001_line", 
+            "type": "line", 
+            "name": "2480001", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "1310000_area", 
+            "type": "area", 
+            "name": "1310000", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "3040001_line", 
+            "type": "line", 
+            "name": "3040001", 
+            "outlineColor": "modra"
+        }, 
+        {
+            "identifier": "2470000_line", 
+            "type": "line", 
+            "name": "2470000", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "3040000_line", 
+            "type": "line", 
+            "name": "3040000", 
+            "outlineColor": "modra"
+        }, 
+        {
+            "identifier": "2010001_line", 
+            "type": "line", 
+            "name": "2010001", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "1720000_line", 
+            "type": "line", 
+            "name": "1720000", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "1290001_line", 
+            "type": "line", 
+            "name": "1290001", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "4030000_area", 
+            "type": "area", 
+            "name": "4030000", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "6060100_line", 
+            "type": "line", 
+            "name": "6060100", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "2440000_line", 
+            "type": "line", 
+            "name": "2440000", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "3020100_line", 
+            "type": "line", 
+            "name": "3020100", 
+            "outlineColor": "modra"
+        }, 
+        {
+            "identifier": "4120000_line", 
+            "type": "line", 
+            "name": "4120000", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "4203000_area", 
+            "type": "area", 
+            "name": "4203000", 
+            "outlineColor": "seda"
+        }, 
+        {
+            "identifier": "4020300_area", 
+            "type": "area", 
+            "name": "4020300", 
+            "outlineColor": "seda"
+        }
+    ]
+};

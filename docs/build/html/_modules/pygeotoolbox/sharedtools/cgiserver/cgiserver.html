@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.cgiserver.cgiserver &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.cgiserver.cgiserver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.cgiserver.cgiserver</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">import</span> <span class="nn">pygeotoolbox.sharedtools.log</span> <span class="k">as</span> <span class="nn">log</span>
+
+<span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">replaceHTMLTags</span><span class="p">,</span> <span class="n">getFileExtension</span><span class="p">,</span> <span class="n">getFileContent</span><span class="p">,</span> <span class="n">getPathRelativeToFile</span><span class="p">,</span> <span class="n">strToBool</span>
+<span class="kn">import</span> <span class="nn">pygeotoolbox.sharedtools.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">TypedList</span><span class="p">,</span> <span class="n">Container</span>
+
+
+<span class="kn">import</span> <span class="nn">urllib</span><span class="o">,</span> <span class="nn">codecs</span><span class="o">,</span> <span class="nn">web</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">platform</span>
+<span class="n">IS_SERVER_SOFTWARE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s1">&#39;SERVER_SOFTWARE&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">O_BINARY</span>
+
+<span class="n">CONFIG</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="p">{})</span>
+
+<div class="viewcode-block" id="getMimeType"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.getMimeType">[docs]</a><span class="k">def</span> <span class="nf">getMimeType</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;.js&quot;</span><span class="p">:</span> <span class="s2">&quot;application/javascript&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.json&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.css&quot;</span><span class="p">:</span> <span class="s2">&quot;text/css; charset=utf-8&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.png&quot;</span><span class="p">:</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.ico&quot;</span><span class="p">:</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.jpg&quot;</span><span class="p">:</span> <span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.jpeg&quot;</span><span class="p">:</span> <span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.htm&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html; charset=utf-8&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.html&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html; charset=utf-8&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain; charset=utf-8&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;.log&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain; charset=utf-8&quot;</span><span class="p">,</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">getFileExtension</span><span class="p">(</span><span class="n">fileName</span><span class="p">),</span> <span class="s2">&quot;application/data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DirectoryProvider"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.DirectoryProvider">[docs]</a><span class="k">class</span> <span class="nc">DirectoryProvider</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">templateProcessors</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="DirectoryProvider.applyTemplates"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.DirectoryProvider.applyTemplates">[docs]</a>    <span class="k">def</span> <span class="nf">applyTemplates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">getFileContent</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+        <span class="n">fileExtension</span> <span class="o">=</span> <span class="n">getFileExtension</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">templateProcessor</span><span class="p">,</span> <span class="n">applicableExtensions</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templateProcessors</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">fileExtension</span> <span class="ow">in</span> <span class="n">applicableExtensions</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">templateProcessor</span><span class="o">.</span><span class="n">processContent</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">content</span></div>
+
+
+
+<div class="viewcode-block" id="DirectoryProvider.provideFileProcessor"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.DirectoryProvider.provideFileProcessor">[docs]</a>    <span class="k">def</span> <span class="nf">provideFileProcessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;Processing path alias...&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;request.subPath=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">subPath</span><span class="p">))</span>
+        <span class="n">fileNameBase</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">subPath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fileNameBase</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Requesting file &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">fileNameBase</span><span class="p">)</span>
+            <span class="n">fileName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">fileNameBase</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">htmlData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">applyTemplates</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">=</span> <span class="n">getMimeType</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">handled</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">fileName</span> <span class="o">+</span> <span class="s2">&quot; is a directory.&quot;</span><span class="p">)</span>
+                    <span class="n">response</span><span class="o">.</span><span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fileName</span> <span class="o">+</span> <span class="s2">&quot; is a directory.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">%s</span><span class="s2">&#39; not found&quot;</span> <span class="o">%</span> <span class="n">fileNameBase</span><span class="p">)</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;File </span><span class="si">%s</span><span class="s2"> not found&quot;</span> <span class="o">%</span> <span class="n">fileNameBase</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You must specify file name&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">closeSection</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="DirectoryProviders"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.DirectoryProviders">[docs]</a><span class="k">class</span> <span class="nc">DirectoryProviders</span><span class="p">(</span><span class="n">TypedList</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">TypedList</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">DirectoryProvider</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DirectoryProviders.getProvider"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.DirectoryProviders.getProvider">[docs]</a>    <span class="k">def</span> <span class="nf">getProvider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">provider</span><span class="o">.</span><span class="n">path</span> <span class="o">==</span> <span class="n">path</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">provider</span>
+
+        <span class="n">provider</span> <span class="o">=</span> <span class="n">DirectoryProvider</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">provider</span></div>
+
+
+<div class="viewcode-block" id="DirectoryProviders.getProcessor"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.DirectoryProviders.getProcessor">[docs]</a>    <span class="k">def</span> <span class="nf">getProcessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getProvider</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">provideFileProcessor</span></div></div>
+
+
+<span class="n">providers</span> <span class="o">=</span> <span class="n">DirectoryProviders</span><span class="p">()</span>
+<span class="n">urls</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;/(.*)&#39;</span><span class="p">,</span> <span class="s1">&#39;handler&#39;</span><span class="p">)</span>
+<span class="n">cssData</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;cgiserver.htdocs.path&quot;</span><span class="p">,</span> <span class="n">getPathRelativeToFile</span><span class="p">(</span><span class="vm">__file__</span><span class="p">,</span> <span class="s2">&quot;../htdocs/&quot;</span><span class="p">),</span> <span class="s2">&quot;htdocspath&quot;</span><span class="p">,</span> <span class="s2">&quot;Path to directory served as files&quot;</span><span class="p">)</span>
+<span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;htdocs&quot;</span><span class="p">:</span> <span class="n">providers</span><span class="o">.</span><span class="n">getProcessor</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">cgiserver</span><span class="o">.</span><span class="n">htdocs</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<span class="p">}</span>
+
+
+<span class="n">HTML_RESULT_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;html&gt;</span>
+<span class="s2">    &lt;head&gt;</span>
+<span class="s2">        &lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css&quot; integrity=&quot;sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm&quot; crossorigin=&quot;anonymous&quot;&gt;</span>
+<span class="s2">        &lt;script src=&quot;https://code.jquery.com/jquery-3.2.1.slim.min.js&quot; integrity=&quot;sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">        &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js&quot; integrity=&quot;sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">        &lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js&quot; integrity=&quot;sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</span>
+<span class="s2">    &lt;/head&gt;</span>
+<span class="s2">    &lt;body&gt;</span>
+<span class="s2">    &lt;div class=&quot;container&quot;&gt;</span>
+<span class="s2">      HTML_DATA</span>
+<span class="s2">    &lt;/div&gt;</span>
+<span class="s2">    </span>
+<span class="s2">    &lt;/body&gt;</span>
+<span class="s2">&lt;/html&gt;    </span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PathContainer"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.PathContainer">[docs]</a><span class="k">class</span> <span class="nc">PathContainer</span><span class="p">:</span>
+<div class="viewcode-block" id="PathContainer.getProcessor"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.PathContainer.getProcessor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getProcessor</span><span class="p">(</span><span class="n">processorOrPathContainer</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">processorOrPathContainer</span><span class="p">,</span> <span class="n">PathContainer</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">processorOrPathContainer</span><span class="o">.</span><span class="n">proc</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">processorOrPathContainer</span></div>
+
+<div class="viewcode-block" id="PathContainer.getDescription"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.PathContainer.getDescription">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getDescription</span><span class="p">(</span><span class="n">processorOrPathContainer</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">processorOrPathContainer</span><span class="p">,</span> <span class="n">PathContainer</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">processorOrPathContainer</span><span class="o">.</span><span class="n">description</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proc</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">proc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span></div>
+
+
+<div class="viewcode-block" id="processRequest"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.processRequest">[docs]</a><span class="k">def</span> <span class="nf">processRequest</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">startCommand</span><span class="p">()</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;REQUEST:</span><span class="si">%s</span><span class="s2">::</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="p">)))</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+        <span class="n">pathFound</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;Searching for path&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">operationPath</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">operations</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">operationPath</span><span class="o">.</span><span class="n">lower</span><span class="p">()):</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Processor for path &#39;</span><span class="si">%s</span><span class="s2">&#39; found&quot;</span> <span class="o">%</span> <span class="n">operationPath</span><span class="p">)</span>
+                <span class="n">subPath</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">operationPath</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">subPath</span><span class="p">:</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">subPath</span> <span class="o">=</span> <span class="n">subPath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">subPath</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">processor</span> <span class="o">=</span> <span class="n">PathContainer</span><span class="o">.</span><span class="n">getProcessor</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+                <span class="n">processor</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+                <span class="n">pathFound</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pathFound</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unknown request&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">closeSection</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">handled</span><span class="p">:</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">buildResult</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">closeSection</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HTTPResponse"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPResponse">[docs]</a><span class="k">class</span> <span class="nc">HTTPResponse</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handled</span><span class="p">,</span> <span class="n">mimeFormat</span> <span class="o">=</span> <span class="s2">&quot;text/html&quot;</span><span class="p">,</span> <span class="n">htmlData</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handled</span> <span class="o">=</span> <span class="n">handled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">=</span> <span class="n">mimeFormat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">htmlData</span> <span class="o">=</span> <span class="n">htmlData</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">contextDisposition</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">htmlTags</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="HTTPResponse.returnFile"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPResponse.returnFile">[docs]</a>    <span class="k">def</span> <span class="nf">returnFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">fileNameBase</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buildResult</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">getMimeType</span><span class="p">(</span><span class="n">fileName</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">fileName</span> <span class="o">+</span> <span class="s2">&quot; is a directory.&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fileName</span> <span class="o">+</span> <span class="s2">&quot; is a directory.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">pathLeaf</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">fileNameBase</span><span class="p">:</span>
+                <span class="n">fileNameBase</span> <span class="o">=</span> <span class="n">pathLeaf</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;File &#39;</span><span class="si">%s</span><span class="s2">&#39; not found&quot;</span> <span class="o">%</span> <span class="n">fileNameBase</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;File </span><span class="si">%s</span><span class="s2"> not found&quot;</span> <span class="o">%</span> <span class="n">fileNameBase</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HTTPResponse.buildResult"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPResponse.buildResult">[docs]</a>    <span class="k">def</span> <span class="nf">buildResult</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">htmlData</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;text/html&quot;</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">formatLogLine</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;&lt;div class=&#39;errorLine&#39;&gt;&quot;</span> <span class="o">+</span> <span class="n">line</span> <span class="o">+</span> <span class="s2">&quot;&lt;/div&gt;&quot;</span>
+            <span class="k">return</span> <span class="n">line</span>
+
+        <span class="n">formatType</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">format</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">formatType</span> <span class="o">=</span> <span class="n">formatType</span><span class="p">[:</span><span class="nb">format</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">formatType</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;text/json&quot;</span><span class="p">,</span> <span class="s2">&quot;application/json&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">htmlData</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
+            <span class="n">htmlData</span> <span class="o">=</span> <span class="n">dumps</span><span class="p">(</span><span class="n">htmlData</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;unicode-escape&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">formatType</span> <span class="o">==</span> <span class="s2">&quot;text/html&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">htmlData</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;&lt;html&gt;&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">htmlData</span><span class="p">:</span>
+                    <span class="n">htmlData</span> <span class="o">+=</span> <span class="s2">&quot;&lt;hr&gt;&quot;</span>
+
+                <span class="n">htmlData</span> <span class="o">=</span> <span class="n">HTML_RESULT_TEMPLATE</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;HTML_DATA&quot;</span><span class="p">,</span> <span class="n">htmlData</span><span class="p">)</span>
+
+            <span class="n">htmlData</span> <span class="o">=</span> <span class="n">htmlData</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;ERRORS /&gt;&quot;</span><span class="p">,</span> <span class="n">log</span><span class="o">.</span><span class="n">getErrorLines</span><span class="p">(</span><span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">))</span>
+            <span class="n">htmlData</span> <span class="o">=</span> <span class="n">htmlData</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;WARNINGS /&gt;&quot;</span><span class="p">,</span> <span class="n">log</span><span class="o">.</span><span class="n">getWarningLines</span><span class="p">(</span><span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">))</span>
+            <span class="n">htmlData</span> <span class="o">=</span> <span class="n">htmlData</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;#datetime#&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()))</span>
+            <span class="k">if</span> <span class="n">cssData</span><span class="p">:</span>
+                <span class="n">htmlData</span> <span class="o">=</span> <span class="n">htmlData</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;/head&gt;&quot;</span><span class="p">,</span> <span class="n">cssData</span> <span class="o">+</span> <span class="s2">&quot;&lt;/head&gt;&quot;</span><span class="p">)</span>
+
+            <span class="n">pathInfos</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">operations</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="n">operations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">pathInfos</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">PathContainer</span><span class="o">.</span><span class="n">getDescription</span><span class="p">(</span><span class="n">info</span><span class="p">)})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">htmlTags</span><span class="p">[</span><span class="s2">&quot;/* PATH_INFOS */&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pathInfos</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">htmlTags</span><span class="p">[</span><span class="s2">&quot;&lt;#LOGLINES#/&gt;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">getLines</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="p">,</span> <span class="n">formatLogLine</span><span class="p">)</span>
+
+            <span class="n">htmlData</span> <span class="o">=</span> <span class="n">replaceHTMLTags</span><span class="p">(</span><span class="n">htmlData</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">htmlTags</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">handled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">=</span> <span class="nb">format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">htmlData</span> <span class="o">=</span> <span class="n">htmlData</span></div></div>
+
+
+<div class="viewcode-block" id="QueryReader"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.QueryReader">[docs]</a><span class="k">class</span> <span class="nc">QueryReader</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">defaultValue</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defaultValue</span> <span class="o">=</span> <span class="n">defaultValue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mandatory</span> <span class="o">=</span> <span class="n">mandatory</span></div>
+
+
+<div class="viewcode-block" id="HTTPRequest"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPRequest">[docs]</a><span class="k">class</span> <span class="nc">HTTPRequest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">remoteUrl</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">remoteUrl</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remoteUrl</span> <span class="o">=</span> <span class="n">remoteUrl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pathItems</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+
+
+<div class="viewcode-block" id="HTTPRequest.getQueryValue"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPRequest.getQueryValue">[docs]</a>    <span class="k">def</span> <span class="nf">getQueryValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">defaultValue</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">defaultValue</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">type</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">strToBool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="HTTPRequest.getLowerPathItem"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPRequest.getLowerPathItem">[docs]</a>    <span class="k">def</span> <span class="nf">getLowerPathItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="n">pathItem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getPathItem</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pathItem</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pathItem</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HTTPRequest.getPathItem"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPRequest.getPathItem">[docs]</a>    <span class="k">def</span> <span class="nf">getPathItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathItems</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathItems</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="HTTPRequest.readQuery"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.HTTPRequest.readQuery">[docs]</a>    <span class="k">def</span> <span class="nf">readQuery</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">reader</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getQueryValue</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">reader</span><span class="o">.</span><span class="n">defaultValue</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">reader</span><span class="o">.</span><span class="n">mandatory</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Query parameter &#39;</span><span class="si">%s</span><span class="s2">&#39; is missing&quot;</span> <span class="o">%</span> <span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="n">reader</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">items</span><span class="p">[</span><span class="n">reader</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="n">Container</span><span class="p">(</span><span class="n">items</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MyApplication"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.MyApplication">[docs]</a><span class="k">class</span> <span class="nc">MyApplication</span><span class="p">(</span><span class="n">web</span><span class="o">.</span><span class="n">application</span><span class="p">):</span>
+<div class="viewcode-block" id="MyApplication.run"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.MyApplication.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="o">*</span><span class="n">middleware</span><span class="p">):</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wsgifunc</span><span class="p">(</span><span class="o">*</span><span class="n">middleware</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">web</span><span class="o">.</span><span class="n">httpserver</span><span class="o">.</span><span class="n">runsimple</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="getHTTPOrigin"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.getHTTPOrigin">[docs]</a><span class="k">def</span> <span class="nf">getHTTPOrigin</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">isCGIApplication</span><span class="p">:</span>
+        <span class="n">remoteHost</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_HOST&quot;</span><span class="p">)</span>
+        <span class="n">remoteAddr</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">remoteHost</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">remoteHost</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">remoteAddr</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">web</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;HTTP_ORIGIN&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:63342&quot;</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="handler"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.handler">[docs]</a><span class="k">class</span> <span class="nc">handler</span><span class="p">:</span>
+<div class="viewcode-block" id="handler.doProcessRequest"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.handler.doProcessRequest">[docs]</a>    <span class="k">def</span> <span class="nf">doProcessRequest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+        <span class="n">CONFIG</span><span class="o">.</span><span class="n">isCGIApplication</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">web</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="n">web</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Credentials&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">HTTPRequest</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">web</span><span class="o">.</span><span class="n">input</span><span class="p">()),</span> <span class="n">getHTTPOrigin</span><span class="p">())</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HTTPResponse</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">processRequest</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">handled</span><span class="p">:</span>
+            <span class="n">web</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">+</span> <span class="s2">&quot;; charset=utf-8&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">contextDisposition</span><span class="p">:</span>
+                <span class="n">web</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s2">&quot;Content-Disposition&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">contextDisposition</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">htmlData</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">web</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain;charset=utf-8&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;doProcessRequest Error&quot;</span></div>
+
+
+<div class="viewcode-block" id="handler.GET"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.handler.GET">[docs]</a>    <span class="k">def</span> <span class="nf">GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">doProcessRequest</span><span class="p">(</span><span class="n">page</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="handler.POST"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.handler.POST">[docs]</a>    <span class="k">def</span> <span class="nf">POST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">doProcessRequest</span><span class="p">(</span><span class="n">page</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="runServer"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.cgiserver.html#pygeotoolbox.sharedtools.cgiserver.cgiserver.runServer">[docs]</a><span class="k">def</span> <span class="nf">runServer</span><span class="p">(</span><span class="n">portNumber</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">createLogger</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;cgiserver.log&quot;</span><span class="p">)</span>
+
+    <span class="k">global</span> <span class="n">operations</span>
+    <span class="n">operations</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+
+    <span class="c1"># Nastavení znakové sady na utf-8</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="n">reload</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">setdefaultencoding</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">IS_SERVER_SOFTWARE</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">cgi</span><span class="o">,</span> <span class="nn">cgitb</span>
+        <span class="n">cgitb</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">msvcrt</span>
+
+            <span class="n">msvcrt</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">O_BINARY</span><span class="p">)</span>  <span class="c1"># stdin  = 0</span>
+            <span class="n">msvcrt</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">O_BINARY</span><span class="p">)</span>  <span class="c1"># stdout = 1</span>
+
+        <span class="n">CONFIG</span><span class="o">.</span><span class="n">isCGIApplication</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">jsonLog</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">form</span> <span class="o">=</span> <span class="n">cgi</span><span class="o">.</span><span class="n">FieldStorage</span><span class="p">()</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
+                <span class="n">query</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">decodedValue</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">decodedValue</span> <span class="o">=</span> <span class="n">unicode</span><span class="p">(</span><span class="n">decodedValue</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">decodedValue</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">decodedValue</span><span class="p">,</span> <span class="s2">&quot;latin-1&quot;</span><span class="p">)</span>
+                <span class="n">decodedValue</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">decodedValue</span><span class="p">)</span>
+                <span class="n">query</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">decodedValue</span>
+
+            <span class="n">jsonLog</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">decodedValue</span>
+
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">HTTPRequest</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">getHTTPOrigin</span><span class="p">())</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HTTPResponse</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">processRequest</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">handled</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">handled</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">=</span> <span class="s2">&quot;text/html&quot;</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">htmlData</span> <span class="o">=</span> <span class="s2">&quot;ProcessRequest not handled&quot;</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">response</span><span class="o">.</span><span class="n">htmlData</span> <span class="o">+=</span> <span class="s2">&quot;&lt;br&gt;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+        <span class="nb">print</span> <span class="s2">&quot;Content-Type: &quot;</span> <span class="o">+</span> <span class="n">response</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="o">+</span> <span class="s2">&quot;; charset=utf-8&quot;</span>  <span class="c1"># HTML is following</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">contextDisposition</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="s2">&quot;Content-Disposition: &quot;</span> <span class="o">+</span> <span class="n">response</span><span class="o">.</span><span class="n">contextDisposition</span>
+        <span class="nb">print</span> <span class="s2">&quot;Access-Control-Allow-Origin: *&quot;</span>
+        <span class="nb">print</span>  <span class="c1"># blank line, end of headers</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">mimeFormat</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;text/html&quot;</span><span class="p">,</span> <span class="s2">&quot;text/javascript&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">]:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">htmlData</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">!=</span> <span class="s2">&quot;win32&quot;</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">htmlData</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">msvcrt</span>
+                <span class="n">msvcrt</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">os</span><span class="o">.</span><span class="n">O_BINARY</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">htmlData</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="n">msvcrt</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">os</span><span class="o">.</span><span class="n">O_TEXT</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">MyApplication</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="nb">globals</span><span class="p">())</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">port</span> <span class="o">=</span> <span class="n">portNumber</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

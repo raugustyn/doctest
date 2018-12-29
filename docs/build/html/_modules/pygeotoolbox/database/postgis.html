@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.database.postgis &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../database.html">pygeotoolbox.database</a> &raquo;</li>
+        
+      <li>pygeotoolbox.database.postgis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.database.postgis</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="c1"># @PRODUCTION MODULE</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">psycopg2</span>
+
+<span class="kn">import</span> <span class="nn">pygeotoolbox.sharedtools.log</span> <span class="k">as</span> <span class="nn">log</span>
+<span class="kn">import</span> <span class="nn">pygeotoolbox.sharedtools.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">setParameters</span><span class="p">,</span> <span class="n">Container</span>
+<span class="kn">from</span> <span class="nn">base</span> <span class="k">import</span> <span class="n">DatabaseTemplate</span>
+
+
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.onCreateDatabaseSQL&quot;</span><span class="p">,</span> <span class="s2">&quot;create extension postgis;&quot;</span><span class="p">,</span> <span class="s2">&quot;Database EPSG Code&quot;</span><span class="p">,</span> <span class="s2">&quot;Database EPSG Code&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Database"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database">[docs]</a><span class="k">class</span> <span class="nc">Database</span><span class="p">(</span><span class="n">DatabaseTemplate</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.disconnect"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;__connection&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">connectionParams</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">pygeotoolbox.sharedtools.config</span> <span class="k">as</span> <span class="nn">config</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">{</span>
+            <span class="s2">&quot;dbname&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+            <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">password</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">host</span> <span class="o">&lt;&gt;</span> <span class="s2">&quot;localhost&quot;</span><span class="p">:</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;host=</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;__connection&quot;</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connectionParams</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span>
+
+
+<div class="viewcode-block" id="Database.extractSchemaAndTableName"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.extractSchemaAndTableName">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">extractSchemaAndTableName</span><span class="p">(</span><span class="n">tableSpec</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tableSpec</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+
+        <span class="n">delPos</span> <span class="o">=</span> <span class="n">tableSpec</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">delPos</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">tableSpec</span><span class="p">[:</span><span class="n">delPos</span><span class="p">]</span>
+            <span class="n">tableName</span> <span class="o">=</span> <span class="n">tableSpec</span><span class="p">[</span><span class="n">delPos</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="n">getDefaultSchemaIfNotAssigned</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">tableName</span> <span class="o">=</span> <span class="n">tableSpec</span>
+
+        <span class="k">return</span> <span class="n">schema</span><span class="p">,</span> <span class="n">tableName</span></div>
+
+
+<div class="viewcode-block" id="Database.getTableNames"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.getTableNames">[docs]</a>    <span class="k">def</span> <span class="nf">getTableNames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return table names in a given database schema.</span>
+
+<span class="sd">        :param str schema: schema name</span>
+<span class="sd">        :return list of str: list of table names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">executeSelectSQL</span><span class="p">(</span><span class="s2">&quot;SELECT table_name FROM information_schema.tables WHERE table_schema=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">schema</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="Database.createSchema"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.createSchema">[docs]</a>    <span class="k">def</span> <span class="nf">createSchema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">dropIfExists</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates database schema with given name.</span>
+
+<span class="sd">        :param str schema: schema name</span>
+<span class="sd">        :param bool dropIfExists: drops schema before creating, if already exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dropIfExists</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;create schema if not exists </span><span class="si">%s</span><span class="s2">;&quot;</span> <span class="o">%</span> <span class="n">schema</span>
+        <span class="k">if</span> <span class="n">dropIfExists</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;drop schema if exists </span><span class="si">%s</span><span class="s2">;&quot;</span> <span class="o">%</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Database.getRowCount"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.getRowCount">[docs]</a>    <span class="k">def</span> <span class="nf">getRowCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tableFullName</span><span class="p">,</span> <span class="n">whereClause</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns table row count.</span>
+
+<span class="sd">        :param String tableFullName:</span>
+<span class="sd">        :return LongInt: Row count for the table specified.</span>
+
+
+<span class="sd">        &gt;&gt;&gt; connection = Database()</span>
+<span class="sd">        &gt;&gt;&gt; connection.getRowCount(&quot;public.z_terennirelief_l&quot;)</span>
+<span class="sd">        1099736L</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select count(*) from </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tableFullName</span>
+        <span class="k">if</span> <span class="n">whereClause</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">+=</span> <span class="s2">&quot; where &quot;</span> <span class="o">+</span> <span class="n">whereClause</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">firstRowFromSelect</span><span class="p">(</span><span class="n">sql</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Database.execute"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span> <span class="o">=</span> <span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Executes sql command. Before execution, it replaces parameters if provided.</span>
+
+<span class="sd">        :param str sql: Command sequence to be executed;</span>
+<span class="sd">        :param dict parameters: Parameters to be used in a query.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">muted</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">sql</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">setParameters</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="c1">#cursor = self.connection.cursor()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">executeElapsedTime</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="c1">#self.connection.commit()</span>
+        <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">sql</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Database.firstRowFromSelect"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.firstRowFromSelect">[docs]</a>    <span class="k">def</span> <span class="nf">firstRowFromSelect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span> <span class="o">=</span> <span class="p">{}):</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">executeSelectSQL</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cursor</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Database.loadShapes"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.loadShapes">[docs]</a>    <span class="k">def</span> <span class="nf">loadShapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">fieldNames</span><span class="p">,</span> <span class="n">geomFieldName</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">shapely.wkb</span> <span class="k">import</span> <span class="n">loads</span>
+        <span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">Container</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">executeSelectSQL</span><span class="p">(</span><span class="n">sql</span><span class="p">):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">fieldName</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">fieldNames</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">fieldName</span> <span class="o">==</span> <span class="n">geomFieldName</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">hex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="Database.executeSelectSQL"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.executeSelectSQL">[docs]</a>    <span class="k">def</span> <span class="nf">executeSelectSQL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">iterSize</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Runs SQL query and returns database cursor with query result.</span>
+
+<span class="sd">        :param str sql: Query to be executed.</span>
+<span class="sd">        :param dict parameters: Parameters to be used in a query.</span>
+<span class="sd">        :return cursor : Cursor with result or None if fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">iterSize</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">setParameters</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">iterSize</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">itersize</span> <span class="o">=</span> <span class="n">iterSize</span>
+        <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectElapsedTime</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+        <span class="k">return</span> <span class="n">cursor</span></div>
+
+
+<div class="viewcode-block" id="Database.getDefaultSchemaIfNotAssigned"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.getDefaultSchemaIfNotAssigned">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getDefaultSchemaIfNotAssigned</span><span class="p">(</span><span class="n">schemaName</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schemaName</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span> <span class="ow">or</span> <span class="n">schemaName</span> <span class="o">==</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">schemaName</span><span class="p">:</span>
+            <span class="n">schemaName</span> <span class="o">=</span> <span class="s1">&#39;public&#39;</span>
+
+        <span class="k">return</span> <span class="n">schemaName</span></div>
+
+
+<div class="viewcode-block" id="Database.cleanTableContent"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.cleanTableContent">[docs]</a>    <span class="k">def</span> <span class="nf">cleanTableContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">schema</span> <span class="o">=</span> <span class="s2">&quot;temp&quot;</span><span class="p">,</span> <span class="n">whereClause</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tableName</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">tableName</span> <span class="o">=</span> <span class="n">schema</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">tableName</span>
+
+        <span class="k">if</span> <span class="n">whereClause</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;delete from </span><span class="si">%s</span><span class="s2"> where &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tableName</span><span class="p">,</span> <span class="n">whereClause</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;truncate table &quot;</span> <span class="o">+</span> <span class="n">tableName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Database.getFieldDefinition"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.getFieldDefinition">[docs]</a>    <span class="k">def</span> <span class="nf">getFieldDefinition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schemaName</span><span class="p">,</span> <span class="n">tableName</span><span class="p">):</span>        
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schemaName</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span> <span class="ow">or</span> <span class="n">schemaName</span> <span class="o">==</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tableName</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+
+
+        <span class="n">schemaName</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="n">getDefaultSchemaIfNotAssigned</span><span class="p">(</span><span class="n">schemaName</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select * from information_schema.columns where table_schema = &#39;</span><span class="si">%s</span><span class="s2">&#39; and table_name = &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">schemaName</span><span class="p">,</span> <span class="n">tableName</span><span class="p">)</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">inst</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;PostGISConnector.getFieldDefinition(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;):</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">schemaName</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="p">)))</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            
+            <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="Database.schemaExists"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.schemaExists">[docs]</a>    <span class="k">def</span> <span class="nf">schemaExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schemaName</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">executeSelectSQL</span><span class="p">(</span><span class="s2">&quot;SELECT exists(select schema_name FROM information_schema.schemata WHERE schema_name = &#39;</span><span class="si">%s</span><span class="s2">&#39;);&quot;</span> <span class="o">%</span> <span class="n">schemaName</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Database.findSRID"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.findSRID">[docs]</a>    <span class="k">def</span> <span class="nf">findSRID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schemaName</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">firstRowFromSelect</span><span class="p">(</span><span class="s2">&quot;SELECT Find_SRID(&#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39;);&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">schemaName</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Database.getFieldString"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.getFieldString">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getFieldString</span><span class="p">(</span><span class="n">fieldDefinition</span><span class="p">):</span>
+        <span class="n">typeNames</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nb">int</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+            <span class="n">basestring</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">typeNames</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fieldDefinition</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Database.fieldExists"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.fieldExists">[docs]</a>    <span class="k">def</span> <span class="nf">fieldExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fieldName</span><span class="p">,</span> <span class="n">tableOrFieldDefinitions</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fieldName</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tableOrFieldDefinitions</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tableOrFieldDefinitions</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tableOrFieldDefinitions</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="n">schemaName</span><span class="p">,</span> <span class="n">tableName</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="n">extractSchemaAndTableName</span><span class="p">(</span><span class="n">tableOrFieldDefinitions</span><span class="p">)</span>
+            <span class="n">fieldDefinitions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFieldDefinition</span><span class="p">(</span><span class="n">schemaName</span><span class="p">,</span> <span class="n">tableName</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fieldDefinitions</span> <span class="o">=</span> <span class="n">tableOrFieldDefinitions</span>
+
+        <span class="k">for</span> <span class="n">fieldDefinition</span> <span class="ow">in</span> <span class="n">fieldDefinitions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fieldName</span> <span class="o">==</span> <span class="n">fieldDefinition</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Database.databaseExists"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.databaseExists">[docs]</a>    <span class="k">def</span> <span class="nf">databaseExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if a database with name databaseName exists.</span>
+
+<span class="sd">        https://dba.stackexchange.com/questions/45143/check-if-postgresql-database-exists-case-insensitive-way</span>
+<span class="sd">        :param str databaseName:database name</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">host</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select exists(SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower(&#39;dbname&#39;));&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;dbname&quot;</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="Database.createDatabase"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.createDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">createDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param databaseName:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">sys</span>
+        <span class="kn">from</span> <span class="nn">psycopg2.extensions</span> <span class="k">import</span> <span class="n">ISOLATION_LEVEL_AUTOCOMMIT</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">openSection</span><span class="p">(</span><span class="s2">&quot;Creating database &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;create database </span><span class="si">%s</span><span class="s2">;&quot;</span> <span class="o">%</span> <span class="n">databaseName</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">host</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">set_isolation_level</span><span class="p">(</span><span class="n">ISOLATION_LEVEL_AUTOCOMMIT</span><span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">onCreateDatabaseSQL</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">onCreateDatabaseSQL</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">onCreateDatabaseSQL</span><span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">closeSection</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Database.geometryValueFromShape"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.geometryValueFromShape">[docs]</a>    <span class="k">def</span> <span class="nf">geometryValueFromShape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometryValueFromWKT</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">wkt</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Database.geometryValueFromWKT"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.geometryValueFromWKT">[docs]</a>    <span class="k">def</span> <span class="nf">geometryValueFromWKT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wkt</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;st_geometryfromtext(&#39;</span><span class="si">%s</span><span class="s2">&#39;, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">wkt</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">epsg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Database.normalizeName"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.normalizeName">[docs]</a>    <span class="k">def</span> <span class="nf">normalizeName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">letter</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">letter</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+              <span class="n">result</span> <span class="o">+=</span> <span class="n">letter</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="Database.getFieldTypeFromValue"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.postgis.Database.getFieldTypeFromValue">[docs]</a>    <span class="k">def</span> <span class="nf">getFieldTypeFromValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;boolean&quot;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;float&quot;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;integer&quot;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;varchar&quot;</span>
+
+        <span class="k">raise</span> <span class="s2">&quot;Field type not recognized&quot;</span></div></div>
+
+
+<span class="c1"># @NO-PRODUCTION CODE</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">database</span> <span class="c1"># No dummy, creating module variables</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">Database</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="s2">&quot;ids:&quot;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">executeSelectSQL</span><span class="p">(</span><span class="s2">&quot;select array_agg(elm_id) from data.elements&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

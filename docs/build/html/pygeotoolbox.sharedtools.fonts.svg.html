@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.fonts.svg package &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pygeotoolbox.sharedtools.fonts.svg package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg.base">pygeotoolbox.sharedtools.fonts.svg.base module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg.glyph">pygeotoolbox.sharedtools.fonts.svg.glyph module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg.pathshape">pygeotoolbox.sharedtools.fonts.svg.pathshape module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg.pathshapeitem">pygeotoolbox.sharedtools.fonts.svg.pathshapeitem module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg.svg2wkt">pygeotoolbox.sharedtools.fonts.svg.svg2wkt module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg.svgfontreader">pygeotoolbox.sharedtools.fonts.svg.svgfontreader module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg.svgicons">pygeotoolbox.sharedtools.fonts.svg.svgicons module</a></li>
+<li><a class="reference internal" href="#module-pygeotoolbox.sharedtools.fonts.svg">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.fonts.svg package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pygeotoolbox.sharedtools.fonts.svg.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pygeotoolbox-sharedtools-fonts-svg-package">
+<h1>pygeotoolbox.sharedtools.fonts.svg package<a class="headerlink" href="#pygeotoolbox-sharedtools-fonts-svg-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg.base">
+<span id="pygeotoolbox-sharedtools-fonts-svg-base-module"></span><h2>pygeotoolbox.sharedtools.fonts.svg.base module<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.Point">
+<em class="property">class </em><code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.base.</code><code class="descname">Point</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#Point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.Point" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.Point.equals">
+<code class="descname">equals</code><span class="sig-paren">(</span><em>point</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#Point.equals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.Point.equals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.addCharaters">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.base.</code><code class="descname">addCharaters</code><span class="sig-paren">(</span><em>chars</em>, <em>charsToBeAdded</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#addCharaters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.addCharaters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds characters from charsToBeAdded param into chars param, if they are not there already. Result is sorted unicode string out.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>chars</strong> (<em>Unicode</em>) – </li>
+<li><strong>charsToBeAdded</strong> (<em>Unicode</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Unicode sorted union of chars and charsToBeAdded parameters.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">addCharaters</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;CDEF&#39;</span><span class="p">)</span>
+<span class="go">u&#39;ACDEF&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.extractParam">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.base.</code><code class="descname">extractParam</code><span class="sig-paren">(</span><em>tag</em>, <em>paramName</em>, <em>defValue=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#extractParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.extractParam" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.getLongerASCII">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.base.</code><code class="descname">getLongerASCII</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#getLongerASCII"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.getLongerASCII" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns lower 255 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">String Returns lower 127 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">getLowerASCII</span><span class="p">()</span>
+<span class="go">u&#39; !&quot;#$%&amp;&#39;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.getLowerASCII">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.base.</code><code class="descname">getLowerASCII</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#getLowerASCII"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.getLowerASCII" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns lower 127 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">String Returns lower 127 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">getLowerASCII</span><span class="p">()</span>
+<span class="go">u&#39; !&quot;#$%&amp;&#39;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.getPathVertexes">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.base.</code><code class="descname">getPathVertexes</code><span class="sig-paren">(</span><em>d</em>, <em>precision</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#getPathVertexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.getPathVertexes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d</strong> – </li>
+<li><strong>precision</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="s2">&quot;M828 131q-100 -85 -192.5 -120t-198.5 -35q-175 0 -269 85.5t-94 218.5q0 78 35.5 142.5t93 103.5t129.5 59q53 14 160 27q218 26 321 62q1 37 1 47q0 110 -51 155q-69 61 -205 61q-127 0 -187.5 -44.5t-89.5 -157.5l-176 24q24 113 79 182.5t159 107t241 37.5 q136 0 221 -32t125 -80.5t56 -122.5q9 -46 9 -166v-240q0 -251 11.5 -317.5t45.5 -127.5h-188q-28 56 -36 131zM813 533q-98 -40 -294 -68q-111 -16 -157 -36t-71 -58.5t-25 -85.5q0 -72 54.5 -120t159.5 -48q104 0 185 45.5t119 124.5q29 61 29 180v66z&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">getPathVertexes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.base.strToListByKeys">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.base.</code><code class="descname">strToListByKeys</code><span class="sig-paren">(</span><em>str</em>, <em>keys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/base.html#strToListByKeys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.base.strToListByKeys" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>str</strong> – </li>
+<li><strong>keys</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">strToListByKeys</span><span class="p">(</span><span class="s1">&#39;M43 662q0 -29 19.5 -48.5t48.5 -19.5t48.5 19.5t19.5 48.5t-19.5 48.5t-48.5 19.5t-48.5 -19.5t-19.5 -48.5zM-2 662q0 23 9 43.5t24.5 36t36 24.5t43.5 9t43.5 -9t36 -24.5t24.5 -36t9 -43.5t-9 -43.5t-24.5 -36t-36 -24.5t-43.5 -9t-43.5 9t-36 24.5t-24.5 36t-9 43.5z&#39;</span><span class="p">,</span> <span class="n">pathElements</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg.glyph">
+<span id="pygeotoolbox-sharedtools-fonts-svg-glyph-module"></span><h2>pygeotoolbox.sharedtools.fonts.svg.glyph module<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg.glyph" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph">
+<em class="property">class </em><code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.glyph.</code><code class="descname">Glyph</code><span class="sig-paren">(</span><em>glyphXMLContent</em>, <em>glyphs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/glyph.html#Glyph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements letter glyph outline.</p>
+<dl class="attribute">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph.PATH_STROKE_LENGTH">
+<code class="descname">PATH_STROKE_LENGTH</code><em class="property"> = 30</em><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph.PATH_STROKE_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph.shape">
+<code class="descname">shape</code><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns shapely shape representation of the glyph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">shapely shape representation of the glyph.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph.wkt">
+<code class="descname">wkt</code><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.glyph.Glyph.wkt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns Well Known Text representation of the glyph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Well Known Text representation of the glyph.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg.pathshape">
+<span id="pygeotoolbox-sharedtools-fonts-svg-pathshape-module"></span><h2>pygeotoolbox.sharedtools.fonts.svg.pathshape module<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg.pathshape" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshape.PathShape">
+<em class="property">class </em><code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.pathshape.</code><code class="descname">PathShape</code><span class="sig-paren">(</span><em>shapeDef</em>, <em>precision</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshape.html#PathShape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshape.PathShape" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshape.PathShape.old__init__">
+<code class="descname">old__init__</code><span class="sig-paren">(</span><em>shapeDef</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshape.html#PathShape.old__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshape.PathShape.old__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshape.PathShape.wkt">
+<code class="descname">wkt</code><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshape.PathShape.wkt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg.pathshapeitem">
+<span id="pygeotoolbox-sharedtools-fonts-svg-pathshapeitem-module"></span><h2>pygeotoolbox.sharedtools.fonts.svg.pathshapeitem module<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg.pathshapeitem" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem">
+<em class="property">class </em><code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.</code><code class="descname">PathShapeItem</code><span class="sig-paren">(</span><em>paramName</em>, <em>params</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshapeitem.html#PathShapeItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.HorizontalLineToPathItem">
+<code class="descname">HorizontalLineToPathItem</code><span class="sig-paren">(</span><em>params</em>, <em>relativePosition</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshapeitem.html#PathShapeItem.HorizontalLineToPathItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.HorizontalLineToPathItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.LineToPathItem">
+<code class="descname">LineToPathItem</code><span class="sig-paren">(</span><em>params</em>, <em>relativePosition</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshapeitem.html#PathShapeItem.LineToPathItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.LineToPathItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.MoveToPathItem">
+<code class="descname">MoveToPathItem</code><span class="sig-paren">(</span><em>params</em>, <em>relativePosition</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshapeitem.html#PathShapeItem.MoveToPathItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.MoveToPathItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.QuadraticBezierCurvePathItem">
+<code class="descname">QuadraticBezierCurvePathItem</code><span class="sig-paren">(</span><em>params</em>, <em>relativePosition</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshapeitem.html#PathShapeItem.QuadraticBezierCurvePathItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.QuadraticBezierCurvePathItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.SmoothQuadraticBezierCurvePathItem">
+<code class="descname">SmoothQuadraticBezierCurvePathItem</code><span class="sig-paren">(</span><em>params</em>, <em>relativePosition</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshapeitem.html#PathShapeItem.SmoothQuadraticBezierCurvePathItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.SmoothQuadraticBezierCurvePathItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.VerticalLineToPathItem">
+<code class="descname">VerticalLineToPathItem</code><span class="sig-paren">(</span><em>params</em>, <em>relativePosition</em>, <em>penPosition</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/pathshapeitem.html#PathShapeItem.VerticalLineToPathItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.pathshapeitem.PathShapeItem.VerticalLineToPathItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg.svg2wkt">
+<span id="pygeotoolbox-sharedtools-fonts-svg-svg2wkt-module"></span><h2>pygeotoolbox.sharedtools.fonts.svg.svg2wkt module<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg.svg2wkt" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.convert">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">convert</code><span class="sig-paren">(</span><em>svg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.convert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.extractParam">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">extractParam</code><span class="sig-paren">(</span><em>tag</em>, <em>paramName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#extractParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.extractParam" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.glyph">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">glyph</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#glyph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.glyph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.line">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">line</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>x2</em>, <em>y2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a WKT line from SVG start/end point coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x1</strong> (<em>{Number}</em>) – Start X.</li>
+<li><strong>y1</strong> (<em>{Number}</em>) – Start Y.</li>
+<li><strong>x2</strong> (<em>{Number}</em>) – End X.</li>
+<li><strong>y2</strong> (<em>{Number}</em>) – End Y.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return {String}:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">Generated WKT.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:public</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.path">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">path</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.polygon">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">polygon</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#polygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a WKT polygon from SVG <cite>points</cite> attribute value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>points</strong> (<em>{String}</em>) – &lt;polygon&gt; <cite>points</cite> attribute value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return {String}:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body">Generated WKT.</td>
+</tr>
+</tbody>
+</table>
+<p>:public</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.polyline">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">polyline</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#polyline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.polyline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a WKT linestrimg from SVG <cite>points</cite> attribute value.</p>
+<p>&#64;param {String} points: &lt;polyline&gt; <cite>points</cite> attribute value.
+&#64;return {String}: Generated WKT.</p>
+<p>&#64;public</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.rect">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">rect</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#rect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a WKT polygon from SVG rectangle origin and dimensions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>{Number}</em>) – Top left X.</li>
+<li><strong>y</strong> (<em>{Number}</em>) – Top left Y.</li>
+<li><strong>width</strong> (<em>{Number}</em>) – Rectangle width.</li>
+<li><strong>height</strong> (<em>{Number}</em>) – Rectangle height.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Return {String}:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">Generated WKT.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>:public</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svg2wkt.swapDelimeters">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svg2wkt.</code><code class="descname">swapDelimeters</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svg2wkt.html#swapDelimeters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svg2wkt.swapDelimeters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg.svgfontreader">
+<span id="pygeotoolbox-sharedtools-fonts-svg-svgfontreader-module"></span><h2>pygeotoolbox.sharedtools.fonts.svg.svgfontreader module<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg.svgfontreader" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svgfontreader.SVGFontReader">
+<em class="property">class </em><code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svgfontreader.</code><code class="descname">SVGFontReader</code><span class="sig-paren">(</span><em>svgFileName</em>, <em>charsToBeLoaded=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svgfontreader.html#SVGFontReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svgfontreader.SVGFontReader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svgfontreader.readTestFonts">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svgfontreader.</code><code class="descname">readTestFonts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svgfontreader.html#readTestFonts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svgfontreader.readTestFonts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg.svgicons">
+<span id="pygeotoolbox-sharedtools-fonts-svg-svgicons-module"></span><h2>pygeotoolbox.sharedtools.fonts.svg.svgicons module<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg.svgicons" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pygeotoolbox.sharedtools.fonts.svg.svgicons.extractSVGIcon">
+<code class="descclassname">pygeotoolbox.sharedtools.fonts.svg.svgicons.</code><code class="descname">extractSVGIcon</code><span class="sig-paren">(</span><em>svgFontFileName</em>, <em>glyphName</em>, <em>iconFileName=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pygeotoolbox/sharedtools/fonts/svg/svgicons.html#extractSVGIcon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pygeotoolbox.sharedtools.fonts.svg.svgicons.extractSVGIcon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pygeotoolbox.sharedtools.fonts.svg">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pygeotoolbox.sharedtools.fonts.svg" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

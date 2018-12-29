@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.fonts.svg.base &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+
+  
+  <script src="../../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.fonts.svg.base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.fonts.svg.base</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+
+<div class="viewcode-block" id="getLowerASCII"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.getLowerASCII">[docs]</a><span class="k">def</span> <span class="nf">getLowerASCII</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns lower 127 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</span>
+
+<span class="sd">    :return: String Returns lower 127 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</span>
+
+<span class="sd">    &gt;&gt;&gt; getLowerASCII()</span>
+<span class="sd">    u&#39; !&quot;#$%&amp;\&#39;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="mi">127</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="getLongerASCII"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.getLongerASCII">[docs]</a><span class="k">def</span> <span class="nf">getLongerASCII</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns lower 255 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</span>
+
+<span class="sd">    :return: String Returns lower 127 characters from ASCII code table, starting from space (no control characters like CR, LF etc).</span>
+
+<span class="sd">    &gt;&gt;&gt; getLowerASCII()</span>
+<span class="sd">    u&#39; !&quot;#$%&amp;\&#39;()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7f&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="mi">255</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="addCharaters"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.addCharaters">[docs]</a><span class="k">def</span> <span class="nf">addCharaters</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">charsToBeAdded</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds characters from charsToBeAdded param into chars param, if they are not there already. Result is sorted unicode string out.</span>
+
+<span class="sd">    :param Unicode chars:</span>
+<span class="sd">    :param Unicode charsToBeAdded:</span>
+<span class="sd">    :return: Unicode sorted union of chars and charsToBeAdded parameters.</span>
+
+<span class="sd">    &gt;&gt;&gt; addCharaters(&#39;A&#39;, &#39;CDEF&#39;)</span>
+<span class="sd">    u&#39;ACDEF&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">chars</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">charsToBeAdded</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">charsToBeAdded</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">addCharaters</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">charsToBeAdded</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
+            <span class="n">charsToBeAdded</span> <span class="o">=</span> <span class="n">unicode</span><span class="p">(</span><span class="n">charsToBeAdded</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">charsToBeAdded</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="n">char</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="Point"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.Point">[docs]</a><span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Point(</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Point.equals"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.Point.equals">[docs]</a>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span></div></div>
+
+
+<div class="viewcode-block" id="extractParam"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.extractParam">[docs]</a><span class="k">def</span> <span class="nf">extractParam</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">paramName</span><span class="p">,</span> <span class="n">defValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">urllib</span>
+
+    <span class="n">paramPrefix</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="si">%s</span><span class="s1">=&quot;&#39;</span> <span class="o">%</span> <span class="n">paramName</span>
+    <span class="n">startPos</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">paramPrefix</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">startPos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">defValue</span>
+
+    <span class="n">startPos</span> <span class="o">=</span> <span class="n">startPos</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">paramPrefix</span><span class="p">)</span>
+    <span class="n">endPos</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="n">startPos</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">endPos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">defValue</span>
+
+    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">tag</span><span class="p">[</span><span class="n">startPos</span><span class="p">:</span> <span class="n">endPos</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="strToListByKeys"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.strToListByKeys">[docs]</a><span class="k">def</span> <span class="nf">strToListByKeys</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param str:</span>
+<span class="sd">    :param keys:</span>
+<span class="sd">    :return:</span>
+
+<span class="sd">    &gt;&gt;&gt; strToListByKeys(&#39;M43 662q0 -29 19.5 -48.5t48.5 -19.5t48.5 19.5t19.5 48.5t-19.5 48.5t-48.5 19.5t-48.5 -19.5t-19.5 -48.5zM-2 662q0 23 9 43.5t24.5 36t36 24.5t43.5 9t43.5 -9t36 -24.5t24.5 -36t9 -43.5t-9 -43.5t-24.5 -36t-36 -24.5t-43.5 -9t-43.5 9t-36 24.5t-24.5 36t-9 43.5z&#39;, pathElements.keys())</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lastFoundKey</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">while</span> <span class="nb">str</span> <span class="o">&lt;&gt;</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">foundKey</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">foundKeyPos</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">keyPos</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">keyPos</span> <span class="o">&lt;&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">foundKey</span> <span class="ow">or</span> <span class="p">(</span><span class="n">foundKey</span> <span class="ow">and</span> <span class="n">foundKeyPos</span> <span class="o">&gt;</span> <span class="n">keyPos</span><span class="p">)):</span>
+                <span class="n">foundKey</span> <span class="o">=</span> <span class="n">key</span>
+                <span class="n">foundKeyPos</span> <span class="o">=</span> <span class="n">keyPos</span>
+
+        <span class="k">if</span> <span class="n">foundKey</span><span class="p">:</span>
+            <span class="n">lastKeyValue</span> <span class="o">=</span> <span class="nb">str</span><span class="p">[:</span><span class="n">foundKeyPos</span><span class="p">]</span>
+            <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">[</span><span class="n">foundKeyPos</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">foundKey</span><span class="p">):]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lastKeyValue</span> <span class="o">=</span> <span class="nb">str</span>
+            <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">lastFoundKey</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">lastFoundKey</span><span class="p">,</span> <span class="n">lastKeyValue</span><span class="p">))</span>
+        <span class="n">lastFoundKey</span> <span class="o">=</span> <span class="n">foundKey</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="getPathVertexes"><a class="viewcode-back" href="../../../../../pygeotoolbox.sharedtools.fonts.svg.html#pygeotoolbox.sharedtools.fonts.svg.base.getPathVertexes">[docs]</a><span class="k">def</span> <span class="nf">getPathVertexes</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param d:</span>
+<span class="sd">    :param precision:</span>
+<span class="sd">    :return:</span>
+
+<span class="sd">    &gt;&gt;&gt; d = &quot;M828 131q-100 -85 -192.5 -120t-198.5 -35q-175 0 -269 85.5t-94 218.5q0 78 35.5 142.5t93 103.5t129.5 59q53 14 160 27q218 26 321 62q1 37 1 47q0 110 -51 155q-69 61 -205 61q-127 0 -187.5 -44.5t-89.5 -157.5l-176 24q24 113 79 182.5t159 107t241 37.5 q136 0 221 -32t125 -80.5t56 -122.5q9 -46 9 -166v-240q0 -251 11.5 -317.5t45.5 -127.5h-188q-28 56 -36 131zM813 533q-98 -40 -294 -68q-111 -16 -157 -36t-71 -58.5t-25 -85.5q0 -72 54.5 -120t159.5 -48q104 0 185 45.5t119 124.5q29 61 29 180v66z&quot;</span>
+<span class="sd">    &gt;&gt;&gt; print getPathVertexes(d, 10)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">svgpathtools</span> <span class="k">import</span> <span class="n">parse_path</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">subString</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">):</span>
+        <span class="n">subPath</span> <span class="o">=</span> <span class="n">parse_path</span><span class="p">(</span><span class="n">subString</span><span class="p">)</span>
+        <span class="n">vertexes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">subPath</span><span class="o">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="n">precision</span><span class="o">/</span><span class="n">subPath</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+
+            <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">pos</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">subPath</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+                <span class="n">vertexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+                <span class="n">pos</span> <span class="o">+=</span> <span class="n">step</span>
+            <span class="k">if</span> <span class="n">pos</span> <span class="o">&lt;&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">subPath</span><span class="o">.</span><span class="n">point</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">vertexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
+
+            <span class="n">startVertex</span> <span class="o">=</span> <span class="n">vertexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">startVertex</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">vertexes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">vertexes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">vertexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">startVertex</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">startVertex</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertexes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

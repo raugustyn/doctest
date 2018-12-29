@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.fonts.fonts &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.fonts.fonts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.fonts.fonts</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">base</span> <span class="k">import</span> <span class="n">getFontTableName</span>
+
+
+<div class="viewcode-block" id="Fonts"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.fonts.html#pygeotoolbox.sharedtools.fonts.fonts.Fonts">[docs]</a><span class="k">class</span> <span class="nc">Fonts</span><span class="p">:</span>
+    <span class="n">FONTS_SCHEMA_CREATED</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">SQL_COMMANDS</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fonts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;__fonts&quot;</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">font</span> <span class="k">import</span> <span class="n">Font</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__fonts</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">getFontInfos</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__fonts</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__fonts</span>
+
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fonts</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Fonts.font"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.fonts.html#pygeotoolbox.sharedtools.fonts.fonts.Fonts.font">[docs]</a>    <span class="k">def</span> <span class="nf">font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fonts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fonts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Fonts</span><span class="o">.</span><span class="n">SQL_COMMANDS</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">database</span> <span class="k">import</span> <span class="n">SQLCommands</span>
+
+            <span class="n">Fonts</span><span class="o">.</span><span class="n">SQL_COMMANDS</span> <span class="o">=</span> <span class="n">SQLCommands</span><span class="p">(</span><span class="n">sqlFileName</span><span class="o">=</span><span class="s2">&quot;fonts.sql&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="vm">__file__</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Fonts</span><span class="o">.</span><span class="n">SQL_COMMANDS</span>
+
+
+<div class="viewcode-block" id="Fonts.schemaNeeded"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.fonts.html#pygeotoolbox.sharedtools.fonts.fonts.Fonts.schemaNeeded">[docs]</a>    <span class="k">def</span> <span class="nf">schemaNeeded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &gt;&gt;&gt; f.schemaNeeded()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Fonts</span><span class="o">.</span><span class="n">FONTS_SCHEMA_CREATED</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">prepareFontSchema</span><span class="p">()</span>
+            <span class="n">Fonts</span><span class="o">.</span><span class="n">FONTS_SCHEMA_CREATED</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Fonts.getFontInfo"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.fonts.html#pygeotoolbox.sharedtools.fonts.fonts.Fonts.getFontInfo">[docs]</a>    <span class="k">def</span> <span class="nf">getFontInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fontName</span><span class="p">):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">getFontInfo</span><span class="p">(</span><span class="n">fontName</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">row</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">registerFont</span><span class="p">(</span><span class="n">fontName</span><span class="p">,</span> <span class="n">getFontTableName</span><span class="p">(</span><span class="n">fontName</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getFontInfo</span><span class="p">(</span><span class="n">fontName</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Fonts.registerFont"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.fonts.html#pygeotoolbox.sharedtools.fonts.fonts.Fonts.registerFont">[docs]</a>    <span class="k">def</span> <span class="nf">registerFont</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Fonts.loadFromSVG"><a class="viewcode-back" href="../../../../pygeotoolbox.sharedtools.fonts.html#pygeotoolbox.sharedtools.fonts.fonts.Fonts.loadFromSVG">[docs]</a>    <span class="k">def</span> <span class="nf">loadFromSVG</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">svgFileName</span><span class="p">,</span> <span class="n">charsToBeAdded</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">font</span> <span class="k">import</span> <span class="n">Font</span>
+
+        <span class="n">font</span> <span class="o">=</span> <span class="n">Font</span><span class="p">(</span><span class="n">svgFileName</span><span class="p">,</span> <span class="n">charsToBeAdded</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">saveToDatabase</span><span class="p">()</span></div></div>
+
+
+<span class="n">fonts</span> <span class="o">=</span> <span class="n">Fonts</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">fonts</span><span class="o">.</span><span class="n">schemaNeeded</span><span class="p">()</span>
+        <span class="nb">id</span><span class="p">,</span> <span class="n">tableName</span> <span class="o">=</span> <span class="n">fonts</span><span class="o">.</span><span class="n">getFontInfo</span><span class="p">(</span><span class="s1">&#39;ArialMT.svg&#39;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="nb">id</span><span class="p">,</span> <span class="n">tableName</span>
+
+    <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">font</span> <span class="ow">in</span> <span class="n">fonts</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%d</span><span class="s2"> glyphs&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">font</span><span class="o">.</span><span class="n">glyphs</span><span class="p">))</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.database.base &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../database.html">pygeotoolbox.database</a> &raquo;</li>
+        
+      <li>pygeotoolbox.database.base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.database.base</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="c1"># @PRODUCTION MODULE</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">pygeotoolbox.sharedtools.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">from</span> <span class="nn">pygeotoolbox.sharedtools</span> <span class="k">import</span> <span class="n">fileRead</span><span class="p">,</span> <span class="n">setParameters</span>
+
+
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.name&quot;</span><span class="p">,</span> <span class="s2">&quot;gensmd&quot;</span><span class="p">,</span> <span class="s2">&quot;Database&quot;</span><span class="p">,</span> <span class="s2">&quot;Database name on the SQl server.&quot;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.user&quot;</span><span class="p">,</span> <span class="s2">&quot;postgres&quot;</span><span class="p">,</span> <span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="s2">&quot;Database user name.&quot;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.password&quot;</span><span class="p">,</span> <span class="s2">&quot;postgres&quot;</span><span class="p">,</span> <span class="s2">&quot;Password&quot;</span><span class="p">,</span> <span class="s2">&quot;Database user password&quot;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.host&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="s2">&quot;Server&quot;</span><span class="p">,</span> <span class="s2">&quot;Server IP adress&quot;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.type&quot;</span><span class="p">,</span> <span class="s2">&quot;postgis&quot;</span><span class="p">,</span> <span class="s2">&quot;Database type&quot;</span><span class="p">,</span> <span class="s2">&quot;Database type (postgis etc)&quot;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.epsg&quot;</span><span class="p">,</span> <span class="mi">5514</span><span class="p">,</span> <span class="s2">&quot;Database EPSG Code&quot;</span><span class="p">,</span> <span class="s2">&quot;Database EPSG Code&quot;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">registerValue</span><span class="p">(</span><span class="s2">&quot;database.proj4Def&quot;</span><span class="p">,</span> <span class="s2">&quot;+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=570.8,85.7,462.8,4.998,1.587,5.261,3.56 +units=m +no_defs&quot;</span><span class="p">,</span> <span class="s2">&quot;proj4 EPSG&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DatabaseTemplate"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate">[docs]</a><span class="k">class</span> <span class="nc">DatabaseTemplate</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Template for geodatabase class. Methods with NotImplementedError must be implemented by all descendants.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__muted</span>  <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__connection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">executeElapsedTime</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectElapsedTime</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">muted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if database is muted.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__muted</span>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.mute"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.mute">[docs]</a>    <span class="k">def</span> <span class="nf">mute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Switch database into muted state, in which neither execute or executeSelectSQL commands are not commited.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__muted</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.unMute"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.unMute">[docs]</a>    <span class="k">def</span> <span class="nf">unMute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Switch database into unmuted state, in which both execute or executeSelectSQL commands works.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__muted</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.disconnect"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Disconnects database connection.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement disconnect method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.execute"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Executes sql command. Before execution, it replaces parameters if provided.</span>
+
+<span class="sd">        :param str sql: Command sequence to be executed;</span>
+<span class="sd">        :param dict parameters: Parameters to be used in a query.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement execute method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.executeSelectSQL"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.executeSelectSQL">[docs]</a>    <span class="k">def</span> <span class="nf">executeSelectSQL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Runs SQL query and returns database cursor with query result.</span>
+
+<span class="sd">        :param str sql: Query to be executed.</span>
+<span class="sd">        :param dict parameters: Parameters to be used in a query.</span>
+<span class="sd">        :return cursor : Cursor with result or None if fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement executeSelectSQL method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.getTableNames"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.getTableNames">[docs]</a>    <span class="k">def</span> <span class="nf">getTableNames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return table names in a given database schema.</span>
+
+<span class="sd">        :param str schema: schema name</span>
+<span class="sd">        :return list of str: list of table names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement getTableNames method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.tableExists"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.tableExists">[docs]</a>    <span class="k">def</span> <span class="nf">tableExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">tableName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if table exists in given schema.</span>
+
+<span class="sd">        :param str schema: Schema name.</span>
+<span class="sd">        :param str tableName: Table name.</span>
+<span class="sd">        :return bool: True if table schema.tableName exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">tableName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTableNames</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.createSchema"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.createSchema">[docs]</a>    <span class="k">def</span> <span class="nf">createSchema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">dropIfExists</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates database schema with given name.</span>
+
+<span class="sd">        :param str schema: schema name</span>
+<span class="sd">        :param bool dropIfExists: drops schema before creating, if already exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement createSchema method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.executeSQLFile"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.executeSQLFile">[docs]</a>    <span class="k">def</span> <span class="nf">executeSQLFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">parameters</span> <span class="o">=</span> <span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Loads SQL script from the file, compiles parameters into it and executes it.</span>
+
+<span class="sd">        :param str fileName: file name to be loaded as SQL script</span>
+<span class="sd">        :param parameters: paramaters to be compiled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">fileRead</span><span class="p">(</span><span class="n">fileName</span><span class="p">),</span> <span class="n">parameters</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.loadAndExecute"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.loadAndExecute">[docs]</a>    <span class="k">def</span> <span class="nf">loadAndExecute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&quot;&quot;&quot;Loads SQL script from the file and executes it.</span>
+
+<span class="sd">        :param str fileName: file name to be loaded as SQL script</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">fileRead</span><span class="p">(</span><span class="n">fileName</span><span class="p">),</span> <span class="n">params</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.clearBuffer"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.clearBuffer">[docs]</a>    <span class="k">def</span> <span class="nf">clearBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Executes all commands in a buffer, commits the database and returns empty buffer.</span>
+
+<span class="sd">        :param list of string buffer: List of SQL commands.</span>
+<span class="sd">        :return: empty buffer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">buffer</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.flushBuffer"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.flushBuffer">[docs]</a>    <span class="k">def</span> <span class="nf">flushBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;clearBuffer method alias. Executes all commands in a buffer, commits the database and returns empty buffer.</span>
+
+<span class="sd">        :param list of string buffer: List of SQL commands.</span>
+<span class="sd">        :return: empty buffer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clearBuffer</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.executeBuffer"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.executeBuffer">[docs]</a>    <span class="k">def</span> <span class="nf">executeBuffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inserts sql into buffer, then executes it, if number of commands in it is higher than limit or does nothing. returns either empty or original buffer.</span>
+
+<span class="sd">        :param str sql:sql command to be inserted to buffer</span>
+<span class="sd">        :param list of str buffer: buffer of SQL commands</span>
+<span class="sd">        :param int limit: maximum number of items in a buffer before being executed</span>
+<span class="sd">        :return list of str: empty list or buffer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sql</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">):</span>
+            <span class="n">sql</span> <span class="o">+=</span> <span class="s2">&quot;;&quot;</span>
+
+        <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="n">setParameters</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+        <span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="n">buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clearBuffer</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">buffer</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.databaseExists"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.databaseExists">[docs]</a>    <span class="k">def</span> <span class="nf">databaseExists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if a database with name databaseName exists.</span>
+
+<span class="sd">        :param str databaseName:database name</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement databaseExists method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.cleanTableContent"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.cleanTableContent">[docs]</a>    <span class="k">def</span> <span class="nf">cleanTableContent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">schema</span> <span class="o">=</span> <span class="s2">&quot;temp&quot;</span><span class="p">,</span> <span class="n">whereClause</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement cleanTableContent method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.createDatabase"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.createDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">createDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">databaseName</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param databaseName:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Database descendants must implement createDatabase method.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DatabaseTemplate.createOrCleanTable"><a class="viewcode-back" href="../../../pygeotoolbox.database.html#pygeotoolbox.database.base.DatabaseTemplate.createOrCleanTable">[docs]</a>    <span class="k">def</span> <span class="nf">createOrCleanTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">createSQL</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tableExists</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">tableName</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cleanTableContent</span><span class="p">(</span><span class="n">tableName</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">createSQL</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

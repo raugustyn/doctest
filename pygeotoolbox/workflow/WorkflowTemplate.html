@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><#TITLE#/></title>
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!--
+    http://www.the-art-of-web.com/html/html5-form-validation/
+    https://www.sitepoint.com/html5-forms-javascript-constraint-validation-api/
+    -->
+    <style type="text/css">
+        .ErrorSpan {
+            color: red;
+        }
+        input:required:invalid, input:focus:invalid {
+            background-image: url(http://www.vugtk.cz/TB04CUZK001/invalid.png);
+            background-position: right top;
+            background-repeat: no-repeat;
+        }
+
+        _input:valid {
+            background-image: url(http://www.vugtk.cz/TB04CUZK001/valid.png);
+            background-position: right top;
+            background-repeat: no-repeat;
+        }
+
+        _input:valid { color: green; }
+        input:invalid { color: red; }
+
+        @font-face {
+            font-family: 'iconic';
+            src: url('http://www.vugtk.cz/TB04CUZK001/iconic.eot');
+            src: url('http://www.vugtk.cz/TB04CUZK001/iconic.eot?#iefix') format('embedded-opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        label {
+            display: inline-block;
+            width: 5em;
+        }
+        .status {
+
+        }
+
+        .result {
+
+        }
+
+		body {
+			    font-family: Tahoma;
+			    color: #575757;
+		}
+
+		p {	font-size: 100%; }
+
+        .ShortDescription {
+            font-style: italic;
+        }
+
+		input, select {
+			    border: 1px solid #ccc;
+			    background: white;
+			    color: #444;
+			    box-shadow: 0 0 15px #ddd;
+			    border-radius: 5px;
+		}
+
+		input:focus {
+			    box-shadow: 0 0 15px #00ffff;
+			    border: 1px solid #00ffff;
+		}
+
+		button {
+            margin: 0px 1rem 0px 1rem;
+            padding: 0px 0px 0px 0px;
+        }
+
+		table {	font-size: small; }
+
+		.WorkflowTable {
+			border-color: gray;
+		}
+
+		h1, h2 { color: #1370AB; }
+
+		.RunButton {
+			margin:0;
+			width: 6em;
+		}
+
+        .WorkflowTable tr:hover {
+            background-color: #dff573;
+        }
+
+        .WorkflowTable tr.RunAllRow:hover {
+            background-color: transparent;
+        }
+
+        .WorkflowTable td {
+            padding: 0;
+        }
+
+        .WorkflowTable tr {
+            vertical-align: top;
+            margin: 0.1rem 0.1rem 0.1rem 0.1rem;
+        }
+
+        body {
+            font-family:Tahoma;
+            background-color: #bae2fc;
+            color: rgb(34, 34, 34);
+        }
+
+        .Paper {
+            width: 20cm;
+            background-color: white;
+            box-shadow: 0.3em 0.3em 0.2em #888888;
+            padding: 0.32em;
+            text-align: left;
+        }
+
+        h1 {
+            background-color: #dff573;
+            color: #0088cc;
+            box-shadow: 0.1em 0.1em 0.1em #888888;
+            padding: 0.21em;
+            text-align: left;
+        }
+
+        h2, h3, h4, h5 {
+            text-align: left;
+        }
+
+        .ContrastTable {
+            background-color: rgb(230, 234, 226);
+        }
+
+        .BlueFramme {
+            border-color: #0088cc;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        p {
+            text-align:  left;
+        }
+
+        .LogDiv {
+
+        }
+        .LogTable td {
+            padding: 0px 1em 0px 1em;
+        }
+
+        .LogSwitchLine {
+            padding: 1em 1em 0px 1em;
+            font-size: 13px;
+            font-family: Tahoma;
+        }
+
+        .ConsoleListView, .ConsoleTableDiv {
+            font-size: 13px;
+            font-family: Tahoma;
+            overflow: scroll;
+            white-space: nowrap;
+            border-collapse:collapse;
+            border:1px solid #cdcdcd;
+            padding: 5px;
+            height:30em;
+        }
+
+        .SpinnerGauge {
+            width: 35px;
+            height: 35px;
+            background-image: url("http://www.vugtk.cz/euradin/spinner.gif");
+            background-position: center;
+            background-repeat: no-repeat;
+        }​
+
+        table.logswitchtable {
+            background-color: red;
+                 }
+
+        table.table th, table.table td {
+            padding: 0px 1em 0px 1em;
+        }
+
+        table.table {
+            border-collapse:collapse;
+            border:1px solid #cdcdcd;
+            margin-top:0px;
+            margin-bottom:20px
+        }
+
+        table.table td, table.table th {
+            line-height:17px;
+            padding: 3px 7px;
+            color:#565656;
+            vertical-align:top;
+            font-weight:normal;
+            text-align:center;
+            white-space:nowrap;
+        }
+
+        table.table th, table.table td {
+            border-collapse:collapse;
+            border:1px solid #cdcdcd;
+        }
+
+        table.table th {
+            background-color:#eeeeee;
+            color:#333;
+            text-align:center;
+            vertical-align: middle
+        }
+
+        table.table th.LeftAlign {
+            text-align:left;
+        }
+
+        table.table td.LeftAlign {
+            text-align:left;
+            white-space:normal;
+        }
+
+        .Tab {
+            border-radius: 10px 10px 0px 0px;
+            border-collapse: collapse;
+            border-left: 1px solid #cdcdcd;
+            border-right: 1px solid #cdcdcd;
+            border-top: 1px solid #cdcdcd;
+            padding: 0.2rem 1rem 0rem 1rem;
+            background-color: #eeeeee;
+            margin: 0px 0.5rem 0px 0px;
+            cursor: default;
+        }
+
+        .TabNotSelected {
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .ConsoleDivTextArea {
+            font-family: Tahoma;
+            font-size: 13px;
+            overflow:scroll;
+            width: 100%;
+            min-height:50px;
+            max-height: 300px;
+        }
+
+        .checkboxes label {
+            display: block;
+            float: left;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+        .checkboxes input {
+            vertical-align: middle;
+        }
+
+        .checkboxes label span {
+            vertical-align: middle;
+        }
+    </style>
+
+	<script language="JavaScript">
+
+function getDateStamp()
+{
+    return "?datestamp=" + Date.now();
+}
+
+$(function() {  $( document ).tooltip(); });
+
+function showProcessLogSection()
+{
+    $("#ProcessLogSection").show();
+    $("#Console").show();
+}
+
+function testConsole()
+{
+    showProcessLogSection();
+    SwitchToListView();
+    refreshConsole();
+}
+
+function refreshConsole()
+{
+    $.get("/console" + getDateStamp(), function(data) {
+        buildConsoleContent(data)
+    });
+
+    $.get("/statusinfo" + getDateStamp(), function(data) {
+        document.getElementById("StatusInfo").innerHTML = data;
+    });
+
+}
+
+var consoleRefreshTimer = false;
+var ParamInputInfos = /* PARAM_INPUT_INFOS */ {} /* END OF PARAM_INPUT_INFOS */;
+var FormInputNames = {};
+var WorkflowItemId = /* WORKFLOWITEMID */ "37" /* END OF WORKFLOWITEMID */;
+
+var WorkflowItems = /* WORKFLOWITEMS */ {
+    "3": {
+        "itemId": "3",
+        "caption": "Dummy01",
+        "id": 61236040,
+        "isExpanded": true
+    },
+    "4": {
+        "itemId": "4",
+        "caption": "Dummy02",
+        "id": 61235720,
+        "isExpanded": true
+    }
+} /* END OF WORKFLOWITEMS */;
+
+var DependsOnItems = /* DEPENDSONITEMS */ [
+        { "caption" : "Stálé kartografické reprezentace závrty", "href" : "/workflows/1", "isValidMessage" : "", isValid: true}
+    ] /* END OF DEPENDSONITEMS */;
+
+// DEV
+var CONSOLESTR_EXAMPLE = "2016-10-09 06:32:00,605 INFO CheckByRuleIdIs6.doCheck() \n2016-10-09 06:32:04,808 INFO Check rounded reliefs assigned by cartographer(ruleid_zm10=6 and zm10_geom is not null and znacka=6060100) \n2016-10-09 06:32:04,808 INFO BuildPointsForRoundedRelief.execute() \n2016-10-09 06:32:05,046 DEBUG \t\tSelecting candidates...\n2016-10-09 06:32:05,046 INFO Creating or cleaning field for storing\n2016-10-09 06:32:05,158 INFO All fields already exists. \n2016-10-09 06:32:05,158 INFO Clearing fields fit_circle, circle_origin,roudness_variation,circle_radius,is_rounded,roudncess_max_delta,affinity_index where ruleid_zm10=6 and zm10_geom is not null and znacka=6060100\n2016-10-09 06:32:49,048 INFO Done. \n2016-10-09 06:32:49,048 INFO Opening database query...\n2016-10-09 06:33:13,247 DEBUG Affinity indexes histogram:\n2016-10-09 06:33:13,247 DEBUG 424	0.0475999585149 \n2016-10-09 06:33:13,247 DEBUG 514	0.0913284919795 \n2016-10-09 06:33:13,247 DEBUG 207	0.135057025444 \n2016-10-09 06:33:13,247 DEBUG 92	0.178785558909 \2016-10-09 06:33:13,252 DEBUG 45	0.222514092373 \n2016-10-09 06:33:13,252 DEBUG 22	0.266242625838 \n2016-10-09 06:33:13,252 DEBUG 7	0.309971159302 \n2016-10-09 06:33:13,252 DEBUG 9	0.353699692767 \n2016-10-09 06:33:13,252 DEBUG 2	0.397428226231 \n2016-10-09 06:33:13,252 DEBUG 2	0.441156759696 \n2016-10-09 06:33:13,252 DEBUG In 1324 processed rows found 1324 rounded features.\n2016-10-09 06:33:13,252 INFO Done. \n2016-10-09 06:33:13,252 INFO Statistics:\n2016-10-09 06:33:13,252 INFO max Open Angle: 3.1374203719e-05\n2016-10-09 06:33:13,252 INFO refused By Persistent Representations Count: 0\n2016-10-09 06:33:13,256 INFO Oscilation: (1.4148418385317996e-05, 0.5560101601866609)\n2016-10-09 06:33:13,256 INFO max Radius: 13.6219086946 \n2016-10-09 06:33:13,256 INFO max Affinity Index: 0.441156759696\n2016-10-09 06:33:13,256 INFO processed Rows: 1324 \n2016-10-09 06:33:13,256 INFO num Circles: 1324 \n2016-10-09 06:33:13,256 INFO max Delta: 8.13355389098\n2016-10-09 06:33:13,256 INFO processedRows: 0 \n2016-10-09 06:33:13,256 INFO Done. \n2016-10-09 06:33:13,256 INFO Done. \n2016-10-09 06:33:15,187 INFO ruleid=6 identification 10 exceptions found.\n2016-10-09 06:33:16,848 INFO Exceptions zdroj_id: '11151565', '7158469', '12616593', '11166999', '3023841', '1217284', '12616704', '1288998', '4698925', '11166922'\n2016-10-09 06:33:16,848 INFO Done. "
+// END OF DEV
+
+function onInputKeyUpProc(inputId)
+{
+    var inputParams = ParamInputInfos[inputId];
+    var inputValue = document.getElementById(inputId).value;
+    if (inputValue != inputParams[1]) {
+        $("#" + inputParams[2]).show()
+    }
+}
+
+function onApplyButtonClick(rowId)
+{
+    var inputNames = FormInputNames[rowId];
+    for (var i=0; i<inputNames.length; i++) {
+        var inputName = inputNames[i];
+        var inputValue = document.getElementById(inputName).value;
+        var serverValue = ParamInputInfos[inputName][1];
+        if (serverValue != inputValue) {
+            ParamInputInfos[inputName][1] = inputValue;
+            href = "/values/" + ParamInputInfos[inputName][0] + "/set?newValue=" + encodeURIComponent(inputValue);
+            $.get(href, function(data) {} )
+            console.info(inputName, serverValue, "<>", inputValue, href);
+        }
+    }
+    $("#" + rowId).hide()
+}
+
+function validate()
+{
+    var href = "/workflows/" + WorkflowItemId + "/validate" + getDateStamp();
+    $.get(href, function(validateMessage) {
+        messageItems = validateMessage.split(":");
+
+        if (messageItems[0] == "True") {
+            message = "Zkontrolováno - v pořádku.<br>";
+        }
+        else {
+            message = "<br><span class='ErrorSpan'>Nalezeny chyby!</span><br>";
+        }
+        message = message +  messageItems[1];
+        document.getElementById("ValidationMessage").innerHTML = message;
+    });
+}
+
+function camelize(str) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+    return index == 0 ? letter.toUpperCase() : letter.toLowerCase();
+  }).replace(/\s+/g, '');
+}
+
+function ShowElementById(ElementId)
+{
+    var RunButtonId = ElementId + "_RunButton";
+    $(RunButtonId).show();
+}
+
+function HideElementById(ElementId)
+{
+    $(ElementId + "_RunButton").hide();
+}
+
+function SetRowVisibility(Id, Visible)
+{
+	var ItemRowId = "#" + Id + "_ROW";
+	if (Visible) {
+		$(ItemRowId).show();
+	}
+	else {
+		$(ItemRowId).hide();
+	}
+}
+
+function getStringToken(str, id)
+{
+    var result = "";
+    var idPosition = str.indexOf(id);
+    if (idPosition >= 0) {
+        result = str.substr(0, idPosition - 1);
+        str = str.substr(idPosition+1);
+    }
+
+    return result
+}
+
+function switchConsoleLevel(levelName)
+{
+    $("." + levelName).toggle();
+}
+
+var consoleIsInTableView = true;
+
+function SwitchToListView()
+{
+    $("#SwitchToListView").removeClass("TabNotSelected");
+    $("#ConsoleViewCheckBoxes").hide();
+    $("#SwitchToTableView").addClass("TabNotSelected");
+    $('#ConsoleTableDiv').hide();
+    $('#ConsoleListView').show();
+    consoleIsInTableView = false;
+}
+
+function SwitchToTableView()
+{
+    $("#SwitchToTableView").removeClass("TabNotSelected");
+    $("#ConsoleViewCheckBoxes").show();
+    $("#SwitchToListView").addClass("TabNotSelected");
+    $('#ConsoleTableDiv').show();
+    $('#ConsoleListView').hide();
+    consoleIsInTableView = true;
+}
+
+function scrollDivToBottom(id)
+{
+    var element = document.getElementById(id);
+    element.scrollTop = element.scrollHeight;
+}
+
+function buildConsoleContent(consoleLines)
+{
+    var USED_LEVELS = {
+        "INFO" : false,
+        "ERROR" : false,
+        "WARNING" : false,
+        "LOG" : false,
+        "CRITICAL" : false
+    };
+
+    consoleLines = consoleLines.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+    var lines = consoleLines.split("\n");
+    var tableContent = "<table id='ConsoleTableView' class='table'><th class='DateItem'>Date</th><th class='TimeItem'>Time</th><th class='LevelItem'>Level</th><th class='LeftAlign'>Msg</th>";
+    for (var i=0; i<lines.length; i++) {
+        var line = lines[i];
+        var allLineItems = line.split(" ");
+        var lineItems = allLineItems.slice(0, 3);
+
+        var msg = allLineItems.slice(3).join(" ");
+        msg = msg.replace(/,/g, ", ");
+        msg = msg.replace(/,  /g, ", ");
+
+        lineItems.push(msg);
+
+        var consoleLevel = lineItems[2];
+        if (consoleLevel != undefined) {
+            USED_LEVELS[consoleLevel] = true;
+            tableContent += "<tr class='" + lineItems[2] + "'>";
+            for (itemI = 0; itemI < lineItems.length; itemI++) {
+                switch (itemI) {
+                    case 0:
+                        tableContent += "<td style='white-space:nowrap' class='DateItem'>";
+                        break;
+                    case 1:
+                        tableContent += "<td class='TimeItem'>";
+                        break;
+                    case 2:
+                        tableContent += "<td class='LevelItem'>";
+                        break;
+                    case 3:
+                        tableContent += "<td class='LeftAlign'>";
+                        break;
+                    default:
+                        tableContent += "<td>";
+                }
+                tableContent += lineItems[itemI] + "</td>"
+            }
+            tableContent += "</tr>"
+        }
+    }
+    tableContent += "</table>";
+
+
+    var switchLine = "";
+    var usedCount = 0;
+    for (var level in USED_LEVELS) {
+        if (USED_LEVELS[level] && level != "undefined") {
+            switchLine += '<label><input type="checkbox" checked onchange="switchConsoleLevel(\'' + level + '\')"><span>' + camelize(level) + '&nbsp;&nbsp;</span></label>';
+            usedCount = usedCount + 1;
+        }
+        $("." + level).show();
+    }
+
+    if (usedCount < 2) {
+        switchLine = "";
+    }
+
+
+    document.getElementById("UsedLevelsSpan").innerHTML = switchLine;
+    document.getElementById("ConsoleTableDiv").innerHTML = tableContent;
+    document.getElementById("ConsoleListView").innerHTML = consoleLines.split("\n").join("<br>");
+    scrollDivToBottom("ConsoleTableDiv");
+    scrollDivToBottom("ConsoleListView");
+
+    SwitchClassVisibility(document.getElementById("SwitchDateVisibilityCB").checked, 'DateItem');
+    SwitchClassVisibility(document.getElementById("SwitchTimeVisibilityCB").checked, 'TimeItem');
+
+    if (consoleIsInTableView) {
+        SwitchToTableView();
+    }
+    else {
+        SwitchToListView();
+    }
+}
+
+function loadDependsOnDiv()
+{
+    if (DependsOnItems.length > 0) {
+        var html = "<br><b>Závislosti</b><br><table>";
+        for (var i = 0; i < DependsOnItems.length; i++) {
+            var item = DependsOnItems[i]
+            html += "<tr valign='top'><td><input type='checkbox'";
+            var message = "";
+            if (item.isValid) {
+                html += " checked "
+            }
+            else {
+                message = item.isValidMessage
+            }
+            html += "></td>"
+            html += "<td><a href='" + item.href + "'>" + item.caption + "</a></td>";
+            html += "<td>" + message + "</td>";
+        }
+        html +=  "</table>";
+        document.getElementById("DependsOn").innerHTML = html + "<br>";
+    }
+    else {
+        $("#DependsOn").hide()
+    }
+}
+
+function onLoadProc()
+{
+    $("#ProcessLogSection").hide();
+    SwitchToTableView();
+    loadDependsOnDiv();
+
+    if (document.getElementById("ShortDescription").innerHTML == document.getElementById("Description").innerHTML) {
+        $(".ShortDescription").hide()
+    }
+
+    $(".ApplyRow").hide();
+
+    // DEV
+    buildConsoleContent(CONSOLESTR_EXAMPLE, "ProcessLogSection");
+    // END OF DEV
+}
+
+function ToggleFolder(sender, id)
+{
+	var ItemSubIds = WorkflowItems[id]["itemSubIds"];
+	var IsExpanded = ! WorkflowItems[id]["isExpanded"];
+
+
+	for (var i=0; i<ItemSubIds.length; i++) {
+		SetRowVisibility(ItemSubIds[i], IsExpanded);
+	}
+
+	WorkflowItems[id]["isExpanded"] = IsExpanded
+}
+
+function fillGauge(id, percetnage)
+{
+	var gaugeElement = document.getElementById(id + "_StatusTD");
+	var s = percetnage*200/100;
+	var html = "<div style='background-color: #ff6232; width: " + Math.floor(percetnage*200/100).toString() + "px'>&nbsp;</div>";
+	gaugeElement.innerHTML = html;
+}
+
+function showSpinner(id)
+{
+    $("#" + id).addClass("SpinnerGauge");
+}
+
+function hideSpinner(id)
+{
+    $("#" + id).removeClass("SpinnerGauge");
+}
+
+function loadGauge(id)
+{
+	var iconElement = document.getElementById(id + "_StatusTD");
+	iconElement.innerHTML = "<img width=30 height=30 src='http://www.vugtk.cz/euradin/spinner.gif' />";
+}
+
+function CleanStatus(id)
+{
+    var statusId = id + "_StatusTD";
+	var statusElement = document.getElementById(statusId);
+    hideSpinner(statusId)
+	statusElement.innerHTML = "";
+}
+
+function loadDoneIcon(id)
+{
+	var iconElement = document.getElementById(id + "_StatusTD");
+	iconElement.innerHTML = "<img src='http://localhost/src/DoneIcon.png' style='height: 1.5em'/>";
+}
+
+function loadDocumentIcon(id, href)
+{
+	var iconElement = document.getElementById(id + "_ResultTD");
+	var html;
+	if (href == undefined) {
+		html = ""
+	}
+	else {
+		html = "<img src='http://localhost/src/DocumentIcon.png' style='height: 1.5em''/>";
+	}
+	iconElement.innerHTML = html;
+}
+
+var ProcessedItemIndex = 0;
+var ProcessedItemPercentage = 0;
+
+function NextExecute()
+{
+	var id = ProcessedItemIndex.toString();
+	if (ProcessedItemPercentage == 0) {
+
+	}
+	fillGauge(id, ProcessedItemPercentage);
+	ProcessedItemPercentage = ProcessedItemPercentage + 10;
+    if (ProcessedItemPercentage > 100) {
+        ProcessedItemPercentage = 0;
+        ProcessedItemIndex = ProcessedItemIndex + 1;
+        if (ProcessedItemIndex >= 23) {
+            ProcessedItemIndex = 0;
+            for (var i=0; i<23;i++) {
+                CleanStatus(i.toString());
+            }
+        }
+    }
+}
+
+var RunList = [];
+var ConsoleLines = "";
+
+function RunNext()
+{
+ if (RunList.length > 0) {
+     var item = RunList[0];
+     RunList = RunList.slice(1);
+     run(item.id, item.itemId);
+ }
+ else {
+     clearTimer();
+ }
+}
+
+function clearTimer()
+{
+    if (consoleRefreshTimer) {
+        window.clearTimeout(consoleRefreshTimer);
+    }
+}
+
+function run(id, itemId)
+{
+    console.info("run('" + id + "', '" + itemId + "')");
+    showProcessLogSection();
+
+    clearTimer();
+    consoleRefreshTimer = setInterval(refreshConsole, 2000)
+    showSpinner(itemId + "_StatusTD");
+
+    var url = itemId + "/execute" + getDateStamp();
+    $.get(url, function(data) {
+        ConsoleLines = ConsoleLines + data + "\n";
+        buildConsoleContent(ConsoleLines, "ProcessLogSection");
+        CleanStatus(itemId);
+        RunNext();
+    }
+    );
+}
+
+function RunAll()
+{
+    console.log("Run All");
+    ConsoleLines = "";
+
+    showProcessLogSection();
+    RunList = [];
+    for (var i in WorkflowItems) {
+        var item = WorkflowItems[i];
+        RunList.push(item);
+    }
+    RunNext();
+}
+
+function SwitchClassVisibility(visible, className)
+{
+    if (visible) {
+        $("." + className).show()
+    }
+    else {
+        $("." + className).hide()
+
+    }
+}
+
+	</script>
+</head>
+<body onload='onLoadProc()'>
+<!-- Example -->
+<button onclick="testConsole()">Test Console</button>
+<!-- END OF Example -->
+    <center>
+        <div class="Paper">
+
+            <h1><#TITLE#/></h1>
+            <#SHORTDESCRIPTION#/>
+            <#DESCRIPTION#/>
+<#PROPERTIES_FORM#/>
+            <#VALIDATEBUTTON#/>
+            <div id="DependsOn">
+
+            </div>
+            <WORKFLOWTABLE />
+
+<!-- Example -->
+	<table class="WorkflowTable">
+<tr style='font-size:medium' id='10_ROW' onmouseenter='ShowElementById("#0")' onmouseleave='HideElementById("#0")'>
+<tr style='font-size:medium' id='0_ROW' onmouseenter='ShowElementById("#0")' onmouseleave='HideElementById("#0")'>
+		<td id="0_StatusTD"></td>
+		<td id="0_ResultTD"></td>
+		<td><span></span>Situace&nbsp;č.8&nbsp;pozitivní&nbsp;test</td>
+		<td id="0_RunButtonTD" class="RunButtonTD"><button style="display: none;" id="0_RunButton">Run to here</button></td>
+		<td>Porovnání algoritmu s prvky označenými kartografem jako ruleid=6</td>
+	</tr>
+	<tr style='font-size:medium' id='1_ROW' onmouseenter='ShowElementById("#1")' onmouseleave='HideElementById("#1")'>
+		<td id="1_StatusTD"></td>
+		<td id="1_ResultTD"></td>
+		<td><span></span>Situace&nbsp;č.8&nbsp;negativní&nbsp;test</td>
+		<td id="1_RunButtonTD" class="RunButtonTD"><button style="display: none;" id="1_RunButton">Run to here</button></td>
+		<td>Porovnání algoritmu s prvky NE-označenými kartografem jako ruleid=6</td>
+	</tr>
+<tr class="RunAllRow"><td></td><td></td><td></td><td><button onclick="RunAll()" style="width:8em">Run All</button></td></tr></table>
+
+
+<!-- End of Example -->
+
+            <div id="DynamicContentDiv" class="ConsoleDiv"></div>
+
+            <div id="ProcessLogSection" class="LogDiv">
+                <div id="StatusInfo"></div>
+
+                <#MAIN_STATUS#/>
+                <div class='LogSwitchLine'>
+                    <table class='logswitchtable' width='100%'>
+                        <tr>
+                            <td class='NoTabLine'>
+                                <div class='checkboxes' id='ConsoleViewCheckBoxes'>
+                                    <label><input type="checkbox" id="SwitchDateVisibilityCB" onchange="SwitchClassVisibility(this.checked, 'DateItem')"><span>Date&nbsp;&nbsp;</span></label>
+                                    <label><input type="checkbox" id="SwitchTimeVisibilityCB" checked onchange="SwitchClassVisibility(this.checked, 'TimeItem')"><span>Time&nbsp;&nbsp;</span></label>
+                                    <label><input type="checkbox" id="SwitchLevelVisibilityCB" checked onchange="SwitchClassVisibility(this.checked, 'LevelItem')"><span>Level&nbsp;&nbsp;</span></label>
+                                    <span id="UsedLevelsSpan"></span>
+                                </div>
+                                &nbsp;
+                            </td>
+                            <td align='right'>
+                                <span id='SwitchToTableView' class='Tab' onclick='SwitchToTableView()'>Table</span>
+                                <span id='SwitchToListView' class='Tab TabNotSelected' onclick='SwitchToListView()'>List</span>
+                            </td>
+                            <td class='NoTabLine'>&nbsp;&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id='ConsoleTableDiv' class='ConsoleTableDiv'></div>
+                <div id='ConsoleListView' class='ConsoleListView'></div>
+            </div>
+    <div style="width:100%">
+    <p>
+
+    <table style="margin-left:auto;margin-right:auto;text-align:center;">
+        <tr style="text-align:left;">
+            <td><img src="http://www.vugtk.cz/euradin/services/rest.py/html/tacr_eng.png" height="55"></td>
+            <td>
+Tento portál je součástí projektu TB04CUZK001: Výzkum a vývoj metod pro kartografickou generalizaci
+státního mapového díla středních měřítek (2015-2016).
+Řešitelé:&nbsp;<a href="http://www.vugtk.cz">VÚGTK, v.v.i.</a>, <a href="http://www.tmapy.cz">T-MAPY spol. s r.o.</a>
+Správce&nbsp;portálu:&nbsp;<a href="mailto:radek.augustyn@vugtk.cz">Ing.&nbsp;Radek&nbsp;Augustýn</a><br>
+            </td>
+            <td align="right">
+                <img src="http://www.vugtk.cz/euradin/services/rest.py/html/SupportedBrowsers.png" title="Podporované prohlížeče: Chrome 20.0, Internet Explorer 10.0, Mozilla Firefox 4.0, Opera 9.0">
+            </td>
+        </tr>
+    </table>
+
+    </p>
+</div>
+
+    </div>
+    </center>
+
+</body>
+
+</html>

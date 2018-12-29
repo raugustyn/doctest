@@ -1,0 +1,593 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.sharedtools.planarmath &mdash; pygeotoolbox 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pygeotoolbox.sharedtools.planarmath</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.sharedtools.planarmath</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  -*- coding: utf-8 -*-</span>
+<span class="c1">###########################################################</span>
+<span class="c1">#                                                         #</span>
+<span class="c1"># Copyright (c) 2018 Radek Augustýn, licensed under MIT.  #</span>
+<span class="c1">#                                                         #</span>
+<span class="c1">###########################################################</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;radek.augustyn@email.cz&quot;</span>
+<span class="c1"># @PRODUCTION MODULE [Full]</span>
+
+<span class="kn">from</span> <span class="nn">base</span> <span class="k">import</span> <span class="n">sqr</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">atan2</span><span class="p">,</span> <span class="n">fabs</span>
+<span class="kn">import</span> <span class="nn">shapely.geometry</span>
+
+
+<div class="viewcode-block" id="normalizeAngle"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.normalizeAngle">[docs]</a><span class="k">def</span> <span class="nf">normalizeAngle</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">limit</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns normalized angle in interval (0, 2*Pi) or given value.</span>
+
+<span class="sd">    :param float value: Value to be normalized.</span>
+<span class="sd">    :param limit: Normalization high limit.</span>
+<span class="sd">    :return: Value in interval (0, limit)</span>
+
+<span class="sd">    &gt;&gt;&gt; normalizeAngle(78.2)</span>
+<span class="sd">    2.801776313844968</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span>
+    <span class="k">if</span> <span class="n">limit</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span> <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span>
+
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="Point"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Point">[docs]</a><span class="k">class</span> <span class="nc">Point</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;&quot; Initialize planar point object on coordinates (x, y). if you want to initialize it by shapely point tuple, use the point parameter hook.</span>
+
+<span class="sd">        &gt;&gt; p = Point(3, 4)</span>
+<span class="sd">        &gt;&gt; print p</span>
+<span class="sd">        Point(3, 4)</span>
+<span class="sd">        &gt;&gt; shapelyPoint = (3, 4)</span>
+<span class="sd">        &gt;&gt; Point(point=shapelyPoint</span>
+<span class="sd">        Point(3, 4)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">point</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Point.distance"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Point.distance">[docs]</a>    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculates planar distance to point.</span>
+
+<span class="sd">        :param Point point: Object to calculate distance to.</span>
+<span class="sd">        :return float: Planar distance between self and point.</span>
+
+<span class="sd">        &gt;&gt;&gt; a = Point(1, 1)</span>
+<span class="sd">        &gt;&gt;&gt; b = Point(6, 6)</span>
+<span class="sd">        &gt;&gt;&gt; a.distance(b)</span>
+<span class="sd">        7.0710678118654755</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">sqr</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">sqr</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns string representation of the object.</span>
+
+<span class="sd">        :return String: String representation of the point.</span>
+
+<span class="sd">        &gt;&gt;&gt; Point(3, 2)</span>
+<span class="sd">        Point(3.000000, 2.000000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Point(</span><span class="si">%f</span><span class="s2">, </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Point.move"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Point.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Moves point by given distances in each coordinate.</span>
+
+<span class="sd">        :param float dx: Move distance in X axis.</span>
+<span class="sd">        :param float dy: Move distance in Y axis.</span>
+
+<span class="sd">        &gt;&gt;&gt; a = Point(3, 5)</span>
+<span class="sd">        &gt;&gt;&gt; a.move(1, 2)</span>
+<span class="sd">        &gt;&gt;&gt; print a</span>
+<span class="sd">        Point(4.000000, 7.000000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dy</span></div>
+
+
+<div class="viewcode-block" id="Point.equals"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Point.equals">[docs]</a>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">]]</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">asShape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="normalizePoint"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.normalizePoint">[docs]</a><span class="k">def</span> <span class="nf">normalizePoint</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">point</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">Point</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">point</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">point</span></div>
+
+
+<div class="viewcode-block" id="Vector"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Vector">[docs]</a><span class="k">class</span> <span class="nc">Vector</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">startPoint</span><span class="p">,</span> <span class="n">endPoint</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">direction</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Initialize vector object.</span>
+
+<span class="sd">        :param Point startPoint:</span>
+<span class="sd">        :param Point endPoint:</span>
+<span class="sd">        :param float length:</span>
+<span class="sd">        :param float direction:</span>
+
+<span class="sd">        &gt;&gt;&gt; Vector(Point(3, 3), Point(5, 5))</span>
+<span class="sd">        Vector(Point(3.000000, 3.000000), Point(5.000000, 5.000000))</span>
+<span class="sd">        &gt;&gt;&gt; Vector(Point(3, 3), length=1, direction=0)</span>
+<span class="sd">        Vector(Point(3.000000, 3.000000), Point(4.000000, 3.000000))</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">endPoint</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">endPoint</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">startPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">length</span><span class="o">*</span><span class="n">cos</span><span class="p">(</span><span class="n">direction</span><span class="p">),</span> <span class="n">startPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">length</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">direction</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span> <span class="o">=</span> <span class="n">normalizePoint</span><span class="p">(</span><span class="n">startPoint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_normalized</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span> <span class="o">=</span> <span class="n">normalizePoint</span><span class="p">(</span><span class="n">endPoint</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns string representation of the object.</span>
+
+<span class="sd">        :return String: String representation of the point.</span>
+<span class="sd">        &gt;&gt;&gt; Vector(Point(3, 3), Point(5, 5))</span>
+<span class="sd">        Vector(Point(3.000000, 3.000000), Point(5.000000, 5.000000))</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Vector(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="p">))</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">normalized</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalized</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_normalized</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_normalized</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalized</span>
+
+
+<div class="viewcode-block" id="Vector.length"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Vector.length">[docs]</a>    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculates vector lenght.</span>
+
+<span class="sd">        :return float: Length of the vector.</span>
+
+<span class="sd">        &gt;&gt;&gt; edge = Vector(Point(3, 3), Point(5, 5))</span>
+<span class="sd">        &gt;&gt;&gt; edge.length()</span>
+<span class="sd">        2.8284271247461903</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="Vector.getDirection"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Vector.getDirection">[docs]</a>    <span class="k">def</span> <span class="nf">getDirection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns direction from the start point to the end point.</span>
+
+<span class="sd">        :return float: Direction from the start point to the end point.</span>
+
+<span class="sd">        &gt;&gt;&gt; edge = Vector(Point(0, 0), Point(-1, 0))</span>
+<span class="sd">        &gt;&gt;&gt; edge.getDirection()</span>
+<span class="sd">        3.141592653589793</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">atan2</span>
+        <span class="k">return</span> <span class="n">atan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vector.normalize"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Vector.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Builds unit vector of the same direction starting from the origin.</span>
+
+<span class="sd">        &gt;&gt;&gt; edge = Vector(Point(10, 10), Point(50, 50))</span>
+<span class="sd">        &gt;&gt;&gt; edge.normalize()</span>
+<span class="sd">        &gt;&gt;&gt; print edge</span>
+<span class="sd">        Vector(Point(0.000000, 0.000000), Point(0.707107, 0.707107))</span>
+<span class="sd">        &gt;&gt;&gt; print edge.length()</span>
+<span class="sd">        1.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">len</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">:</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vector.Interpolate_Point"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Vector.Interpolate_Point">[docs]</a>    <span class="k">def</span> <span class="nf">Interpolate_Point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">normalized</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Alias to the function calcPointOn.     &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcPointOn</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">normalized</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vector.calcPointOn"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Vector.calcPointOn">[docs]</a>    <span class="k">def</span> <span class="nf">calcPointOn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">normalized</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a point interpolated along a line.</span>
+
+<span class="sd">        :param float t: Distance or length fraction from the start point.</span>
+<span class="sd">        :param boolean normalized: If normalised set to True, then second argument t is a float between 0 and 1 representing fraction of total length of linestring the point has to be located.</span>
+<span class="sd">        If not, then t means length from the start point to the resulting point.</span>
+<span class="sd">        :return Point: Interpolated point.</span>
+
+<span class="sd">        &gt;&gt;&gt; edge = Vector(Point(10, 10), Point(50, 50))</span>
+<span class="sd">        &gt;&gt;&gt; edge.calcPointOn(0.5, True)</span>
+<span class="sd">        &gt;&gt;&gt; edge.calcPointOn(0.5, True)</span>
+<span class="sd">        Point(30.000000, 30.000000)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">y</span>
+
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Vector.extent"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.Vector.extent">[docs]</a>    <span class="k">def</span> <span class="nf">extent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">targetLength</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Adjust the vector so it&#39;s resulting length is as of targetLength parameter.</span>
+
+<span class="sd">        :param float targetLength:</span>
+
+<span class="sd">        &gt;&gt;&gt; edge = Vector(Point(10, 10), Point(50, 50))</span>
+<span class="sd">        &gt;&gt;&gt; edge.extent(12)</span>
+<span class="sd">        &gt;&gt;&gt; print edge, edge.length()</span>
+<span class="sd">        Vector(Point(10.000000, 10.000000), Point(18.485281, 18.485281)) 12.0</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selfLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selfLength</span> <span class="o">&lt;&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">targetLength</span><span class="o">/</span><span class="n">selfLength</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">scale</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="n">scale</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">asShape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">LineString</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">startPoint</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">endPoint</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="calcArea"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.calcArea">[docs]</a><span class="k">def</span> <span class="nf">calcArea</span><span class="p">(</span><span class="n">vertexes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param vertexes:</span>
+<span class="sd">    :return Float: Area of the polygon, Positive value means clockwise direction, negative counter-clockwise.</span>
+
+<span class="sd">    &gt;&gt;&gt; calcArea([Point(0, 0), Point(0, 1), Point(1, 1), Point(1, 0)])</span>
+<span class="sd">    -1.0</span>
+
+<span class="sd">    &gt;&gt;&gt; calcArea([Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)])</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">vertexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">vertexes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">vertexes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">vertexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertexes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">prevVertex</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertexes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prevVertex</span><span class="p">:</span>
+            <span class="nb">sum</span> <span class="o">+=</span> <span class="p">(</span><span class="n">prevVertex</span><span class="o">.</span><span class="n">x</span><span class="o">*</span><span class="n">vertex</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">prevVertex</span><span class="o">.</span><span class="n">y</span><span class="o">*</span><span class="n">vertex</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">prevVertex</span> <span class="o">=</span> <span class="n">vertex</span>
+
+    <span class="k">return</span> <span class="nb">sum</span><span class="o">/</span><span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="isLeft"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.isLeft">[docs]</a><span class="k">def</span> <span class="nf">isLeft</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">b</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="calcLineBearing"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.calcLineBearing">[docs]</a><span class="k">def</span> <span class="nf">calcLineBearing</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">by</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param ax:</span>
+<span class="sd">    :param ay:</span>
+<span class="sd">    :param bx:</span>
+<span class="sd">    :param by:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">ay</span> <span class="o">-</span> <span class="n">by</span><span class="p">,</span> <span class="n">ax</span> <span class="o">-</span> <span class="n">bx</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">result</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="n">pi</span>
+
+    <span class="k">while</span> <span class="n">result</span> <span class="o">&gt;</span> <span class="n">pi</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">-</span> <span class="n">pi</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="calcBearingsDifference"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.calcBearingsDifference">[docs]</a><span class="k">def</span> <span class="nf">calcBearingsDifference</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">normalizeAngle</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">pi</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">normalizeAngle</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">pi</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fabs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">normalizeAngle</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="constructPoint"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.constructPoint">[docs]</a><span class="k">def</span> <span class="nf">constructPoint</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">bearing</span><span class="p">,</span> <span class="n">lenght</span><span class="p">,</span> <span class="n">vertical</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Constructs point by given parameters.</span>
+
+<span class="sd">    :param point: Point for constructing line from.</span>
+<span class="sd">    :param bearing: Bearing for calculation.</span>
+<span class="sd">    :param lenght: Length of constructing vector.</span>
+<span class="sd">    :param vertical: if True, then calculate vertial.</span>
+<span class="sd">    :return: Point as shapely array [x, y]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">vertical</span><span class="p">:</span>
+        <span class="n">bearing</span> <span class="o">=</span> <span class="n">bearing</span> <span class="o">+</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">lenght</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">bearing</span><span class="p">),</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">lenght</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">bearing</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="moveShapeCenterToIntersection"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.moveShapeCenterToIntersection">[docs]</a><span class="k">def</span> <span class="nf">moveShapeCenterToIntersection</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Centers shape element around stream element.</span>
+
+<span class="sd">    :param shape: Shapely shape to be centered.</span>
+<span class="sd">    :param stream: Shapely element as center line.</span>
+<span class="sd">    :return: Moved shape element.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Shapely library imports</span>
+    <span class="kn">from</span> <span class="nn">shapely.affinity</span> <span class="k">import</span> <span class="n">translate</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normalized</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">newCenter</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+    <span class="n">movedShape</span> <span class="o">=</span> <span class="n">translate</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">newCenter</span><span class="o">.</span><span class="n">x</span><span class="o">-</span><span class="n">center</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">newCenter</span><span class="o">.</span><span class="n">y</span><span class="o">-</span><span class="n">center</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">movedShape</span></div>
+
+
+<div class="viewcode-block" id="calcShapeBearingAt"><a class="viewcode-back" href="../../../pygeotoolbox.sharedtools.html#pygeotoolbox.sharedtools.planarmath.calcShapeBearingAt">[docs]</a><span class="k">def</span> <span class="nf">calcShapeBearingAt</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates bearing of the shape element at the spot nearest to the point.</span>
+
+<span class="sd">    :param shape: Element to calculate bearing at.</span>
+<span class="sd">    :param point: Point to calculate element spot for bearing.</span>
+<span class="sd">    :return: Bearing at the projected sopt from point in radians.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">LineString</span>
+
+    <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Polygon&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">calcShapeBearingAt</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">boundary</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;geoms&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">geoms</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">geoms</span><span class="p">))):</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">calcShapeBearingAt</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">firstPoint</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">minDistance</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">streamBearing</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">shape</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">firstPoint</span><span class="p">:</span>
+                <span class="n">secondPoint</span> <span class="o">=</span> <span class="n">coord</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">LineString</span><span class="p">([</span><span class="n">firstPoint</span><span class="p">,</span> <span class="n">secondPoint</span><span class="p">])</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">minDistance</span> <span class="ow">or</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">minDistance</span><span class="p">:</span>
+                    <span class="n">minDistance</span> <span class="o">=</span> <span class="n">distance</span>
+                    <span class="n">streamBearing</span> <span class="o">=</span> <span class="n">calcLineBearing</span><span class="p">(</span><span class="n">firstPoint</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">firstPoint</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">secondPoint</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">secondPoint</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">firstPoint</span> <span class="o">=</span> <span class="n">secondPoint</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">firstPoint</span> <span class="o">=</span> <span class="n">coord</span>
+        <span class="k">return</span> <span class="n">streamBearing</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

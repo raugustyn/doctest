@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script language="JavaScript" src="example-list.js"></script>
+    <style>
+        body {
+            font-family: "Open Sans", sans-serif;
+            background-color: #bae2fc;
+            color: rgb(34, 34, 34);
+        }
+
+        .example {
+            height: 140px;
+            padding: 8px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: auto;
+            background-color: rgb(242, 220, 219);
+            float: left;
+            width:9.0cm;
+            margin:5px;
+            box-shadow: 0.1em 0.1em 0.1em #888888;
+        }
+
+        .title {
+            font-weight: bold;
+            color: #0088cc;
+            font-size: 16px;
+        }
+
+        .shortDescription {
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .description {
+            font-size: 12px;
+        }
+
+        h1 {
+            background-color: #dff573;
+            color: #0088cc;
+            box-shadow: 0.1em 0.1em 0.1em #888888;
+            padding: 0.21em;
+            text-align: left;
+        }
+
+        h2, h3, h4, h5 {
+            text-align: left;
+        }
+
+        .Paper {
+            width: 20cm;
+            background-color: white;
+            box-shadow: 0.3em 0.3em 0.2em #888888;
+            padding: 0.32em;
+            text-align: left;
+        }
+
+        .Content {
+            overflow: hidden
+        }
+
+    </style>
+
+</head>
+<body onload="onLoadProc()">
+    <center>
+        <div class="Paper">
+            <h1>Value Templates</h1>
+            <div id="content" class="Content">
+                <div class="example">
+                    <p class="title">Situace č.8 pozitivní test</p>
+                    <p class="description">Porovnání algoritmu s prvky označenými kartografem jako ruleid=6</p>
+                </div>
+
+                <div class="example">
+                    <p class="title">Situace č.8 negativní test</p>
+                    <p class="description">Porovnání algoritmu s prvky NE-označenými kartografem jako ruleid=6</p>
+                </div>
+
+            </div>
+        </div>
+    </center>
+</body>
+</html>

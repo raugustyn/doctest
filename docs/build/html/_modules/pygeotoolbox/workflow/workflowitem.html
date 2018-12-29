@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pygeotoolbox.workflow.workflowitem &mdash; pygeotoolbox 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pygeotoolbox
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pygeotoolbox</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../workflow.html">pygeotoolbox.workflow</a> &raquo;</li>
+        
+      <li>pygeotoolbox.workflow.workflowitem</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pygeotoolbox.workflow.workflowitem</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># WORKFLOW_LICENSE</span>
+
+<span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">dumps</span>
+
+<span class="kn">from</span> <span class="nn">sharedtools</span> <span class="k">import</span> <span class="n">normalizePath</span><span class="p">,</span> <span class="n">HTMLFormatter</span><span class="p">,</span> <span class="n">fileRead</span><span class="p">,</span> <span class="n">saveStrToFile</span><span class="p">,</span> <span class="n">initializeJavaScriptVariable</span>
+
+<div class="viewcode-block" id="HtmlFormField"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.HtmlFormField">[docs]</a><span class="k">class</span> <span class="nc">HtmlFormField</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caption</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">toStrConversion</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">caption</span> <span class="o">=</span> <span class="n">caption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrName</span> <span class="o">=</span> <span class="n">attrName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toStrConversion</span> <span class="o">=</span> <span class="n">toStrConversion</span></div>
+
+<div class="viewcode-block" id="WorkflowItem"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem">[docs]</a><span class="k">class</span> <span class="nc">WorkflowItem</span><span class="p">:</span>
+    <span class="n">_paramInputInfos</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_formInputNames</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">NEXT_WORKFLOW_ID</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">REGISTERED_WORKFLOWS</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caption</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">onExecute</span><span class="p">,</span> <span class="n">enabled</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">paramNames</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize workflow item.</span>
+
+<span class="sd">        :param caption: Process human readable name.</span>
+<span class="sd">        :param description: Process description.</span>
+
+<span class="sd">        &gt;&gt;&gt; namedItem = WorkflowItem(&quot;My Caption&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; namedItem.caption</span>
+<span class="sd">        &#39;My Caption&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; namedItemWithCaption = WorkflowItem(&quot;My Caption&quot;, description=&quot;My Description&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; namedItem.caption</span>
+<span class="sd">        &#39;My Caption&#39;</span>
+<span class="sd">        &gt;&gt;&gt; namedItemWithCaption.description</span>
+<span class="sd">        &#39;My Description&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NEXT_WORKFLOW_ID</span><span class="p">)</span>
+        <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">NEXT_WORKFLOW_ID</span> <span class="o">=</span> <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">NEXT_WORKFLOW_ID</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">caption</span> <span class="o">=</span> <span class="n">caption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shortDescription</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onExecute</span> <span class="o">=</span> <span class="n">onExecute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_enabled</span> <span class="o">=</span> <span class="n">enabled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_required</span> <span class="o">=</span> <span class="n">required</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paramNames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">paramNames</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">paramNames</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visibility</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requires</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validateProc</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">REGISTERED_WORKFLOWS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WorkflowItem.getAlldDependencies"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getAlldDependencies">[docs]</a>    <span class="k">def</span> <span class="nf">getAlldDependencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">def</span> <span class="nf">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">requires</span><span class="p">:</span>
+            <span class="n">subList</span> <span class="o">=</span> <span class="n">dependency</span><span class="o">.</span><span class="n">getAlldDependencies</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">subList</span><span class="p">:</span>
+                <span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">addItem</span><span class="p">(</span><span class="n">dependency</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">REGISTERED_WORKFLOWS</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">href</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;/workflows/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+
+<div class="viewcode-block" id="WorkflowItem.getItemById"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getItemById">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">getItemById</span><span class="p">(</span><span class="n">itemId</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Used for restfull web interfaces. Enables to get WorkflowItem object from it&#39;s id.</span>
+
+<span class="sd">        :param String or Integer itemId: id of the object to be searched for.</span>
+<span class="sd">        :return WorkflowItem: WorkflowItem with given itemId.</span>
+
+<span class="sd">        &gt;&gt;&gt; item = WorkflowItem(&quot;Test&quot;, &quot;&quot;, None, True, True)</span>
+<span class="sd">        &gt;&gt;&gt; itemId = id(item)</span>
+<span class="sd">        &gt;&gt;&gt; WorkflowItem.getItemById(itemId)</span>
+<span class="sd">        WorkflowItem(&#39;Test&#39;, True, True)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">itemId</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">itemId</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">REGISTERED_WORKFLOWS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">itemId</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">item</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.isBlind"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.isBlind">[docs]</a>    <span class="k">def</span> <span class="nf">isBlind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns True if onExecute property is empty.</span>
+
+<span class="sd">        :return Boolean: True if onExecute property is empty</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">onExecute</span> <span class="o">==</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.getJSON"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getJSON">[docs]</a>    <span class="k">def</span> <span class="nf">getJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;itemId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="s2">&quot;caption&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span>
+            <span class="s2">&quot;isExpanded&quot;</span> <span class="p">:</span> <span class="kc">True</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.getAllItems"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getAllItems">[docs]</a>    <span class="k">def</span> <span class="nf">getAllItems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enabled</span>
+
+    <span class="nd">@enabled</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_enabled</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">required</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_required</span>
+
+    <span class="nd">@required</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">setRequired</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_required</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="WorkflowItem.harvestParamNames"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.harvestParamNames">[docs]</a>    <span class="k">def</span> <span class="nf">harvestParamNames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skippedParamNames</span> <span class="o">=</span> <span class="p">[]):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">paramName</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">paramNames</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">paramName</span> <span class="ow">in</span> <span class="n">skippedParamNames</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">paramName</span><span class="p">,</span> <span class="s2">&quot;parameter&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.execute"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This method executes desired workflow process. Returns True if suceeds.</span>
+
+<span class="sd">        :param result: Returns True in case of sucess.</span>
+
+<span class="sd">        &gt;&gt;&gt; item = WorkflowItem(&quot;TestItem&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print item.execute()</span>
+<span class="sd">        False</span>
+
+<span class="sd">        &gt;&gt;&gt; def executeProc():print &quot;Executed procedure called&quot;;return True</span>
+<span class="sd">        &gt;&gt;&gt; item = WorkflowItem(&quot;TestItem&quot;, onExecute=executeProc)</span>
+<span class="sd">        &gt;&gt;&gt; print item.execute()</span>
+<span class="sd">        Executed procedure called</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onExecute</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">onExecute</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns string representing the instance.</span>
+
+<span class="sd">        :return: string representing the instance</span>
+
+<span class="sd">        &gt;&gt;&gt; item = WorkflowItem(&quot;Ahoj&quot;, &quot;&quot;, None, False, True)</span>
+<span class="sd">        &gt;&gt;&gt; print item</span>
+<span class="sd">        WorkflowItem(&#39;Ahoj&#39;, True, False)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">caption</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;, &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s2">&quot;, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">required</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;)&#39;</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+<div class="viewcode-block" id="WorkflowItem.getShortDescription"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getShortDescription">[docs]</a>    <span class="k">def</span> <span class="nf">getShortDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortDescription</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortDescription</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.getHTMLForm"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getHTMLForm">[docs]</a>    <span class="k">def</span> <span class="nf">getHTMLForm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputSize</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">skippedParamNames</span> <span class="o">=</span> <span class="p">[]):</span>
+        <span class="kn">import</span> <span class="nn">sharedtools.config</span> <span class="k">as</span> <span class="nn">config</span>
+        <span class="kn">from</span> <span class="nn">sharedtools</span> <span class="k">import</span> <span class="n">formatValueIfNotEmpty</span>
+
+        <span class="n">paramNames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">harvestParamNames</span><span class="p">(</span><span class="n">skippedParamNames</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">paramNames</span><span class="p">:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">HTMLFormatter</span><span class="p">()</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">addLineAndIndent</span><span class="p">(</span><span class="s2">&quot;&lt;form class=&#39;SettingsForm&#39; id=&#39;Form_</span><span class="si">%s</span><span class="s2">&#39;&gt;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">addLineAndIndent</span><span class="p">(</span><span class="s2">&quot;&lt;table&gt;&quot;</span><span class="p">)</span>
+            <span class="n">formApplyRowId</span> <span class="o">=</span> <span class="s2">&quot;Form_</span><span class="si">%s</span><span class="s2">_ApplyRow&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">_formInputNames</span><span class="p">[</span><span class="n">formApplyRowId</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">paramIndex</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">paramName</span><span class="p">,</span> <span class="n">groupName</span> <span class="ow">in</span> <span class="n">paramNames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">groupName</span> <span class="o">&lt;&gt;</span> <span class="s2">&quot;ChildParam&quot;</span><span class="p">:</span>
+                    <span class="n">valueInfo</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">valueInfos</span><span class="p">[</span><span class="n">paramName</span><span class="p">]</span>
+                    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">formatValueIfNotEmpty</span><span class="p">(</span><span class="s2">&quot; title=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">valueInfo</span><span class="o">.</span><span class="n">description</span><span class="p">),</span>
+                        <span class="n">formatValueIfNotEmpty</span><span class="p">(</span><span class="s2">&quot; required&quot;</span><span class="p">,</span> <span class="n">valueInfo</span><span class="o">.</span><span class="n">required</span><span class="p">),</span>
+                        <span class="n">formatValueIfNotEmpty</span><span class="p">(</span><span class="s2">&quot; type=&#39;text&#39; pattern=&#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">valueInfo</span><span class="o">.</span><span class="n">inputPattern</span><span class="p">),</span>
+                        <span class="n">formatValueIfNotEmpty</span><span class="p">(</span><span class="s2">&quot; size=</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inputSize</span><span class="p">)</span>
+                    <span class="p">]</span>
+
+                    <span class="n">inputId</span> <span class="o">=</span> <span class="s2">&quot;input_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">paramIndex</span><span class="p">)</span>
+                    <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">_formInputNames</span><span class="p">[</span><span class="n">formApplyRowId</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inputId</span><span class="p">)</span>
+                    <span class="n">onKeyUpProc</span> <span class="o">=</span> <span class="s1">&#39;onInputKeyUpProc(&quot;</span><span class="si">%s</span><span class="s1">&quot;)&#39;</span> <span class="o">%</span> <span class="n">inputId</span>
+                    <span class="n">html</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s2">&quot;&lt;tr</span><span class="si">%s</span><span class="s2">&gt;&lt;td&gt;&lt;input</span><span class="si">%s</span><span class="s2"> value=&#39;</span><span class="si">%s</span><span class="s2">&#39; onkeyup=&#39;</span><span class="si">%s</span><span class="s2">&#39; id=&#39;</span><span class="si">%s</span><span class="s2">&#39;&gt;&lt;/input&gt;&lt;/td&gt;&lt;td style=&#39;padding-left:5px&#39;&gt;</span><span class="si">%s</span><span class="s2">&lt;/td&gt;&lt;/tr&gt;&quot;</span> <span class="o">%</span>
+                                 <span class="p">(</span><span class="n">formatValueIfNotEmpty</span><span class="p">(</span><span class="s2">&quot; class=&#39;</span><span class="si">%s</span><span class="s2">_Class&#39;&quot;</span><span class="p">,</span> <span class="n">groupName</span><span class="p">),</span>
+                                  <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">params</span><span class="p">),</span>
+                                  <span class="n">config</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="n">paramName</span><span class="p">),</span> <span class="n">onKeyUpProc</span><span class="p">,</span>
+                                  <span class="n">inputId</span><span class="p">,</span>
+                                  <span class="n">valueInfo</span><span class="o">.</span><span class="n">caption</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_paramInputInfos</span><span class="p">[</span><span class="n">inputId</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">paramName</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="n">paramName</span><span class="p">),</span> <span class="n">formApplyRowId</span><span class="p">]</span>
+                    <span class="n">paramIndex</span> <span class="o">=</span> <span class="n">paramIndex</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="n">onClickProc</span> <span class="o">=</span> <span class="s1">&#39;onApplyButtonClick(&quot;</span><span class="si">%s</span><span class="s1">&quot;)&#39;</span> <span class="o">%</span> <span class="n">formApplyRowId</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s2">&quot;&lt;tr id=&#39;</span><span class="si">%s</span><span class="s2">&#39; class=&#39;ApplyRow&#39;&gt;&lt;td&gt;&lt;/td&gt;&lt;td align=&#39;left&#39;&gt;&lt;button type=&#39;button&#39; onclick=&#39;</span><span class="si">%s</span><span class="s2">&#39;&gt;&amp;nbsp;&amp;nbsp;Použij&amp;nbsp;&amp;nbsp;&lt;/button&gt;&lt;/td&gt;&lt;/tr&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">formApplyRowId</span><span class="p">,</span> <span class="n">onClickProc</span><span class="p">))</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">unIndentAndAddLine</span><span class="p">(</span><span class="s2">&quot;&lt;/table&gt;&quot;</span><span class="p">)</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">unIndentAndAddLine</span><span class="p">(</span><span class="s2">&quot;&lt;form&gt;&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">html</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.getAllItemsJSON"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getAllItemsJSON">[docs]</a>    <span class="k">def</span> <span class="nf">getAllItemsJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">onExecute</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getJSON</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="WorkflowItem.getHTML"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getHTML">[docs]</a>    <span class="k">def</span> <span class="nf">getHTML</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">paramNames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">harvestParamNames</span><span class="p">()</span>
+        <span class="n">skippedNames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">paramName</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">paramNames</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">group</span> <span class="o">==</span> <span class="s2">&quot;SharedParam&quot;</span><span class="p">:</span>
+                <span class="n">skippedNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paramName</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">printSequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s%s</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="n">sequence</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">required</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">enabled</span><span class="p">))</span>
+
+            <span class="nb">print</span> <span class="n">msg</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sequence</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                    <span class="n">printSequence</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">indent</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_html</span> <span class="o">=</span> <span class="n">HTMLFormatter</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">indentToHTML</span><span class="p">(</span><span class="n">indent</span><span class="p">):</span>
+            <span class="n">strValue</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">indent</span><span class="p">):</span>
+                <span class="n">strValue</span> <span class="o">+=</span> <span class="s2">&quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&quot;</span>
+            <span class="k">return</span> <span class="s2">&quot;&lt;span&gt;</span><span class="si">%s</span><span class="s2">&lt;/span&gt;&quot;</span> <span class="o">%</span> <span class="n">strValue</span>
+
+        <span class="k">def</span> <span class="nf">indentToFontSize</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">sizeId</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span> <span class="s2">&quot;small&quot;</span><span class="p">,</span> <span class="s2">&quot;smaller&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">indent</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sizeId</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;smaller&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">sizeId</span><span class="p">[</span><span class="n">indent</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">htmlSequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">showRoot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="n">hasItems</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="s2">&quot;items&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sequence</span><span class="o">.</span><span class="n">items</span>
+            <span class="k">if</span> <span class="n">showRoot</span><span class="p">:</span>
+                <span class="n">itemId</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">id</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">HTMLFormatter</span><span class="p">()</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">addLineAndIndent</span><span class="p">(</span><span class="s2">&quot;&lt;tr style=&#39;font-size:</span><span class="si">%s</span><span class="s2">&#39; id=&#39;</span><span class="si">%s</span><span class="s2">&#39; onmouseenter=&#39;ShowElementById(</span><span class="se">\&quot;</span><span class="s2">#</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">)&#39; onmouseleave=&#39;HideElementById(</span><span class="se">\&quot;</span><span class="s2">#</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">)&#39;&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indentToFontSize</span><span class="p">(</span><span class="n">indent</span><span class="p">),</span> <span class="n">itemId</span> <span class="o">+</span> <span class="s2">&quot;_ROW&quot;</span><span class="p">,</span> <span class="n">itemId</span><span class="p">,</span> <span class="n">itemId</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">sequence</span><span class="o">.</span><span class="n">required</span><span class="p">:</span>
+                    <span class="n">checkBoxStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">checkBoxStr</span> <span class="o">=</span> <span class="s1">&#39;&lt;input id=&quot;</span><span class="si">%s</span><span class="s1">&quot; type=&quot;checkbox&quot; name=&quot;vehicle&quot; value=&quot;Bike&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itemId</span> <span class="o">+</span> <span class="s2">&quot;_CB&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">sequence</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+                        <span class="n">checkBoxStr</span> <span class="o">+=</span>  <span class="s2">&quot; checked&quot;</span>
+                    <span class="n">checkBoxStr</span> <span class="o">+=</span> <span class="s1">&#39;&gt;&#39;</span>
+
+                <span class="k">if</span> <span class="n">hasItems</span><span class="p">:</span>
+                    <span class="n">itemIcon</span> <span class="o">=</span> <span class="s2">&quot;&lt;img src=&#39;http://localhost/src/folder-horizontal.png&#39; onclick=&#39;ToggleFolder(this, </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">)&#39;/&gt;&amp;nbsp;&quot;</span> <span class="o">%</span> <span class="n">itemId</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">itemIcon</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+                <span class="n">msg</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s1">&#39;&lt;td id=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&lt;/td&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itemId</span> <span class="o">+</span> <span class="s2">&quot;_StatusTD&quot;</span><span class="p">))</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s1">&#39;&lt;td id=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&lt;/td&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itemId</span> <span class="o">+</span> <span class="s2">&quot;_ResultTD&quot;</span><span class="p">))</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s2">&quot;&lt;td&gt;</span><span class="si">%s%s%s%s</span><span class="s2">&lt;/td&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indentToHTML</span><span class="p">(</span><span class="n">indent</span><span class="p">),</span> <span class="n">checkBoxStr</span><span class="p">,</span> <span class="n">itemIcon</span><span class="p">,</span> <span class="n">sequence</span><span class="o">.</span><span class="n">caption</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;nbsp;&#39;</span><span class="p">)))</span>
+
+                <span class="k">if</span> <span class="n">sequence</span><span class="o">.</span><span class="n">isBlind</span><span class="p">():</span>
+                    <span class="n">runBtnHTML</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">runBtnHTML</span> <span class="o">=</span> <span class="s1">&#39;&lt;button style=&quot;display: none;width:6em&quot; RunButton&quot; id=&quot;</span><span class="si">%s</span><span class="s1">_RunButton&quot;  type=&quot;button&quot; onclick=&quot;run(</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">, </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">)&quot;&gt;Spusť&lt;/button&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itemId</span><span class="p">,</span> <span class="n">sequence</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">itemId</span><span class="p">)</span>
+
+                <span class="n">msg</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s1">&#39;&lt;td id=&quot;</span><span class="si">%s</span><span class="s1">&quot; class=&quot;RunButtonTD&quot;&gt;</span><span class="si">%s</span><span class="s1">&lt;/td&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">itemId</span> <span class="o">+</span> <span class="s2">&quot;_RunButtonTD&quot;</span><span class="p">,</span> <span class="n">runBtnHTML</span><span class="p">))</span>
+
+                <span class="n">formHTML</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">getHTMLForm</span><span class="p">(</span><span class="n">skippedParamNames</span><span class="o">=</span><span class="n">skippedNames</span><span class="p">)</span>
+
+                <span class="n">msg</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s2">&quot;&lt;td&gt;</span><span class="si">%s%s</span><span class="s2">&lt;/td&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">formHTML</span><span class="p">))</span>
+                <span class="n">msg</span><span class="o">.</span><span class="n">unIndentAndAddLine</span><span class="p">(</span><span class="s2">&quot;&lt;/tr&gt;&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_html</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">html</span><span class="p">)</span>
+                <span class="n">subItemsIndent</span> <span class="o">=</span> <span class="n">indent</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subItemsIndent</span> <span class="o">=</span> <span class="n">indent</span>
+
+            <span class="k">if</span> <span class="n">hasItems</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sequence</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                    <span class="n">htmlSequence</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">subItemsIndent</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">getValueIfNotEmpty</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">template</span> <span class="o">%</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">_paramInputInfos</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">WorkflowItem</span><span class="o">.</span><span class="n">_formInputNames</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_html</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isBlind</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_html</span><span class="o">.</span><span class="n">addLineAndIndent</span><span class="p">(</span><span class="s1">&#39;&lt;table class=&quot;WorkflowTable&quot;&gt;&#39;</span><span class="p">)</span>
+            <span class="n">htmlSequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_html</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s1">&#39;&lt;tr class=&quot;RunAllRow&quot;&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;button type=&quot;button&quot; onclick=&quot;RunAll()&quot; style=&quot;width:6em&quot;&gt;Spusť vše&lt;/button&gt;&lt;/td&gt;&lt;/tr&gt;&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_html</span><span class="o">.</span><span class="n">unIndentAndAddLine</span><span class="p">(</span><span class="s2">&quot;&lt;/table&gt;&quot;</span><span class="p">)</span>
+
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fileRead</span><span class="p">(</span><span class="n">normalizePath</span><span class="p">(</span><span class="s2">&quot;workflow/WorkflowTemplate.html&quot;</span><span class="p">))</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;div id=&quot;DynamicContentDiv&quot; class=&quot;ConsoleDiv&quot;&gt;&lt;/div&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;div id=&quot;DynamicContentDiv&quot;&gt;</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&lt;/div&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_html</span><span class="o">.</span><span class="n">html</span><span class="p">)</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;WORKFLOWTABLE /&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;#TITLE#/&gt;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">caption</span><span class="p">)</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;#DESCRIPTION#/&gt;&quot;</span><span class="p">,</span> <span class="n">getValueIfNotEmpty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="s1">&#39;&lt;p class=&quot;Description&quot; id=&quot;Description&quot;&gt;</span><span class="si">%s</span><span class="s1">&lt;/p&gt;&#39;</span><span class="p">))</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;#SHORTDESCRIPTION#/&gt;&quot;</span><span class="p">,</span> <span class="n">getValueIfNotEmpty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getShortDescription</span><span class="p">(),</span> <span class="s1">&#39;&lt;p class=&quot;ShortDescription&quot; id=&quot;ShortDescription&quot;&gt;</span><span class="si">%s</span><span class="s1">&lt;/p&gt;&#39;</span><span class="p">))</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;#PROPERTIES_FORM#/&gt;&quot;</span><span class="p">,</span> <span class="n">getValueIfNotEmpty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getHTMLForm</span><span class="p">(),</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">))</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;#MAIN_STATUS#/&gt;&quot;</span><span class="p">,</span> <span class="s1">&#39;&lt;div id=&quot;</span><span class="si">%s</span><span class="s1">&quot;&gt;&lt;/div&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&quot;_StatusTD&quot;</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validateProc</span><span class="p">:</span>
+            <span class="n">htmlFormatter</span> <span class="o">=</span> <span class="n">HTMLFormatter</span><span class="p">()</span>
+            <span class="n">htmlFormatter</span><span class="o">.</span><span class="n">addLineAndIndent</span><span class="p">(</span><span class="s1">&#39;&lt;div style=&quot;vertical-align: middle&quot;&gt;&#39;</span><span class="p">)</span>
+            <span class="n">htmlFormatter</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s1">&#39;&lt;button type=&quot;button&quot; onclick=&quot;validate()&quot; style=&quot;width:6em&quot; title=&quot;Zkontroluje nastavení pomocí volání funkce na serveru&quot;&gt;Zkontroluj&lt;/button&gt;&#39;</span><span class="p">)</span>
+            <span class="n">htmlFormatter</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="s1">&#39;&lt;span id=&quot;ValidationMessage&quot;&gt;&lt;/span&gt;&#39;</span><span class="p">)</span>
+            <span class="n">htmlFormatter</span><span class="o">.</span><span class="n">unIndentAndAddLine</span><span class="p">(</span><span class="s1">&#39;&lt;/div&gt;&#39;</span><span class="p">)</span>
+            <span class="n">validateHTML</span> <span class="o">=</span> <span class="n">htmlFormatter</span><span class="o">.</span><span class="n">html</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">validateHTML</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">fullHtml</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&lt;#VALIDATEBUTTON#/&gt;&quot;</span><span class="p">,</span> <span class="n">validateHTML</span><span class="p">)</span>
+
+
+        <span class="kn">from</span> <span class="nn">sharedtools.base</span> <span class="k">import</span> <span class="n">replaceJavaScriptBlock</span><span class="p">,</span> <span class="n">replaceHTMLBlock</span>
+
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">fullHtml</span><span class="p">,</span> <span class="s2">&quot;DEV&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">fullHtml</span><span class="p">,</span> <span class="s2">&quot;DEPENDSONITEMS&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getDependsOnJSON</span><span class="p">())</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">fullHtml</span><span class="p">,</span> <span class="s2">&quot;WORKFLOWITEMID&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">fullHtml</span><span class="p">,</span> <span class="s2">&quot;WORKFLOWITEMS&quot;</span><span class="p">,</span> <span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getAllItemsJSON</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">replaceJavaScriptBlock</span><span class="p">(</span><span class="n">fullHtml</span><span class="p">,</span> <span class="s2">&quot;PARAM_INPUT_INFOS&quot;</span><span class="p">,</span> <span class="n">dumps</span><span class="p">(</span><span class="n">WorkflowItem</span><span class="o">.</span><span class="n">_paramInputInfos</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">initializeJavaScriptVariable</span><span class="p">(</span><span class="n">fullHtml</span><span class="p">,</span> <span class="s2">&quot;FormInputNames&quot;</span><span class="p">,</span> <span class="n">dumps</span><span class="p">(</span><span class="n">WorkflowItem</span><span class="o">.</span><span class="n">_formInputNames</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+        <span class="n">fullHtml</span> <span class="o">=</span> <span class="n">replaceHTMLBlock</span><span class="p">(</span><span class="n">fullHtml</span><span class="p">,</span> <span class="s2">&quot;Example&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fullHtml</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.getDependsOnJSON"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.getDependsOnJSON">[docs]</a>    <span class="k">def</span> <span class="nf">getDependsOnJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">getAlldDependencies</span><span class="p">():</span>
+            <span class="n">isValid</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">&quot;caption&quot;</span> <span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span>
+                <span class="s2">&quot;href&quot;</span> <span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">href</span><span class="p">,</span>
+                <span class="s2">&quot;isValidMessage&quot;</span> <span class="p">:</span> <span class="n">msg</span><span class="p">,</span>
+                <span class="s2">&quot;isValid&quot;</span> <span class="p">:</span> <span class="n">isValid</span>
+            <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WorkflowItem.validate"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.WorkflowItem.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Validates item by self.validateProc. If not present, assumes item is oky.</span>
+
+<span class="sd">        :return (Boolean, String): Validation state and error message if failed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validateProc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validateProc</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">isValid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;validating item and returns result.</span>
+
+<span class="sd">        :return Boolean: True if validation was successfull</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="HtmlFormMasterTemplateWorkflowItem"><a class="viewcode-back" href="../../../pygeotoolbox.workflow.html#pygeotoolbox.workflow.workflowitem.HtmlFormMasterTemplateWorkflowItem">[docs]</a><span class="k">class</span> <span class="nc">HtmlFormMasterTemplateWorkflowItem</span><span class="p">(</span><span class="n">WorkflowItem</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Template for field form.</span>
+
+<span class="sd">    &gt;&gt;&gt; a = HtmlFormMasterTemplateWorkflowItem()</span>
+<span class="sd">    &gt;&gt;&gt; content = a.getHTMLForm(40)</span>
+<span class="sd">    &gt;&gt;&gt; open(&quot;c:/temp/htmlmastertemplate.html&quot;, &quot;w&quot;).write(content)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">WorkflowItem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="s2">&quot;Test escription&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">htmlParams</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">HtmlFormField</span><span class="p">(</span><span class="s2">&quot;Text Field Example&quot;</span><span class="p">,</span> <span class="s2">&quot;textField&quot;</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textField</span> <span class="o">=</span> <span class="s2">&quot;Text Field Example Value&quot;</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Radek Augustyn.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
